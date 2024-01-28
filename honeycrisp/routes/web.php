@@ -14,5 +14,10 @@ use Illuminate\Support\Facades\Route;
 */
 
 Route::get('/', function () {
-    return view('welcome');
+            return redirect('/facilities');
 });
+
+Route::resource(
+    'facilities',
+    'App\Http\Controllers\FacilityController'
+);
