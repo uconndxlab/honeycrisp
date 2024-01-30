@@ -12,8 +12,9 @@ class FacilityController extends Controller
      */
     public function index()
     {
-        // facilities get em all
-        $facilities = Facility::all();
+        // facilities get em all sorted by name
+        $facilities = Facility::orderBy('name')->get();
+    
 
         // return the view with the data
         return view('facilities.index', [
@@ -45,6 +46,8 @@ class FacilityController extends Controller
         $facility = new Facility();
         $facility->name = $request->name;
         $facility->description = $request->description;
+        $facility->abbreviation = $request->abbreviation;
+        $facility->status = $request->status;
 
         // if the facility is saved, redirect to the index
         // with a success message
@@ -74,7 +77,15 @@ class FacilityController extends Controller
      */
     public function edit(string $id)
     {
-        //
+        // just load the create view with a facility preloaded
+        $facility = Facility::find($id);
+        if ($facility) {
+            return view('facilities.create', [
+                'facility' => $facility
+            ]);
+        } else {
+            return redirect('/facilities')->with('error', 'Facility not found!');
+        }
     }
 
     /**
@@ -90,6 +101,13 @@ class FacilityController extends Controller
      */
     public function destroy(string $id)
     {
-        //
+        // delete the facility by id
+        $facility = Facility::find($id);
+        if ($facility) {
+            $facility->delete();
+            return redirect('/facilities')->with('success', 'Facility deleted!');
+        } else {
+            return redirect('/facilities')->with('error', 'Facility not found!');
+        }
     }
 }
