@@ -16,7 +16,7 @@ return new class extends Migration
             $table->foreignId('user_id')->constrained();
             $table->foreignId('service_id')->nullable()->constrained();
             $table->foreignId('product_id')->nullable()->constrained();
-            $table->foreignId('billing_account_id')->constrained();
+           // $table->foreignId('billing_account_id')->constrained();
             $table->dateTime('start_time');
             $table->dateTime('end_time')->nullable();
             $table->integer('quantity')->nullable();
