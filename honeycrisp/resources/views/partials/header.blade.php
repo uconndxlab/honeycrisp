@@ -14,9 +14,13 @@
             </div>
         @endif
 
-        @if (session('error'))
+        @if ($errors->any())
             <div class="alert alert-danger">
-                {{ session('error') }}
+                <ul>
+                    @foreach ($errors->all() as $error)
+                        <li>{{ $error }}</li>
+                    @endforeach
+                </ul>
             </div>
         @endif
 
@@ -25,6 +29,11 @@
                 {{ session('status') }}
             </div>
         @endif
+
+        @error('name')
+            <div class="alert alert-danger">{{ $message }}</div>
+        @enderror
+
     </div>
 
 </header>

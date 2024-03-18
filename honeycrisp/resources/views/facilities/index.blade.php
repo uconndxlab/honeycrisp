@@ -21,25 +21,35 @@
 
                             <p>
                                 <!-- form fields for creating a facility -->
-                                <label for="name">Facility Name</label>
-                                <input type="text" name="name" id="name" required>
+                                <label 
+                                for="name">Facility Name</label>
+                                <input
+                                value="{{ old('name') }}"
+
+                                 type="text" name="name" id="name" required>
                             </p>
 
                             <p>
                                 <!-- description -->
                                 <label for="description">Description</label>
-                                <textarea name="description" id="description" cols="30" rows="10"></textarea>
+                                <textarea name="description" id="description" cols="30" rows="10">
+                                    {{ old('description') }}
+                                </textarea>
                             </p>
 
                             <p>
                                 <!-- abbreviation -->
                                 <label for="abbreviation">Abbreviation</label>
-                                <input type="text" name="abbreviation" id="abbreviation" required>
+                                <input 
+                                value="{{ old('abbreviation') }}"
+                                type="text" name="abbreviation" id="abbreviation" required>
                             </p>
 
                             <p> <!f-- status (enum active/intactive) -->
                                 <label for="status">Status</label>
-                                <select name="status" id="status">
+                                <select 
+                                value="{{ old('status') }}"
+                                name="status" id="status">
                                     <option value="active">Active</option>
                                     <option value="inactive">Inactive</option>
                                 </select>

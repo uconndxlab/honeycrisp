@@ -39,22 +39,34 @@ class FacilityController extends Controller
         // validate the request needs a name and description
         $request->validate([
             'name' => 'required',
-            'description' => 'required'
+            'description' => 'required',
+            'abbreviation' => 'required',
+            'status' => 'required'
+        ], [
+            'name.required' => 'The name field is required.',
+            'description.required' => 'The description field is required.',
+            'abbreviation.required' => 'The abbreviation field is required.',
+            'status.required' => 'The status field is required.'
         ]);
-
+    
         // create a new facility
         $facility = new Facility();
         $facility->name = $request->name;
         $facility->description = $request->description;
         $facility->abbreviation = $request->abbreviation;
         $facility->status = $request->status;
-
+    
         // if the facility is saved, redirect to the index
         // with a success message
         if ($facility->save()) {
             return redirect('/facilities')->with('success', 'Facility created!');
+        } else {
+            // if the facility cannot be saved, redirect back
+            // with an error message
+            return redirect()->back()->withInput()->withErrors(['error' => 'Failed to create facility.']);
         }
     }
+    
 
     /**
      * Display the specified resource.
