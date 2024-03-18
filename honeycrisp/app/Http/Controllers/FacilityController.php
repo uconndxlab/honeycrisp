@@ -28,7 +28,8 @@ class FacilityController extends Controller
      */
     public function create()
     {
-        //
+        // just load the create view
+        return view('facilities.create');
     }
 
     /**
@@ -92,9 +93,7 @@ class FacilityController extends Controller
         // just load the create view with a facility preloaded
         $facility = Facility::find($id);
         if ($facility) {
-            return view('facilities.create', [
-                'facility' => $facility
-            ]);
+            return view('facilities.create')->with('facility', $facility);
         } else {
             return redirect('/facilities')->with('error', 'Facility not found!');
         }
@@ -105,7 +104,40 @@ class FacilityController extends Controller
      */
     public function update(Request $request, string $id)
     {
-        //
+        // validate the request needs a name and description
+        $request->validate([
+            'name' => 'required',
+            'description' => 'required',
+            'abbreviation' => 'required',
+            'status' => 'required'
+        ], [
+            'name.required' => 'The name field is required.',
+            'description.required' => 'The description field is required.',
+            'abbreviation.required' => 'The abbreviation field is required.',
+            'status.required' => 'The status field is required.'
+        ]);
+    
+        // get the facility by id
+        $facility = Facility::find($id);
+        if ($facility) {
+            // update the facility
+            $facility->name = $request->name;
+            $facility->description = $request->description;
+            $facility->abbreviation = $request->abbreviation;
+            $facility->status = $request->status;
+    
+            // if the facility is saved, redirect to the index
+            // with a success message
+            if ($facility->save()) {
+                return redirect('/facilities')->with('success', 'Facility updated!');
+            } else {
+                // if the facility cannot be saved, redirect back
+                // with an error message
+                return redirect()->back()->withInput()->withErrors(['error' => 'Failed to update facility.']);
+            }
+        } else {
+            return redirect('/facilities')->with('error', 'Facility not found!');
+        }
     }
 
     /**
