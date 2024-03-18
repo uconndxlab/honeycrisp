@@ -51,6 +51,22 @@
                     </div>
                 </div>
             </div>
+
+            <!-- danger zone containing delete button -->
+            @if(isset($facility))
+                <div class="col-md-12 mt-4">
+                    <div class="card">
+                        <div class="card-header">Danger Zone</div>
+                        <div class="card-body">
+                            <form action="{{ route('facilities.destroy', $facility->id) }}" method="POST">
+                                @csrf
+                                @method('DELETE')
+                                <button type="submit" class="btn btn-danger">Delete Facility</button>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            @endif
         </div>
     </div>
 @endsection

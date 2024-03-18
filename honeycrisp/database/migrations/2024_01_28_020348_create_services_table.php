@@ -14,9 +14,13 @@ return new class extends Migration
         Schema::create('services', function (Blueprint $table) {
             $table->id();
             $table->string('name');
+            //unit of measure
+            $table->string('uom');
             $table->text('description');
             $table->foreignId('facility_id')->constrained();
-            $table->decimal('price', 8, 2);
+            // internal price per unit, verus external price per unit
+            $table->decimal('internal_price', 10, 2);
+            $table->decimal('external_price', 10, 2);
             $table->timestamps();
         });
     }

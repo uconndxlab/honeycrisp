@@ -140,6 +140,18 @@ class FacilityController extends Controller
         }
     }
 
+    /** Load the Form to add a service */
+    public function service(string $id)
+    {
+        // get the facility by id
+        $facility = Facility::find($id);
+        if ($facility) {
+            return view('services.create')->with('facility', $facility);
+        } else {
+            return redirect('/facilities')->with('error', 'Facility not found!');
+        }
+    }
+
     /**
      * Remove the specified resource from storage.
      */

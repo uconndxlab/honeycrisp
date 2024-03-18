@@ -21,3 +21,15 @@ Route::resource(
     'facilities',
     'App\Http\Controllers\FacilityController'
 );
+
+Route::resource(
+    'facilities.services',
+    'App\Http\Controllers\FacilityServiceController'
+);
+
+
+// services resource
+Route::resource(
+    'services',
+    'App\Http\Controllers\ServiceController'
+);
