@@ -11,9 +11,9 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::table('facilities', function (Blueprint $table) {
-            $table->string('abbreviation');
-            $table->enum('status', ['active', 'inactive'])->default('active');
+        Schema::create('orders', function (Blueprint $table) {
+            $table->id();
+            $table->timestamps();
         });
     }
 
@@ -22,8 +22,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::table('facilities', function (Blueprint $table) {
-            $table->dropColumn(['abbreviation', 'status']);
-        });
+        Schema::dropIfExists('orders');
     }
 };

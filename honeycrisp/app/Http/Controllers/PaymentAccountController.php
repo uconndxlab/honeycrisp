@@ -2,10 +2,10 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Facility;
+use App\Models\PaymentAccount;
 use Illuminate\Http\Request;
 
-class FacilityController extends Controller
+class PaymentAccountController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -34,7 +34,7 @@ class FacilityController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(Facility $facility)
+    public function show(PaymentAccount $paymentAccount)
     {
         //
     }
@@ -42,7 +42,7 @@ class FacilityController extends Controller
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(Facility $facility)
+    public function edit(PaymentAccount $paymentAccount)
     {
         //
     }
@@ -50,7 +50,7 @@ class FacilityController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, Facility $facility)
+    public function update(Request $request, PaymentAccount $paymentAccount)
     {
         //
     }
@@ -58,7 +58,7 @@ class FacilityController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(Facility $facility)
+    public function destroy(PaymentAccount $paymentAccount)
     {
         //
     }
