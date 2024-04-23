@@ -29,7 +29,20 @@ class FacilityController extends Controller
      */
     public function store(Request $request)
     {
-        Facility::create($request->all());
+        
+        $facility = new Facility();
+        $facility->name = $request->name;
+        $facility->description = $request->description;
+        $facility->abbreviation = $request->abbreviation;
+        $facility->email= $request->email;
+        $facility->recharge_account = $request->recharge_account;
+        $facility->address = $request->address;
+
+        $facility->save();
+
+        return redirect()->route('facilities.index');
+
+
     }
 
     /**
@@ -45,7 +58,7 @@ class FacilityController extends Controller
      */
     public function edit(Facility $facility)
     {
-        //
+        return view('facilities.edit', compact('facility'));
     }
 
     /**
@@ -53,7 +66,24 @@ class FacilityController extends Controller
      */
     public function update(Request $request, Facility $facility)
     {
-        //
+        $facility->name = $request->name;
+        $facility->description = $request->description;
+        $facility->abbreviation = $request->abbreviation;
+        $facility->email= $request->email;
+        $facility->recharge_account = $request->recharge_account;
+        $facility->address = $request->address;
+
+        $facility->save();
+
+        if($facility->wasChanged()){
+            $state = 'success';
+            $msg = $facility->name . ' has been updated';
+        } else {
+            $state = 'alert';
+            $msg = $facility->name . ' was not updated';
+        }
+
+        return redirect()->route('facilities.index')->with($state, $msg);
     }
 
     /**
@@ -61,6 +91,9 @@ class FacilityController extends Controller
      */
     public function destroy(Facility $facility)
     {
-        //
+        $msg = $facility->name . ' has been deleted';
+        $facility->delete();
+
+        return redirect()->route('facilities.index')->with('alert', $msg);
     }
 }

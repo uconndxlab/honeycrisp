@@ -23,6 +23,7 @@ return new class extends Migration
             $table->string('recharge_account')->nullable();
             $table->string('address')->nullable();
 
+            
 
             
         });

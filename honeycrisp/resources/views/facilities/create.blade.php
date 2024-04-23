@@ -29,12 +29,12 @@
                         <input type="text" class="form-control" id="abbreviation" name="abbreviation" required>
                     </div>
                     <div class="mb-3">
-                        <label for="image" class="form-label">Image</label>
-                        <input type="text" class="form-control" id="image" name="image" required>
+                        <label for="email" class="form-label">Email</label>
+                        <input type="text" class="form-control" id="email" name="email" required>
                     </div>
                     <div class="mb-3">
-                        <label for="payment_source" class="form-label">Recharge Destination Account:</label>
-                        <input type="text" class="form-control" id="payment_source" name="payment_source" required>
+                        <label for="recharge_account" class="form-label">Recharge Destination Account:</label>
+                        <input type="text" class="form-control" id="recharge_account" name="recharge_account" required>
 
                     </div>
                     <div class="mb-3">
@@ -43,7 +43,7 @@
                     </div>
                     <div class="mb-3">
                         <label for="address" class="form-label">Address</label>
-                        <input type="text" class="form-control" id="address" name="address" required>
+                        <input type="text" class="form-control" id="address" name="address">
                     </div>
                     <button type="submit" class="btn btn-primary">Create Facility</button>
                 </form>
