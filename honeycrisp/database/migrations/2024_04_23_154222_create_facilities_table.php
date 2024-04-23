@@ -14,6 +14,17 @@ return new class extends Migration
         Schema::create('facilities', function (Blueprint $table) {
             $table->id();
             $table->timestamps();
+            $table->string('name');
+            // description, email, abbreviation, address
+
+            $table->string('description');
+            $table->string('email')->nullable();
+            $table->string('abbreviation');
+            $table->string('recharge_account')->nullable();
+            $table->string('address')->nullable();
+
+
+            
         });
     }
 

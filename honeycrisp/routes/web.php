@@ -8,7 +8,7 @@ use App\Http\Controllers\OrderController;
 use App\Http\Controllers\PaymentAccountController;
 
 Route::get('/', function () {
-    return view('welcome');
+    return view('facilities.index');
 });
 
 

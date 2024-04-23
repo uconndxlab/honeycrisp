@@ -12,7 +12,8 @@ class FacilityController extends Controller
      */
     public function index()
     {
-        //
+        $facilities = Facility::all();
+        return view('facilities.index', compact('facilities'));
     }
 
     /**
@@ -20,7 +21,7 @@ class FacilityController extends Controller
      */
     public function create()
     {
-        //
+        return view('facilities.create');
     }
 
     /**
@@ -28,7 +29,7 @@ class FacilityController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        Facility::create($request->all());
     }
 
     /**
