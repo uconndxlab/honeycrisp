@@ -50,7 +50,7 @@ class FacilityController extends Controller
      */
     public function show(Facility $facility)
     {
-        //
+        return view('facilities.show', compact('facility'));
     }
 
     /**

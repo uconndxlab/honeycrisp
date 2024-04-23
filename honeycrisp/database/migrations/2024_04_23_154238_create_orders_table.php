@@ -14,6 +14,16 @@ return new class extends Migration
         Schema::create('orders', function (Blueprint $table) {
             $table->id();
             $table->timestamps();
+
+            $table->unsignedBigInteger('user_id');
+            $table->unsignedBigInteger('facility_id');
+            $table->unsignedBigInteger('payment_account');
+            $table->string('status');
+            $table->json('tags')->nullable();
+
+            $table->foreign('user_id')->references('id')->on('users');
+            $table->foreign('facility_id')->references('id')->on('facilities');
+            $table->foreign('payment_account')->references('id')->on('payment_accounts');
         });
     }
 

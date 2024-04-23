@@ -23,6 +23,11 @@ return new class extends Migration
             $table->string('recharge_account')->nullable();
             $table->string('address')->nullable();
 
+            // status, default is active, can be inactive
+            $table->string('status')->default('active');
+
+            
+
             
 
             
