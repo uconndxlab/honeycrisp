@@ -1,4 +1,7 @@
-@import url('https://fonts.googleapis.com/css?family=Fira+Code&display=swap');
+/** import monospace and open sans font */
+
+@import url('https://fonts.googleapis.com/css2?family=Fira+Code:wght@300;400;500;600;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Open+Sans:wght@300;400;600;700&display=swap');
 
 .hc-logo {
   display: inline-block;
@@ -11,10 +14,11 @@
 }
 
 :root {
-    --primary-color: #0056b3; /* Red */
-    --primary-color-dark: #004b87; /* Dark blue */
-    --secondary-color: /** some dark blue color */ #9ccdf5;
+    --primary-color: #0056b3; /* Different Blue */
+    --primary-color-dark: #004b87; /* Different blue, darker */
+    --secondary-color: /** extremely navy */ #020202;
     --dark-color: #343a40; /* Dark gray */
+    --accent-color: #e71313; /* Red */
   }
 
   .bg-primary {
@@ -40,10 +44,21 @@
   .text-dark {
     color: var(--dark-color) !important;
   }
+
+  .bg-accent {
+    background-color: var(--accent-color) !important;
+  }
+
+  .text-accent {
+    color: var(--accent-color) !important;
+  }
   
   body {
     background-color: #f8f9fa; /* Light gray */
-    /** some cool monospace font */
+    font-family: 'Open Sans', sans-serif;
+  }
+
+  h1,h2,h3,h4,h5,h6 {
     font-family: 'Fira Code', monospace;
   }
   
@@ -59,6 +74,7 @@
     color: white;
     padding-right: 2rem!important;
     font-size: 12px;
+    font-family: 'Fira Code', monospace;
   }
   
   .navbar .nav-link:hover {
@@ -69,6 +85,12 @@
     background-color: var(--primary-color);
     border-color: var(--primary-color);
   }
+
+  .btn-outline-primary {
+    color: var(--primary-color);
+    border-color: var(--primary-color);
+  }
+
   
   .btn-primary:hover {
     background-color: var(--primary-color-dark);
@@ -78,6 +100,7 @@
   .btn-secondary {
     background-color: var(--secondary-color);
     border-color: var(--secondary-color);
+    color:#343a40;
   }
   
   .btn-secondary:hover {
@@ -87,16 +110,7 @@
   
   .card {
     border: 1px solid rgba(0, 0, 0, 0.125);
-    border-radius: 0.25rem;
-  }
-  
-  .card-header {
-    background-color: var(--primary-color);
-    color: white;
-  }
-  
-  .card-body {
-    background-color: white;
+    border-radius: 0.25rem;450
   }
   
   .card-footer {
@@ -113,3 +127,123 @@
     background-image: url("data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16' fill='%23ffffff'><path fill-rule='evenodd' d='M1.646 4.646a.5.5 0 0 1 .708 0L8 10.293l5.646-5.647a.5.5 0 0 1 .708.708l-6 6a.5.5 0 0 1-.708 0l-6-6a.5.5 0 0 1 0-.708z'/></svg>") !important;
   }
   
+  .list-group li, .list-group-item a {
+    font-size:14px;
+    text-decoration: none!important;
+  }
+
+  h5, h6 {
+    color: var(--dark-color);
+    text-transform: uppercase;
+    font-weight: bold;
+  }
+
+  /** style cards to have square corners and material design shadow */
+
+  .card, .accordion-item, .list-group, .alert, .modal-content {
+    border-radius: 0px!important;
+    /** subtle shadow */
+    box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.08);
+  }
+
+  input,textarea {
+    border-radius: 0px!important;
+  }
+
+  input:focus, textarea:focus {
+    border-color: var(--primary-color)!important;
+    box-shadow: 0 0 0 0.2rem rgba(0, 86, 179, 0.25)!important;
+  }
+
+  label {
+    cursor: pointer;
+  }
+  
+  /** style the buttons to be a little more material design in terms of shape and shadow */
+
+  .btn {
+    border-radius: 0px!important;
+    box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.15);
+  }
+
+  .btn-primary {
+    background-color: var(--primary-color);
+    border-color: var(--primary-color);
+  }
+
+  .btn-primary:hover {
+    background-color: var(--primary-color-dark);
+    border-color: var(--primary-color-dark);
+  }
+
+  .btn-secondary {
+    background-color: var(--secondary-color);
+    border-color: var(--secondary-color);
+    color: white;
+  }
+
+  .btn-secondary:hover {
+    background-color: #004b87; /* Darker UConn blue */
+    border-color: #00437d; /* Darker UConn blue */
+  }
+
+  .btn-accent {
+    background-color: var(--accent-color);
+    border-color: var(--accent-color);
+    color: white;
+  }
+
+  .btn-accent:hover {
+    background-color: #e71313; /* Darker red */
+    border-color: #e71313; /* Darker red */
+  }
+
+  .btn-outline-primary {
+    color: var(--primary-color);
+    border-color: var(--primary-color);
+  }
+
+  .btn-outline-primary:hover {
+    background-color: var(--primary-color);
+    color: white;
+  }
+
+  .btn-outline-secondary {
+    color: var(--secondary-color);
+    border-color: var(--secondary-color);
+  }
+
+  .btn-outline-secondary:hover {
+    background-color: var(--secondary-color);
+    color: white;
+  }
+
+  .btn-outline-accent {
+    color: var(--accent-color);
+    border-color: var(--accent-color);
+  }
+
+  .btn-outline-accent:hover {
+    background-color: var(--accent-color);
+    color: white;
+  }
+
+  .btn-outline-dark {
+    color: var(--dark-color);
+    border-color: var(--dark-color);
+  }
+
+  .btn-outline-dark:hover {
+    background-color: var(--dark-color);
+    color: white;
+  }
+
+  .btn-outline-light {
+    color: white;
+    border-color: white;
+  }
+
+  .btn-outline-light:hover {
+    background-color: white;
+    color: var(--dark-color);
+  }
