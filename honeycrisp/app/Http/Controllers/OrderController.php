@@ -19,10 +19,11 @@ class OrderController extends Controller
     /**
      * Show the form for creating a new resource.
      */
-    public function create()
+    public function create($facilityAbbreviation)
     {   
-        $facilities = Facility::all();
-        return view('orders.create', compact('facilities'));
+        $facility = Facility::all()->where('status', 'active')->where('abbreviation', $facilityAbbreviation)->first();
+        
+        return view('orders.create', compact('facility'));
     }
 
     /**

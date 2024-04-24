@@ -1,0 +1,115 @@
+@import url('https://fonts.googleapis.com/css?family=Fira+Code&display=swap');
+
+.hc-logo {
+  display: inline-block;
+  padding: 0.5rem 0.5rem;
+  border-radius: 0.25rem;
+  background: linear-gradient(to right, #ff0000, #ff3300, #ff6600, #ff9900, #ffcc00, #ff9900, #ff6600, #ff3300);
+  color: white;
+  font-weight: bold;
+  font-size: 1rem;
+}
+
+:root {
+    --primary-color: #0056b3; /* Red */
+    --primary-color-dark: #004b87; /* Dark blue */
+    --secondary-color: /** some dark blue color */ #9ccdf5;
+    --dark-color: #343a40; /* Dark gray */
+  }
+
+  .bg-primary {
+    background-color: var(--primary-color) !important;
+  }
+
+  .text-primary {
+    color: var(--primary-color) !important;
+  }
+
+  .bg-secondary {
+    background-color: var(--secondary-color) !important;
+  }
+
+  .text-secondary {
+    color: var(--secondary-color) !important;
+  }
+
+  .bg-dark {
+    background-color: var(--dark-color) !important;
+  }
+
+  .text-dark {
+    color: var(--dark-color) !important;
+  }
+  
+  body {
+    background-color: #f8f9fa; /* Light gray */
+    /** some cool monospace font */
+    font-family: 'Fira Code', monospace;
+  }
+  
+  .navbar {
+    background-color: var(--primary-color);
+  }
+  
+  .navbar .navbar-brand {
+    color: white;
+  }
+  
+  .navbar .nav-link {
+    color: white;
+    padding-right: 2rem!important;
+    font-size: 12px;
+  }
+  
+  .navbar .nav-link:hover {
+    color: white;
+  }
+  
+  .btn-primary {
+    background-color: var(--primary-color);
+    border-color: var(--primary-color);
+  }
+  
+  .btn-primary:hover {
+    background-color: var(--primary-color-dark);
+    border-color: var(--primary-color-dark);
+  }
+  
+  .btn-secondary {
+    background-color: var(--secondary-color);
+    border-color: var(--secondary-color);
+  }
+  
+  .btn-secondary:hover {
+    background-color: #004b87; /* Darker UConn blue */
+    border-color: #00437d; /* Darker UConn blue */
+  }
+  
+  .card {
+    border: 1px solid rgba(0, 0, 0, 0.125);
+    border-radius: 0.25rem;
+  }
+  
+  .card-header {
+    background-color: var(--primary-color);
+    color: white;
+  }
+  
+  .card-body {
+    background-color: white;
+  }
+  
+  .card-footer {
+    background-color: var(--dark-color);
+    color: white;
+  }
+
+  .accordion-header, .accordion-button, .accordion-button:not(.collapsed) {
+    background-color: var(--dark-color)!important;
+    color: white!important;
+  }
+
+  .accordion-button:after {
+    background-image: url("data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16' fill='%23ffffff'><path fill-rule='evenodd' d='M1.646 4.646a.5.5 0 0 1 .708 0L8 10.293l5.646-5.647a.5.5 0 0 1 .708.708l-6 6a.5.5 0 0 1-.708 0l-6-6a.5.5 0 0 1 0-.708z'/></svg>") !important;
+  }
+  

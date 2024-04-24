@@ -17,5 +17,7 @@ Route::get('/', function () {
 Route::resource('facilities', FacilityController::class);
 Route::resource('products', ProductController::class);
 Route::resource('orders', OrderController::class);
+Route::get('orders/create/{facilityAbbreviation}', [OrderController::class, 'create']);
+
 Route::resource('payment-accounts', PaymentAccountController::class);
 
