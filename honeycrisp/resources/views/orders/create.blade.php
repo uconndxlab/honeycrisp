@@ -15,7 +15,7 @@
                 </div>
             </div>
 
-            <div class="row">
+            <div class="row pb-3">
 
                 <div class="col-md-6">
                     <div class="accordion my-2" id="facilityInformationAccordion">
