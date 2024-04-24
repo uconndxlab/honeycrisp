@@ -10,6 +10,8 @@
             <div class="row">
                 <div class="col-md-12">
                     <h1>Create Order</h1>
+                    <!-- facility name and abbreviation -->
+                    <h2>{{ $facility->name }} ({{ $facility->abbreviation }})</h2>
                 </div>
             </div>
 
@@ -22,20 +24,37 @@
                                 <button class="accordion-button" type="button" data-bs-toggle="collapse"
                                     data-bs-target="#facilityInformationCollapse" aria-expanded="true"
                                     aria-controls="facilityInformationCollapse">
-                                    Facility Information
+                                    Order Details
                                 </button>
                             </h2>
                             <div id="facilityInformationCollapse" class="accordion-collapse collapse show"
                                 aria-labelledby="facilityInformationHeading" data-bs-parent="#facilityInformationAccordion">
                                 <div class="accordion-body">
-                                    <p class="card-text">
-                                        <a href="{{ route('facilities.show', $facility->id) }}">
-                                            {{ $facility->name }}
-                                            ({{ $facility->abbreviation }})
-                                        </a>
-                                    </p>
-                                    <p class="card-text"><a href="mailto:{{ $facility->email }}">{{ $facility->email }}</a>
-                                    <p class="card-text">{{ $facility->description }}</p>
+<!-- form for order details like title, description, status, and date -->
+                                    <div class="form-group my-2">
+                                        <label for="title">Title:</label>
+                                        <input value="WellSCAN Project April 2024" type="text" name="title" id="title" class="form-control" value="">
+                                    </div>
+
+                                    <div class="form-group my-2">
+                                        <label for="description">Description:</label>
+                                        <textarea name="description" id="description" class="form-control">This order is for the WellSCAN project in April 2024.</textarea>
+                                    </div>
+
+                                    <div class="form-group" my-2>
+                                        <label for="status">Status:</label>
+                                        <select name="status" id="status" class="form-control">
+                                            <option selected value="draft">Draft</option>
+                                            <option value="submitted">Submitted</option>
+                                            <option value="approved">Approved</option>
+                                            <option value="rejected">Rejected</option>
+                                        </select>
+                                    </div>
+
+                                    <div class="form-group my-2">
+                                        <label for="date">Date:</label>
+                                        <input type="date" name="date" id="date" class="form-control" value="">
+                                    </div>
 
                                 </div>
                             </div>
@@ -91,7 +110,8 @@
         </div>
     </div>
 
-    <div class="container-fluid">
+    <div class="bg-dark">
+    <div class="container">
         <div class="row bg-dark text-white">
             <div class="row my-3 py-3">
                 <div class="col-md-8">
@@ -116,20 +136,32 @@
 
                     <!-- list of products in a ul -->
                     <ul class="list-group">
-                        <li class="list-group-item"><a href="#" class="list-group-item-action text-accent">Student
-                                Web Development ($25 per hour)</a></li>
-                        <li class="list-group-item"><a href="#" class="list-group-item-action text-accent">Facility
-                                Director Time ($150 per hour)</a>
+                        <li class="list-group-item">
+                            <a data-bs-toggle="modal" 
+                            data-bs-target="#addCustomItemModal" href="#" class="list-group-item-action">Student
+                                Web Development ($25 per hour)</a>
                         </li>
-                        <li class="list-group-item"><a href="#" class="list-group-item-action text-accent">Senior
-                                Application Developer ($105 per hour)</a></li>
-                        <li class="list-group-item"><a href="#" class="list-group-item-action text-accent">Graduate
-                                Student Times ($51 per hour)</a>
+                        <li class="list-group-item">
+                            <a  data-bs-toggle="modal" 
+                            data-bs-target="#addCustomItemModal"href="#" class="list-group-item-action">Facility
+                                Director Time ($150 per hour)</a>
+                            
+                        </li>
+                        <li class="list-group-item">
+                            <a data-bs-toggle="modal" 
+                            data-bs-target="#addCustomItemModal" href="#" class="list-group-item-action">Senior
+                                Application Developer ($105 per hour)</a>
+                        </li>
+                        <li class="list-group-item">
+                            <a href="#"  
+                            data-bs-toggle="modal" 
+                            data-bs-target="#addCustomItemModal" class="list-group-item-action">Graduate
+                                Student Time ($51 per hour)</a> 
                         </li>
                     </ul>
                 </div>
                 <div class="col-md-4">
-                    <h5>Current Order</h5>
+                    <h5 class="text-white">Current Order</h5>
 
                     <div class="alert alert-info">
                         <!-- Cart-like list of products with remove and quantity -->
@@ -138,21 +170,27 @@
                                 Student Web Development <br> $137.50
                                 <div class="input-group input-group-sm" style="width: 100px;">
                                     <input type="number" class="form-control" value="5.5" min="1">
-                                    <button class="btn btn-danger btn-sm">X</button>
+                                    <button class="btn btn-danger btn-sm">
+                                        <i class="bi bi-trash"></i>
+                                    </button>
                                 </div>
                             </li>
                             <li class="list-group-item d-flex justify-content-between align-items-center">
                                 Facility Director Time <br> $300.00
                                 <div class="input-group input-group-sm" style="width: 100px;">
                                     <input type="number" class="form-control" value="2.0" min="1">
-                                    <button class="btn btn-danger btn-sm">X</button>
+                                    <button class="btn btn-danger btn-sm">
+                                        <i class="bi bi-trash"></i>
+                                    </button>
                                 </div>
                             </li>
                             <li class="list-group-item d-flex justify-content-between align-items-center">
                                 Senior Application Developer <br> $315.00
                                 <div class="input-group input-group-sm" style="width: 100px;">
                                     <input type="number" class="form-control" value="3.0" min="1">
-                                    <button class="btn btn-danger btn-sm">X</button>
+                                    <button class="btn btn-danger btn-sm">
+                                        <i class="bi bi-trash"></i>
+                                    </button>
                                 </div>
                             </li>
                         </ul>
@@ -166,7 +204,7 @@
                     </div>
 
                     <div class="form-group my-2 text-end">
-                        <button type="button" class="btn btn-outline-danger">Clear Order</button>
+                        <button type="button" class="btn btn-outline-light">Clear Order</button>
                         <button type="button" class="btn btn-primary">Save Draft</button>
                     </div>
                 </div>
@@ -213,5 +251,6 @@
                 </div>
             </div>
         </div>
+    </div>
     </form>
 @endsection

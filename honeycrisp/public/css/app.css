@@ -5,11 +5,31 @@
 
 .hc-logo {
   display: inline-block;
-  padding: 0.5rem 0.5rem;
-  border-radius: 0.25rem;
+  padding: 8px 8px;
+  border-radius: 0px;
   background: linear-gradient(to right, #ff0000, #ff3300, #ff6600, #ff9900, #ffcc00, #ff9900, #ff6600, #ff3300);
   color: white;
   font-weight: bold;
+  font-size: 1rem;
+  position:relative;
+  top:2px;
+}
+
+h1 {
+  font-size: 2rem;
+
+}
+
+h2 {
+  font-size: 1.5rem;
+}
+
+h3 {
+  font-size: 1.25rem;
+
+}
+
+h4 {
   font-size: 1rem;
 }
 
@@ -19,6 +39,10 @@
     --secondary-color: /** extremely navy */ #020202;
     --dark-color: #343a40; /* Dark gray */
     --accent-color: #e71313; /* Red */
+  }
+
+  .list-group-item-action {
+    color: var(--primary-color)!important;
   }
 
   .bg-primary {
@@ -68,6 +92,9 @@
   
   .navbar .navbar-brand {
     color: white;
+    font-family: 'Fira Code', monospace;
+    
+    font-size:16px;
   }
   
   .navbar .nav-link {

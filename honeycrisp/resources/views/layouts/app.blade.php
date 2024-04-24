@@ -7,6 +7,8 @@
     <script src="https://unpkg.com/htmx.org@1.9.12" integrity="sha384-ujb1lZYygJmzgSwoxRggbCHcjc0rB2XoQrxeTUQyRjrOnlCoYta87iKBWq3EsdM2" crossorigin="anonymous"></script>
     <!-- bootstrap5 CSS -->
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/css/bootstrap.min.css">
+    <!-- bootstrap5 Icons CSS -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css">
     <link rel="stylesheet" href="{{ asset('css/app.css') }}">
     <title>@yield('title')</title>
     <!-- Your CSS and JS imports go here -->
@@ -14,6 +16,26 @@
 
 <body>
     <header>
+        <!-- secondary top navigation above the main navigation -->
+        <nav class="navbar navbar-expand-lg navbar-light bg-secondary">
+            <div class="container">
+                <div class="collapse navbar-collapse" id="navbarNav">
+                    <ul class="navbar-nav"
+                        style="margin-left: auto; display: flex; justify-content: end; width: 100%;">
+                        <li class="nav-item">
+                            <a class="nav-link text-white" href="#">My Profile</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link text-white" href="#">Settings</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link text-white" href="#">Logout</a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </nav>
+
         <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
             <div class="container">
                 <a class="navbar-brand" href="/">
