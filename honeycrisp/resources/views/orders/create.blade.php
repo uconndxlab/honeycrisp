@@ -86,8 +86,11 @@
                                 <!-- Payment Account -->
                                 <div class="form-group my-2">
                                     <label for="payment_account">Payment Account:</label>
-                                    <input type="text" name="payment_account" id="payment_account"
-                                        value="KFS-6215250-6610 (WellSCAN PHA 2021)" class="form-control" value="">
+                                    <select name="payment_account" id="payment_account" class="form-select">
+                                        <option value="KFS-6215250-6610 (WellSCAN PHA 2021)">KFS-6215250-6610 (WellSCAN PHA 2021)</option>
+                                        <option value="KFS-6215250-6611 (WellSCAN PHA 2022)">KFS-6215250-6611 (WellSCAN PHA 2022)</option>
+                                        <option value="KFS-6215250-6612 (WellSCAN PHA 2023)">KFS-6215250-6612 (WellSCAN PHA 2023)</option>
+                                    </select>
                                 </div>
 
                                 <!-- Price Group -->

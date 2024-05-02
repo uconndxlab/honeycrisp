@@ -31,7 +31,8 @@
 
     <h3>Orders</h3>
     <div>
-        <p><a href="{{ route('orders.create') }}">Create Order</a></p>
+        <p><a href="{{ route('orders.create') }}/{{ $facility->abbreviation }}" class="btn btn-primary">
+            Create Order</a></p>
     </div>
     @if ($facility->orders->isEmpty())
     <p>No orders have been placed at this facility.</p>

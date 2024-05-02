@@ -23,8 +23,23 @@
                     <span class="badge bg-success">Admin</span>
                 </span>
                 <div class="collapse navbar-collapse" id="navbarNav">
-                    <ul class="navbar-nav"
-                        style="margin-left: auto; display: flex; justify-content: end; width: 100%;">
+                    <ul class="navbar-nav" style="margin-left: auto; display: flex; justify-content: end; width: 100%;">
+                        <li>
+                            <div class="dropdown">
+                                <button class="btn btn-secondary btn-sm dropdown-toggle" type="button" id="dropdownMenuButton" data-bs-toggle="dropdown" aria-expanded="false">
+                                    Manage
+                                </button>
+                                <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                                    <!-- Replace the href="#" with appropriate routes like orders/create/{facility->abbreviation} -->
+                                    @foreach($facilities as $facility)
+                                    <li>
+                                        <a class="dropdown-item" href=" {{ route('orders.create') }}/{{ $facility->abbreviation }}
+                                ">{{ $facility->name }}</a>
+                                    </li>
+                                    @endforeach
+                                </ul>
+                            </div>
+                        </li>
                         <li class="nav-item">
                             <a class="nav-link text-white" href="#">My Profile</a>
                         </li>
@@ -34,6 +49,7 @@
                         <li class="nav-item">
                             <a class="nav-link text-white" href="#">Logout</a>
                         </li>
+
                     </ul>
                 </div>
             </div>
@@ -44,8 +60,7 @@
                 <a class="navbar-brand" href="/">
                     <span class="hc-logo"></span>
                     Honeycrisp</a>
-                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav"
-                    aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
                     <span class="navbar-toggler-icon"></span>
                 </button>
                 <div class="collapse navbar-collapse" id="navbarNav">
@@ -61,8 +76,7 @@
                         </li>
                     </ul>
                     <div class="dropdown">
-                        <button class="btn btn-primary dropdown-toggle" type="button" id="dropdownMenuButton"
-                            data-bs-toggle="dropdown" aria-expanded="false">
+                        <button class="btn btn-primary dropdown-toggle" type="button" id="dropdownMenuButton" data-bs-toggle="dropdown" aria-expanded="false">
                             Start an Order
                         </button>
                         <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton">
@@ -76,7 +90,7 @@
                 </div>
             </div>
         </nav>
-        
+
     </header>
 
     <main>
