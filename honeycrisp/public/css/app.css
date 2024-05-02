@@ -3,6 +3,14 @@
 @import url('https://fonts.googleapis.com/css2?family=Fira+Code:wght@300;400;500;600;700&display=swap');
 @import url('https://fonts.googleapis.com/css2?family=Open+Sans:wght@300;400;600;700&display=swap');
 
+:root {
+  --primary-color: #0056b3; /* Different Blue */
+  --primary-color-dark: #004b87; /* Different blue, darker */
+  --secondary-color: /** extremely navy */ #020202;
+  --dark-color: #343a40; /* Dark gray */
+  --accent-color: #e71313; /* Red */
+}
+
 .hc-logo {
   display: inline-block;
   padding: 8px 8px;
@@ -13,6 +21,15 @@
   font-size: 1rem;
   position:relative;
   top:2px;
+}
+
+.login-hud {
+  font-size:14px;
+
+}
+
+.text-mono {
+  font-family: 'Fira Code', monospace;
 }
 
 h1 {
@@ -33,13 +50,7 @@ h4 {
   font-size: 1rem;
 }
 
-:root {
-    --primary-color: #0056b3; /* Different Blue */
-    --primary-color-dark: #004b87; /* Different blue, darker */
-    --secondary-color: /** extremely navy */ #020202;
-    --dark-color: #343a40; /* Dark gray */
-    --accent-color: #e71313; /* Red */
-  }
+
 
   body {
     overflow-y: scroll;

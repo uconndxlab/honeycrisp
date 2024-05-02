@@ -10,7 +10,7 @@
     <!-- bootstrap5 Icons CSS -->
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css">
     <link rel="stylesheet" href="{{ asset('css/app.css') }}">
-    <title>@yield('title')</title>
+    <title>@yield('title') - Honeycrisp</title>
     <!-- Your CSS and JS imports go here -->
 </head>
 
@@ -19,6 +19,9 @@
         <!-- secondary top navigation above the main navigation -->
         <nav class="navbar navbar-expand-lg navbar-light bg-secondary">
             <div class="container">
+                <span class="navbar-text text-white text-mono login-hud">Logged in as: jrs06005
+                    <span class="badge bg-success">Admin</span>
+                </span>
                 <div class="collapse navbar-collapse" id="navbarNav">
                     <ul class="navbar-nav"
                         style="margin-left: auto; display: flex; justify-content: end; width: 100%;">

@@ -43,7 +43,7 @@
 
                                     <div class="form-group" my-2>
                                         <label for="status">Status:</label>
-                                        <select name="status" id="status" class="form-control">
+                                        <select name="status" id="status" class="form-select">
                                             <option selected value="draft">Draft</option>
                                             <option value="submitted">Submitted</option>
                                             <option value="approved">Approved</option>
