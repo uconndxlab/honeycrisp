@@ -72,7 +72,7 @@
                             <a class="nav-link" href="{{ route('payment-accounts.index') }}">Payment Accounts</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link" href="#">Users</a>
+                            <a class="nav-link" href="{{ route('users.index') }}">Users</a>
                         </li>
                     </ul>
                     <div class="dropdown">
