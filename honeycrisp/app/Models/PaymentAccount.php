@@ -8,4 +8,30 @@ use Illuminate\Database\Eloquent\Model;
 class PaymentAccount extends Model
 {
     use HasFactory;
+
+    protected $fillable = [
+        'account_name',
+        'account_number',
+        'account_type',
+        'expiration_date',
+    ];
+
+    public function users()
+    {
+        return $this->belongsToMany(User::class)
+            ->withPivot('role')
+            ->withTimestamps();
+    }
+
+
+
+    public static function types()
+    {
+        // get them via the enum options
+        return [
+            'kfs',
+            'uch',
+            'other'
+        ];
+    }
 }

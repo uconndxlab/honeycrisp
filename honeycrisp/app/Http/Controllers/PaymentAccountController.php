@@ -12,7 +12,9 @@ class PaymentAccountController extends Controller
      */
     public function index()
     {
-        //
+        return view('payment-accounts.index', [
+            'paymentAccounts' => PaymentAccount::all(),
+        ]);
     }
 
     /**
@@ -20,7 +22,7 @@ class PaymentAccountController extends Controller
      */
     public function create()
     {
-        //
+        return view('payment-accounts.create');
     }
 
     /**
@@ -28,7 +30,19 @@ class PaymentAccountController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $request->validate([
+            'account_name' => 'required',
+            'account_number' => 'required',
+            'account_type' => 'required',
+        ], [
+            'name.required' => 'The name field is required.',
+            'account_number.required' => 'The account number field is required.',
+            'type.required' => 'The type field is required.',
+        ]);
+
+        PaymentAccount::create($request->all());
+
+        return redirect()->route('payment-accounts.index');
     }
 
     /**

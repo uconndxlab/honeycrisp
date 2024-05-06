@@ -69,7 +69,7 @@
                             <a class="nav-link" href="{{ route('facilities.index') }}">Facilities</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link" href="#">Payment Sources</a>
+                            <a class="nav-link" href="{{ route('payment-accounts.index') }}">Payment Accounts</a>
                         </li>
                         <li class="nav-item">
                             <a class="nav-link" href="#">Users</a>

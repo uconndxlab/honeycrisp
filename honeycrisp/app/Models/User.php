@@ -44,4 +44,11 @@ class User extends Authenticatable
             'password' => 'hashed',
         ];
     }
+
+    public function paymentAccounts()
+    {
+        return $this->belongsToMany(PaymentAccount::class)
+            ->withPivot('role')
+            ->withTimestamps();
+    }
 }
