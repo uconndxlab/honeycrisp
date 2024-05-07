@@ -30,6 +30,7 @@
                         <td>{{ $user->email }}</td>
                         <td>{{ $user->role }}</td>
                         <td>
+                            <a href="{{ route('users.show', $user->id) }}" class="btn btn-primary">View</a>
                             <a href="{{ route('users.edit', $user->id) }}" class="btn btn-primary">Edit</a>
                             <form action="{{ route('users.destroy', $user->id) }}" method="POST" class="d-inline">
                                 @csrf

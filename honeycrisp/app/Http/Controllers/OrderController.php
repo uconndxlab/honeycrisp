@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Order;
 use Illuminate\Http\Request;
 use App\Models\Facility;
+use App\Models\User;
 
 class OrderController extends Controller
 {
@@ -21,9 +22,10 @@ class OrderController extends Controller
      */
     public function create($facilityAbbreviation)
     {   
+        $users = User::all();
         $facility = Facility::all()->where('status', 'active')->where('abbreviation', $facilityAbbreviation)->first();
         
-        return view('orders.create', compact('facility'));
+        return view('orders.create', compact('facility', 'users'));
     }
 
     /**

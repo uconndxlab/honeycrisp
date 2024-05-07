@@ -50,6 +50,9 @@ class UserController extends Controller
         $user = \App\Models\User::create([
             'name' => $request->name,
             'email' => $request->email,
+            'role' => $request->role,
+            'status' => $request->status,
+            'external_rates' => $request->external_rates,
             'password' => bcrypt($request->password),
         ]);
 
@@ -61,7 +64,8 @@ class UserController extends Controller
      */
     public function show(string $id)
     {
-        //
+        $user = \App\Models\User::find($id)->first();
+        return view('users.show', compact('user'));
     }
 
     /**

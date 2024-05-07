@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\PaymentAccount;
+use App\Models\User;
 use Illuminate\Http\Request;
 
 class PaymentAccountController extends Controller
@@ -22,7 +23,8 @@ class PaymentAccountController extends Controller
      */
     public function create()
     {
-        return view('payment-accounts.create');
+        $users =  User::all();
+        return view('payment-accounts.create')->with('users', $users);
     }
 
     /**
@@ -34,13 +36,17 @@ class PaymentAccountController extends Controller
             'account_name' => 'required',
             'account_number' => 'required',
             'account_type' => 'required',
+            'account_owner' => 'required',
         ], [
             'name.required' => 'The name field is required.',
             'account_number.required' => 'The account number field is required.',
             'type.required' => 'The type field is required.',
+            'owner.required' => 'The owner field is required.',
         ]);
 
-        PaymentAccount::create($request->all());
+        $paymentAccount = PaymentAccount::create($request->all());
+        // add the user to the account as the owner
+        $paymentAccount->users()->attach($request->account_owner, ['role' => 'owner']);
 
         return redirect()->route('payment-accounts.index');
     }

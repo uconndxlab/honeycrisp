@@ -79,8 +79,11 @@
                                 <!-- User ID -->
                                 <div class="form-group my-2">
                                     <label for="user_id">Ordering for User:</label>
-                                    <input type="text" name="user_id" id="user_id" class="form-control"
-                                        value="jrs06005 (Salisbury, Joel R)" readonly>
+                                    <select name="user_id" id="user_id" class="form-select">
+                                        @foreach ($users as $user)
+                                            <option value="{{ $user->id }}">{{ $user->name }}</option>
+                                        @endforeach
+                                    </select>
                                 </div>
 
                                 <!-- Payment Account -->
