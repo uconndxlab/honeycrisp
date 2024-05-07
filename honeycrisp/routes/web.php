@@ -8,6 +8,7 @@ use App\Http\Controllers\ProductController;
 use App\Http\Controllers\OrderController;
 use App\Http\Controllers\PaymentAccountController;
 use App\Http\Controllers\UserController;
+use App\Http\Controllers\LedgerController;
 
 Route::get('/', function () {
     // facilities.index controller
@@ -19,7 +20,10 @@ Route::get('/', function () {
 Route::resource('facilities', FacilityController::class);
 Route::resource('products', ProductController::class);
 Route::resource('orders', OrderController::class);
+
 Route::get('orders/create/{facilityAbbreviation}', [OrderController::class, 'create']);
+
+Route::resource('ledgers', LedgerController::class);
 
 Route::resource('payment-accounts', PaymentAccountController::class);
 

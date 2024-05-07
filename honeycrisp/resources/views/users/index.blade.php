@@ -5,9 +5,10 @@
 @section('content')
     <div>
         <div class="container">
-            <h1>Users</h1>
-            <div class="row">
+
+            <div class="row my-3">
                 <div class="col-12">
+                    <h1>Users</h1>
                     <a href="{{ route('users.create') }}" class="btn btn-primary">Add User</a>
                 </div>
             </div>

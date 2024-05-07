@@ -167,9 +167,10 @@
                     </ul>
                 </div>
                 <div class="col-md-4">
-                    <h5 class="text-white">Current Order</h5>
 
                     <div class="alert alert-info">
+                        <h5 class="text-dark">Current Order</h5>
+
                         <!-- Cart-like list of products with remove and quantity -->
                         <ul class="list-group">
                             <li class="list-group-item d-flex justify-content-between align-items-center">

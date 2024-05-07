@@ -53,6 +53,11 @@
                         <li class="nav-item">
                             <a class="nav-link" href="{{ route('orders.index') }}">Orders</a>
                         </li>
+
+                        <li class="nav-item">
+                            <a class="nav-link" href="{{ route('ledgers.index') }}">Ledgers</a>
+                        </li>
+
                         <li class="nav-item">
                             <a class="nav-link" href="{{ route('facilities.index') }}">Facilities</a>
                         </li>

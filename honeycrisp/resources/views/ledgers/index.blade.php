@@ -4,9 +4,21 @@
 @section('content')
 
     <div class="container">
-        <div class="row">
-            <div class="col">
-                <h1>All Ledgers</h1>
+        <div class="row my-3">
+            <div class="col-md-12">
+                <h1>Ledgers</h1>
+                <!-- filter UI and a spot for an admin menu like "Add Facility" go here -->
+
+                <div class="d-flex justify-content-between align-items-center">
+                    <div>
+                        <input type="text" id="filter" name="filter" class="form-control"
+                            placeholder="Search for a Ledger">
+                    </div>
+                    <div>
+                        <a href={{ route('facilities.create') }} id="addFacility" class="btn btn-primary">Start a Ledger</a>
+                    </div>
+                </div>
+
             </div>
         </div>
         <div class="row">
@@ -16,8 +28,8 @@
                         <tr>
                             <th>Ledger ID</th>
                             <th>Facility</th>
-                            <th>Order Date</th>
-                            <th>Order Status</th>
+                            <th>Ledger Date</th>
+                            <th>Ledger Status</th>
                             <th>Actions</th>
                         </tr>
                     </thead>
@@ -43,10 +55,6 @@
                 </table>
             </div>
         </div>
-        <div class="row">
-            <div class="col">
-                <a href="{{ route('ledgers.create') }}" class="btn btn-primary">Add Ledger</a>
-            </div>
-        </div>
     </div>
 </div>
+@endsection
