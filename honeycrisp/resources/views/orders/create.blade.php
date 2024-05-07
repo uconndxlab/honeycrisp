@@ -207,7 +207,7 @@
 
                     <!-- total price align right -->
                     <div class="my-4 text-end">
-                        <h5>Total: $752.50</h5>
+                        <h5 class="text-white">Total: $752.50</h5>
                     </div>
 
                     <div class="form-group my-2 text-end">
