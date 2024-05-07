@@ -13,6 +13,7 @@ class PaymentAccount extends Model
         'account_name',
         'account_number',
         'account_type',
+        'account_owner',
         'expiration_date',
     ];
 
@@ -25,11 +26,11 @@ class PaymentAccount extends Model
 
     public function owner()
     {
-        return $this->users()->wherePivot('role', 'owner')->first();
+        $user = User::find($this->account_owner);
+        return $user;
     }
 
-
-
+  
     public static function types()
     {
         // get them via the enum options

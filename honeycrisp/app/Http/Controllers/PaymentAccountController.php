@@ -45,8 +45,7 @@ class PaymentAccountController extends Controller
         ]);
 
         $paymentAccount = PaymentAccount::create($request->all());
-        // add the user to the account as the owner
-        $paymentAccount->users()->attach($request->account_owner, ['role' => 'owner']);
+      
 
         return redirect()->route('payment-accounts.index');
     }
@@ -64,7 +63,10 @@ class PaymentAccountController extends Controller
      */
     public function edit(PaymentAccount $paymentAccount)
     {
-        //
+        return view('payment-accounts.edit', [
+            'paymentAccount' => $paymentAccount,
+            'users' => User::all(),
+        ]);
     }
 
     /**
@@ -72,7 +74,23 @@ class PaymentAccountController extends Controller
      */
     public function update(Request $request, PaymentAccount $paymentAccount)
     {
-        //
+        $request->validate([
+            'account_name' => 'required',
+            'account_number' => 'required',
+            'account_type' => 'required',
+            'account_owner' => 'required',
+        ], [
+            'name.required' => 'The name field is required.',
+            'account_number.required' => 'The account number field is required.',
+            'type.required' => 'The type field is required.',
+            'owner.required' => 'The owner field is required.',
+        ]);
+
+        $paymentAccount->update($request->all());
+        // update the user to the account as the owner
+    
+
+        return redirect()->route('payment-accounts.index');
     }
 
     /**

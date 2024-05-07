@@ -16,10 +16,16 @@ return new class extends Migration
             $table->timestamps();
             $table->string('account_name');
             $table->string('account_number');
+            $table->foreignId('account_owner')->constrained('users');
+
+            
+            
             //expiration date
             $table->date('expiration_date');
             $table->string('account_status')->default('active');
             $table->string('account_type');
+
+
         });
 
         // can have many users
