@@ -12,7 +12,8 @@ class LedgerController extends Controller
      */
     public function index()
     {
-        //
+        $ledgers = Ledger::all();
+        return view('ledgers.index', compact('ledgers'));
     }
 
     /**

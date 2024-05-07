@@ -24,22 +24,7 @@
                 </span>
                 <div class="collapse navbar-collapse" id="navbarNav">
                     <ul class="navbar-nav" style="margin-left: auto; display: flex; justify-content: end; width: 100%;">
-                        <li>
-                            <div class="dropdown">
-                                <button class="btn btn-secondary btn-sm dropdown-toggle" type="button" id="dropdownMenuButton" data-bs-toggle="dropdown" aria-expanded="false">
-                                    Manage
-                                </button>
-                                <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-                                    <!-- Replace the href="#" with appropriate routes like orders/create/{facility->abbreviation} -->
-                                    @foreach($facilities as $facility)
-                                    <li>
-                                        <a class="dropdown-item" href=" {{ route('orders.create') }}/{{ $facility->abbreviation }}
-                                ">{{ $facility->name }}</a>
-                                    </li>
-                                    @endforeach
-                                </ul>
-                            </div>
-                        </li>
+
                         <li class="nav-item">
                             <a class="nav-link text-white" href="#">My Profile</a>
                         </li>
@@ -65,6 +50,9 @@
                 </button>
                 <div class="collapse navbar-collapse" id="navbarNav">
                     <ul class="navbar-nav me-auto">
+                        <li class="nav-item">
+                            <a class="nav-link" href="{{ route('orders.index') }}">Orders</a>
+                        </li>
                         <li class="nav-item">
                             <a class="nav-link" href="{{ route('facilities.index') }}">Facilities</a>
                         </li>
