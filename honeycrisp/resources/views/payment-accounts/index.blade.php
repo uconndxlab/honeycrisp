@@ -15,6 +15,7 @@
                     <tr>
                         <th>Account Name</th>
                         <th>Account Number</th>
+                        <th>Owner</th>
                         <th>Account Type</th>
                         <th>Expiration Date</th>
                         <th>Actions</th>
@@ -25,6 +26,7 @@
                     <tr>
                         <td>{{ $paymentAccount->account_name }}</td>
                         <td>{{ $paymentAccount->account_number }}</td>
+                        <td>{{ $paymentAccount->owner()->name }}</td>
                         <td>{{ $paymentAccount->account_type }}</td>
                         <td>{{ $paymentAccount->expiration_date }}</td>
                         <td>

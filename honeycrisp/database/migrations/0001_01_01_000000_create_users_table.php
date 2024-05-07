@@ -19,6 +19,7 @@ return new class extends Migration
             $table->string('password');
             $table->string('status')->default('active');
             $table->string('role')->default('user');
+            $table->string('netid')->nullable();
             $table->boolean('external_rates')->default(false);
             $table->rememberToken();
             $table->timestamps();

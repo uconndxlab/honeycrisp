@@ -50,6 +50,7 @@ class UserController extends Controller
         $user = \App\Models\User::create([
             'name' => $request->name,
             'email' => $request->email,
+            'netid' => $request->netid, // added 'netid' => $request->netid, to the create method
             'role' => $request->role,
             'status' => $request->status,
             'external_rates' => $request->external_rates,
@@ -83,7 +84,35 @@ class UserController extends Controller
      */
     public function update(Request $request, string $id)
     {
-        //
+        $user = \App\Models\User::find($id)->first();
+
+        if ($request->has('name') && $request->name !== $user->name) {
+            $user->name = $request->name;
+        }
+
+        if ($request->has('email') && $request->email !== $user->email) {
+            $user->email = $request->email;
+        }
+
+        if ($request->has('role') && $request->role !== $user->role) {
+            $user->role = $request->role;
+        }
+
+        if ($request->has('status') && $request->status !== $user->status) {
+            $user->status = $request->status;
+        }
+
+        if ($request->has('external_rates') && $request->external_rates !== $user->external_rates) {
+            $user->external_rates = $request->external_rates;
+        }
+
+        if ($request->has('password') && $request->password !== $user->password) {
+            $user->password = bcrypt($request->password);
+        }
+
+        $user->save();
+
+        return redirect()->route('users.index')->with('success', 'User updated successfully.');
     }
 
     /**

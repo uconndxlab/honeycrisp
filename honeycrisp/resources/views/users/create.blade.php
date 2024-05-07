@@ -21,23 +21,31 @@
                         </div>
                     @endif
 
-                        <form method="POST" action="{{ route('users.store') }}">
+                        <form method="POST" action="{{ isset($user) ? route('users.update', $user->id) : route('users.store') }}">
                             @csrf
                             @if(isset($user))
+                                @method('PUT')
                                 <input type="hidden" name="id" value="{{ $user->id }}">
                             @endif
                             <div class="form-group mb-3">
                                 <label for="name">Name</label>
                                 <input type="text" name="name" id="name" class="form-control" value="{{ isset($user) ? $user->name : old('name') }}" required>
                             </div>
+
                             <div class="form-group mb-3">
                                 <label for="email">Email</label>
                                 <input type="email" name="email" id="email" class="form-control" value="{{ isset($user) ? $user->email : old('email') }}" required>
                             </div>
 
                             <div class="form-group mb-3">
+                                <label for="netid">NetID</label>
+                                <input type="text" name="netid" id="netid" class="form-control" value="{{ isset($user) ? $user->netid : old('net
+id') }}" required>
+                            </div>
+
+                            <div class="form-group mb-3">
                                 <label for="role">Role</label>
-                                <select name="role" id="role" class="form-control" required>
+                                <select name="role" id="role" class="form-select" required>
                                     <option value="">Select Role</option>
                                     <option value="admin" {{ isset($user) && $user->role == 'admin' ? 'selected' : '' }}>Admin</option>
                                     <option value="user" {{ isset($user) && $user->role == 'user' ? 'selected' : '' }}>User</option>
@@ -46,7 +54,7 @@
 
                             <div class="form-group mb-3">
                                 <label for="status">Status</label>
-                                <select name="status" id="status" class="form-control" required>
+                                <select name="status" id="status" class="form-select" required>
                                     <option value="">Select Status</option>
                                     <option value="active" {{ isset($user) && $user->status == 'active' ? 'selected' : '' }}>Active</option>
                                     <option value="inactive" {{ isset($user) && $user->status == 'inactive' ? 'selected' : '' }}>Inactive</option>
@@ -64,15 +72,18 @@
                             </div>
 
 
-                            <div class="form-group mb-3">
-                                <label for="password">Password</label>
-                                <input type="password" name="password" id="password" class="form-control" required>
-                            </div>
-                            <div class="form-group mb-3">
-                                <label for="password_confirmation">Confirm Password</label>
-                                <input type="password" name="password_confirmation" id="password_confirmation" class="form-control" required>
-                            </div>
-                            <button type="submit" class="btn btn-primary">Create</button>
+                            @if(!isset($user))
+                                <div class="form-group mb-3">
+                                    <label for="password">Password</label>
+                                    <input type="password" name="password" id="password" class="form-control" required>
+                                </div>
+                                <div class="form-group mb-3">
+                                    <label for="password_confirmation">Confirm Password</label>
+                                    <input type="password" name="password_confirmation" id="password_confirmation" class="form-control" required>
+                                </div>
+                            @endif
+                            <button type="submit" class="btn btn-primary">{{ isset($user) ? 'Update' : 'Create' }}</button>
+                        </form>
                         </form>
                     </div>
                 </div>

@@ -17,6 +17,7 @@
                     <tr>
                         <th>ID</th>
                         <th>Name</th>
+                        <th>NetID</th>
                         <th>Email</th>
                         <th>Role</th>
                         <th>Actions</th>
@@ -27,6 +28,7 @@
                     <tr>
                         <td>{{ $user->id }}</td>
                         <td>{{ $user->name }}</td>
+                        <td>{{ $user->netid }}</td>
                         <td>{{ $user->email }}</td>
                         <td>{{ $user->role }}</td>
                         <td>

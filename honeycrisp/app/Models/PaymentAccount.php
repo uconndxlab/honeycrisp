@@ -23,6 +23,11 @@ class PaymentAccount extends Model
             ->withTimestamps();
     }
 
+    public function owner()
+    {
+        return $this->users()->wherePivot('role', 'owner')->first();
+    }
+
 
 
     public static function types()

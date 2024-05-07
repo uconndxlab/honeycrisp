@@ -25,6 +25,7 @@ class User extends Authenticatable
         'status',
         'role',
         'external_rates',
+        'netid',
         'password',
     ];
 

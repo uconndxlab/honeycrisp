@@ -80,6 +80,7 @@ class PaymentAccountController extends Controller
      */
     public function destroy(PaymentAccount $paymentAccount)
     {
-        //
+        $paymentAccount->delete();
+        return redirect()->route('payment-accounts.index');
     }
 }

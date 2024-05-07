@@ -18,6 +18,7 @@ return new class extends Migration
             $table->string('account_number');
             //expiration date
             $table->date('expiration_date');
+            $table->string('account_status')->default('active');
             $table->string('account_type');
         });
 
