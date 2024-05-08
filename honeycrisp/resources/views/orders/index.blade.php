@@ -10,10 +10,32 @@
                 <!-- filter UI and a spot for an admin menu like "Add Facility" go here -->
 
                 <div class="d-flex justify-content-between align-items-center">
-                    <div>
-                        <input type="text" id="filter" name="filter" class="form-control"
-                            placeholder="Search for an Order">
+                    <div class="d-flex">                   
+                        <select class="form-select" id="facility" name="facility">
+                            <option value="all">All Facilities</option>
+                            @foreach($facilities as $facility)
+                            <option value="{{ $facility->id }}">{{ $facility->name }}</option>
+                            @endforeach
+                        </select>
+
+                        <select class="form-select ms-2" id="status" name="status">
+                            <option value="all">All Statuses</option>
+                            <option value="pending">Pending</option>
+                            <option value="approved">Approved</option>
+                            <option value="rejected">Rejected</option>
+                        </select>
+
+                        <div class="d-flex ms-3 align-items-center">
+                            <label for="start_date">Dates: </label>
+                            <input type="date" class="form-control ms-2" id="start_date" name="start_date">
+                            <input type="date" class="form-control ms-2" id="end_date" name="end_date">
+                        </div>
+
+                        <button class="btn btn-primary ms-2">Filter</button>
+                        
                     </div>
+                 
+
                     <div>
                         <!-- create order with facility dropdown -->
                         <div class="dropdown">

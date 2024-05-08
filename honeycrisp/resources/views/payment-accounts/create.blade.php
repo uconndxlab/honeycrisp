@@ -26,7 +26,8 @@
 
                 <!-- user_id is a foreign key -->
                 <div class="mb-3">
-                    <label for="account_owner" class="form-label">User ID</label>
+                    <label for="account_owner" class="form-label">Account Owner</label>
+                    <small>(You can add authorized users to this account later.)</small>
                     <select class="form-select" id="account_owner" name="account_owner">
                         @foreach ($users as $user)
                             <option value="{{ $user->id }}">{{ $user->name }}</option>
@@ -47,6 +48,7 @@
                         <option value="uch">Banner/UCH</option>
                         <option value="other">Other</option>
                     </select>
+                </div>
 
                 <div class="mb-3">
                     <label for="account_number" class="form-label">Account Number</label>

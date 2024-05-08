@@ -2,6 +2,8 @@
 
 @import url('https://fonts.googleapis.com/css2?family=Fira+Code:wght@300;400;500;600;700&display=swap');
 @import url('https://fonts.googleapis.com/css2?family=Open+Sans:wght@300;400;600;700&display=swap');
+/** roboto slab */
+@import url('https://fonts.googleapis.com/css2?family=Roboto+Slab:wght@300;400;500;600;700&display=swap');
 
 :root {
   --primary-color: #0056b3; /* Different Blue */
@@ -29,7 +31,7 @@
 }
 
 .text-mono {
-  font-family: 'Fira Code', monospace;
+  font-family: 'Roboto Slab', serif;
 }
 
 h1 {
@@ -98,7 +100,7 @@ h4 {
   }
 
   h1,h2,h3,h4,h5,h6 {
-    font-family: 'Fira Code', monospace;
+    font-family: 'Roboto Slab', serif;
   }
   
   .navbar {
@@ -107,7 +109,7 @@ h4 {
   
   .navbar .navbar-brand {
     color: white;
-    font-family: 'Fira Code', monospace;
+    font-family: 'Roboto Slab', serif;
     padding-right: 8px;
     border-right: 1px solid #4e4e4e;
     font-size:16px;
@@ -117,7 +119,7 @@ h4 {
     color: white;
     padding-right: 2rem!important;
     font-size: 14px;
-    font-family: 'Fira Code', monospace;
+    font-family: 'Roboto Slab', serif;
   }
   
   .navbar .nav-link:hover {

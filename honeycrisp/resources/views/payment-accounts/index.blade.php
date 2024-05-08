@@ -6,6 +6,8 @@
         <div class="row my-3">
             <div class="col">
                 <h1>Payment Accounts</h1>
+                <a href="{{ route('payment-accounts.create') }}" class="btn btn-primary">Add Payment Account</a>
+
             </div>
         </div>
         <div class="row">
@@ -49,11 +51,7 @@
                 </table>
             </div>
         </div>
-        <div class="row">
-            <div class="col">
-                <a href="{{ route('payment-accounts.create') }}" class="btn btn-primary">Add Payment Account</a>
-            </div>
-        </div>
+
     </div>
 
 @endsection
