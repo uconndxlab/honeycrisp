@@ -3,6 +3,8 @@
 namespace App\Http\Controllers;
 
 use App\Models\Product;
+use App\Models\Facility;
+
 use Illuminate\Http\Request;
 
 class ProductController extends Controller
@@ -18,9 +20,11 @@ class ProductController extends Controller
     /**
      * Show the form for creating a new resource.
      */
-    public function create()
+    public function create($facilityAbbreviation)
     {
-        //
+        $facility = Facility::all()->where('status', 'active')->where('abbreviation', $facilityAbbreviation)->first();
+
+        return view('products.create', compact('facility'));
     }
 
     /**

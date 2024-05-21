@@ -3,48 +3,51 @@
 @section('title', 'Facility Details')
 
 @section('content')
-<div class="container">
-    <h2>{{ $facility->name }} ({{ $facility->abbreviation }})</h2>
-    <p><strong>Status:</strong> {{ $facility->status }}</p>
-    <p><strong>Description:</strong> {{ $facility->description }}</p>
+    <div class="container">
 
-    <h3>Products Available</h3>
-    @if ($facility->products->isEmpty())
-    <p>No products available at this time.</p>
-    @else
-    <ul>
-        @foreach ($facility->products as $product)
-        <li>{{ $product->name }} - {{ $product->description }}</li>
-        @endforeach
-    </ul>
-    @endif
+        <div class="row my-4">
+            <div class="col-md-5">
+                <div class="card">
+                    <div class="card-header">
+                        <h2>{{ $facility->name }} ({{ $facility->abbreviation }})</h2>
+                    </div>
+                    <div class="card-body">
+                        <p><strong>Status:</strong> {{ $facility->status }}</p>
+                        <p><strong>Description:</strong> {{ $facility->description }}</p>
+                    </div>
+                </div>
+            </div>
+        </div>
 
-    <p><a href="{{ route('facilities.edit', $facility->id) }}">Edit Facility</a></p>
-    <p><a href="{{ route('facilities.index') }}">Back to All Facilities</a></p>
+        <h3>Products & Services Available</h3>
+        @if ($facility->products->isEmpty())
+            <p>No products available at this time.</p>
 
-    <form action="{{ route('facilities.destroy', $facility->id) }}" method="POST">
-        @csrf
-        @method('DELETE')
-        <button type="submit" class="btn btn-danger">Delete Facility</button>
+            <a href="{{ route('products.create') }}/{{$facility->abbreviation}} " class="btn btn-primary">Add Product</a> to this facility.
+        @else
+            <ul>
+                @foreach ($facility->products as $product)
+                    <li>{{ $product->name }} - {{ $product->description }}</li>
+                @endforeach
+            </ul>
+        @endif
 
-    </form>
 
-    <h3>Orders</h3>
-    <div>
-        <p><a href="{{ route('orders.create') }}/{{ $facility->abbreviation }}" class="btn btn-primary">
-            Create Order</a></p>
+        <h3>Orders</h3>
+        <div>
+            <p><a href="{{ route('orders.create') }}/{{ $facility->abbreviation }}" class="btn btn-primary">
+                    Create Order</a></p>
+        </div>
+        @if ($facility->orders->isEmpty())
+            <p>No orders have been placed at this facility.</p>
+        @else
+            <ul>
+                @foreach ($facility->orders as $order)
+                    <li>{{ $order->user->name }} - {{ $order->status }}</li>
+                @endforeach
+            </ul>
+        @endif
+
+
     </div>
-    @if ($facility->orders->isEmpty())
-    <p>No orders have been placed at this facility.</p>
-
-    @else
-    <ul>
-        @foreach ($facility->orders as $order)
-        <li>{{ $order->user->name }} - {{ $order->status }}</li>
-        @endforeach
-    </ul>
-    @endif
-
-    
-</div>
 @endsection

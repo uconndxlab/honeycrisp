@@ -19,6 +19,13 @@ return new class extends Migration
             $table->string('description');
             $table->string('unit');
             $table->string('unit_price');
+            
+            // requires approval?
+            $table->boolean('requires_approval')->default(false);
+            $table->boolean('is_active')->default(true);
+            $table->boolean('is_deleted')->default(false);
+            
+
             $table->string('image_url')->nullable();
             $table->json('tags')->nullable();
 
