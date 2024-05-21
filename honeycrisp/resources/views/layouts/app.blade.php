@@ -86,7 +86,7 @@
 
     </header>
 
-    <main>
+    <main class="py-4">
         <div class="container py-2">
             <div class="row">
                 <div class="col-md-12">
@@ -113,9 +113,28 @@
         </div>
         @yield('content')
     </main>
+    <footer id="uc-footer" class="site-footer" role="contentinfo">
+        <div class="container">
+            <ul id="uc-footer-links" class="clearfix text-center">
+                                        <li>
+                        © <a href="http://uconn.edu">University of Connecticut</a>
+                    </li>
+                    <li>
+                        <a href="http://uconn.edu/disclaimers-privacy-copyright/">Disclaimers, Privacy &amp; Copyright</a>
+                    </li>
+                    <li>
+                        <a href="https://accessibility.uconn.edu/">Accessibility</a>
+                    </li>
+                                    <li>
+                    <a href="https://pandemic-journaling-project.chip.uconn.edu/wp-admin/">Webmaster Login</a>
+                </li>
 
-    <footer>
-        <!-- Your footer content goes here -->
+                <a href="#" target="_blank">
+                    Contact Information
+                </a>
+
+                                </ul>
+        </div>
     </footer>
     <!-- bootstrap5 JS -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>

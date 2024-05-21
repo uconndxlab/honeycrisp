@@ -26,18 +26,27 @@
 
             <div class="form-group">
                 <label for="name">Product Name</label>
-                <input type="text" class="form-control" id="name" name="name" required>
+                <input type="text" class="form-control" id="name" name="name">
             </div>
 
             <div class="form-group">
                 <label for="description">Description</label>
-                <textarea class="form-control" id="description" name="description" rows="3" required></textarea>
+                <textarea class="form-control" id="description" name="description" rows="3"></textarea>
             </div>
 
             <!-- is active-->
             <div class="form-group">
                 <label for="is_active">Is Active</label>
-                <select class="form-control" id="is_active" name="is_active" required>
+                <select class="form-select" id="is_active" name="is_active">
+                    <option value="1">Yes</option>
+                    <option value="0">No</option>
+                </select>
+            </div>
+
+            <!-- is_deleted -->
+            <div class="form-group">
+                <label for="is_deleted">Is Deleted</label>
+                <select class="form-select" id="is_deleted" name="is_deleted">
                     <option value="1">Yes</option>
                     <option value="0">No</option>
                 </select>
@@ -46,7 +55,7 @@
             <!-- requires approval -->
             <div class="form-group">
                 <label for="requires_approval">Requires Approval</label>
-                <select class="form-control" id="requires_approval" name="requires_approval" required>
+                <select class="form-select" id="requires_approval" name="requires_approval">
                     <option value="1">Yes</option>
                     <option value="0">No</option>
                 </select>
@@ -64,14 +73,14 @@
                 <label for="unit">Unit</label>
                 <input type="text" class="form-control" id="unit" name="unit" required>
             </div>
-            <div class="form-group">
+            <div class="form-group my-3">
                 <label for="price">Price</label>
-                <input type="number" class="form-control" id="price" name="price" required>
+                <input type="number" class="form-control" id="price" name="unit_price">
             </div>
-
+            <button type="submit" class="btn btn-primary">Add Product</button>
+            <a href="{{ route('facilities.show', $facility->abbreviation) }}" class="btn btn-secondary">Cancel</a>
         </form>
-        <button type="submit" class="btn btn-primary">Add Product</button>
-        <a href="{{ route('facilities.show', $facility->abbreviation) }}" class="btn btn-secondary">Cancel</a>
+
     </div>
 
 @endsection

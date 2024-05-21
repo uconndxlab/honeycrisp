@@ -292,3 +292,27 @@ h4 {
     background-color: white;
     color: var(--dark-color);
   }
+
+  #uc-footer {
+    background-color: var(--secondary-color);
+    color: white;
+    padding: 1rem;
+  }
+
+  #uc-footer ul {
+    list-style-type: none;
+  }
+
+  #uc-footer ul li {
+    display: inline;
+    padding-right: 1rem;
+  }
+
+  #uc-footer a {
+    color: white;
+  }
+
+  /** set height of main so that footer is always at the bottom of the page */
+  main {
+    min-height: calc(100vh - 180px);
+  }
