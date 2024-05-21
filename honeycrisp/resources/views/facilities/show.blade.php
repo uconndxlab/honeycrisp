@@ -22,13 +22,18 @@
         <h3>Products & Services Available</h3>
         @if ($facility->products->isEmpty())
             <p>No products available at this time.</p>
-
-            <a href="{{ route('products.create') }}/{{$facility->abbreviation}} " class="btn btn-primary">Add Product</a> to this facility.
         @else
-            <ul>
+            <a href="{{ route('products.create') }}/{{$facility->abbreviation}} " class="btn btn-primary">Add Product</a>
+
+            <ul class="my-4" >
                 @foreach ($facility->products as $product)
-                    <li>{{ $product->name }} - {{ $product->description }}</li>
+                    <li>
+                        <a href="{{ route('products.show', $product->id) }}">
+                            {{ $product->name }} - {{ $product->description }}
+                        </a>
+                    </li>
                 @endforeach
+
             </ul>
         @endif
 
