@@ -26,11 +26,11 @@
             <p>No products available at this time.</p>
         @else
 
-            <ul class="my-4" >
+            <ul class="list-group my-4" >
                 @foreach ($facility->products as $product)
-                    <li>
+                    <li class="list-group-item">
                         <a href="{{ route('products.show', $product->id) }}">
-                            {{ $product->name }} - {{ $product->description }}
+                            {{ $product->name }} - (${{ $product->unit_price }} / {{ $product->unit }})
                         </a>
                     </li>
                 @endforeach
