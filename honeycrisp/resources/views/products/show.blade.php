@@ -18,6 +18,14 @@
                         <p><strong>Is Deleted:</strong> {{ $product->is_deleted ? 'Yes' : 'No' }}</p>
                         <p><strong>Requires Approval:</strong> {{ $product->requires_approval ? 'Yes' : 'No' }}</p>
                     </div>
+                    <div class="card-footer">
+                        <a href="{{ route('products.edit', $product->id) }}" class="btn btn-primary">Edit</a>
+                        <form action="{{ route('products.destroy', $product->id) }}" method="POST" style="display: inline;">
+                            @csrf
+                            @method('DELETE')
+                            <button type="submit" class="btn btn-danger">Delete</button>
+                        </form>
+                    </div>
                 </div>
             </div>
         </div>

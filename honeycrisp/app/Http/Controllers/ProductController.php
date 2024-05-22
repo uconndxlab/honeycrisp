@@ -63,7 +63,7 @@ class ProductController extends Controller
      */
     public function edit(Product $product)
     {
-        //
+        return view('products.edit', compact('product'));
     }
 
     /**
@@ -71,7 +71,21 @@ class ProductController extends Controller
      */
     public function update(Request $request, Product $product)
     {
-        //
+        $product->name = $request->name;
+        $product->description = $request->description;
+        $product->unit = $request->unit;
+        $product->unit_price = $request->unit_price;
+        $product->requires_approval = $request->requires_approval;
+        $product->is_active = $request->is_active;
+        $product->is_deleted = $request->is_deleted;
+        $product->image_url = $request->image_url;
+        $product->tags = $request->tags;
+        $product->facility_id = $request->facility_id;
+
+        $product->save();
+
+        return redirect()->route('facilities.show', $product->facility_id);
+
     }
 
     /**

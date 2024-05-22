@@ -28,7 +28,7 @@
                         @foreach ($paymentAccounts as $paymentAccount)
                             <tr>
                                 <td>{{ $paymentAccount->account_name }}</td>
-                                <td>{{ $paymentAccount->account_type }}</td>
+                                <td>{{ strtoupper($paymentAccount->account_type) }}</td>
                                 <td>{{ $paymentAccount->account_number }}</td>
                                 <td>{{ $paymentAccount->owner()->name }}</td>
 

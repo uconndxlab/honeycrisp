@@ -121,7 +121,7 @@
         <div class="row bg-dark text-white">
             <div class="row my-3 py-3">
                 <div class="col-md-8">
-                    <h3>Available Items</h3>
+                    <h3>Available Products</h3>
 
                     <!-- little search box start typing and it filters the products -->
                     <div class="input-group mb-3">
@@ -142,28 +142,15 @@
 
                     <!-- list of products in a ul -->
                     <ul class="list-group">
-                        <li class="list-group-item">
-                            <a data-bs-toggle="modal" 
-                            data-bs-target="#addCustomItemModal" href="#" class="list-group-item-action">Student
-                                Web Development ($25 per hour)</a>
-                        </li>
-                        <li class="list-group-item">
-                            <a  data-bs-toggle="modal" 
-                            data-bs-target="#addCustomItemModal"href="#" class="list-group-item-action">Facility
-                                Director Time ($150 per hour)</a>
-                            
-                        </li>
-                        <li class="list-group-item">
-                            <a data-bs-toggle="modal" 
-                            data-bs-target="#addCustomItemModal" href="#" class="list-group-item-action">Senior
-                                Application Developer ($105 per hour)</a>
-                        </li>
-                        <li class="list-group-item">
-                            <a href="#"  
-                            data-bs-toggle="modal" 
-                            data-bs-target="#addCustomItemModal" class="list-group-item-action">Graduate
-                                Student Time ($51 per hour)</a> 
-                        </li>
+
+                        @foreach ($facility->products as $product)
+                            <li class="list-group-item">
+                                <a 
+                                    data-bs-toggle="modal" 
+                                    data-bs-target="#addCustomItemModal"
+                                href="#" class="list-group-item-action">{{ $product->name }} (${{ $product->unit_price }} per {{$product->unit}})</a>
+                            </li>
+                        @endforeach
                     </ul>
                 </div>
                 <div class="col-md-4">

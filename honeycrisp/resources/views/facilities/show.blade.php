@@ -20,10 +20,11 @@
         </div>
 
         <h3>Products & Services Available</h3>
+        <a href="{{ route('products.create') }}/{{$facility->abbreviation}} " class="btn btn-primary">Add Product</a>
+
         @if ($facility->products->isEmpty())
             <p>No products available at this time.</p>
         @else
-            <a href="{{ route('products.create') }}/{{$facility->abbreviation}} " class="btn btn-primary">Add Product</a>
 
             <ul class="my-4" >
                 @foreach ($facility->products as $product)
