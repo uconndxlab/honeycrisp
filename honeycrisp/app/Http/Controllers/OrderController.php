@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Order;
 use Illuminate\Http\Request;
 use App\Models\Facility;
+use App\Models\PaymentAccount;
 use App\Models\User;
 
 class OrderController extends Controller
@@ -29,14 +30,27 @@ class OrderController extends Controller
         $users = User::all()->where('status', 'active');
         $selected_user = null;
 
-        if (request('netid')) {
-            $user = User::all()->where('netid', request('netid'))->first();
+        if (request('user_id')) {
+            $user = User::all()->where('netid', request('user_id'))->first();
             $selected_user = $user->id;
+            $accounts = [];
+
+            $account_ids =  $user->paymentAccounts();
+           // loop through the accounts and echo the account number
+            foreach ($account_ids as $account_id) {
+                $account = PaymentAccount::all()->where('id', $account_id)->first();
+                $accounts[] = $account;
+            }
+
+
+        } else {
+            $accounts = null;
         }
+
         
         $facility = Facility::all()->where('status', 'active')->where('abbreviation', $facilityAbbreviation)->first();
         
-        return view('orders.create', compact('facility', 'users', 'selected_user'));
+        return view('orders.create', compact('facility', 'users', 'selected_user', 'accounts'));
     }
 
     /**
