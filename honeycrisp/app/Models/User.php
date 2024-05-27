@@ -52,10 +52,17 @@ class User extends Authenticatable
         ];
     }
 
+    /** belongs to many paymentaccounts pivoting  on role */
     public function paymentAccounts()
     {
         return $this->belongsToMany(PaymentAccount::class)
             ->withPivot('role')
             ->withTimestamps();
+    }
+
+    /** get owned accounts */
+    public function ownedAccounts()
+    {
+        return PaymentAccount::all()->where('account_owner', $this->id);
     }
 }

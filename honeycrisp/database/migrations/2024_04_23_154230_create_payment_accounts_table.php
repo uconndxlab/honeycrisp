@@ -16,7 +16,6 @@ return new class extends Migration
             $table->timestamps();
             $table->string('account_name');
             $table->string('account_number');
-            $table->foreignId('account_owner')->constrained('users');
 
             
             

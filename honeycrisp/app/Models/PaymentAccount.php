@@ -13,7 +13,6 @@ class PaymentAccount extends Model
         'account_name',
         'account_number',
         'account_type',
-        'account_owner',
         'expiration_date',
     ];
 
@@ -26,10 +25,21 @@ class PaymentAccount extends Model
 
     public function owner()
     {
-        $user = User::find($this->account_owner);
-        return $user;
+        // owner is pivot on user
+        return $this->belongsTo(User::class, 'account_owner');
     }
 
+    public function account_manager()
+    {
+        // account manager is pivot on user
+        return $this->belongsTo(User::class, 'account_manager');
+    }
+
+    public function fiscal_officer()
+    {
+        // fiscal officer is pivot on user
+        return $this->belongsTo(User::class, 'fiscal_officer');
+    }
   
     public static function types()
     {

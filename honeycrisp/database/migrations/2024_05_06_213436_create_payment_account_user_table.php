@@ -17,7 +17,9 @@ return new class extends Migration
             $table->foreignId('user_id')->constrained();
 
 
-            $table->enum('role', ['admin', 'user']);
+            $table->enum('role', ['owner', 'fiscal_officer', 'account_manager', 'authorized_user'])
+                ->default('authorized_user');
+                
             $table->timestamps();
         });
     }
