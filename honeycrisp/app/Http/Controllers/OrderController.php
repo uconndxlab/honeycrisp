@@ -23,10 +23,20 @@ class OrderController extends Controller
      */
     public function create($facilityAbbreviation)
     {   
-        $users = User::all();
+        
+        // if request[netid] is not null, get the user with that netid so they can be selected by default
+
+        $users = User::all()->where('status', 'active');
+        $selected_user = null;
+
+        if (request('netid')) {
+            $user = User::all()->where('netid', request('netid'))->first();
+            $selected_user = $user->id;
+        }
+        
         $facility = Facility::all()->where('status', 'active')->where('abbreviation', $facilityAbbreviation)->first();
         
-        return view('orders.create', compact('facility', 'users'));
+        return view('orders.create', compact('facility', 'users', 'selected_user'));
     }
 
     /**

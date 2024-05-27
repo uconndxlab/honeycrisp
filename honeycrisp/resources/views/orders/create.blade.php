@@ -81,8 +81,9 @@
                                     <label for="user_id">Ordering for User:</label>
                                     <select name="user_id" id="user_id" class="form-select">
                                         @foreach ($users as $user)
-                                            <option value="{{ $user->id }}">{{ $user->name }}</option>
+                                            <option value="{{ $user->id }}" @if ($selected_user == $user->id) selected @endif>{{ $user->name }}</option>
                                         @endforeach
+                                       
                                     </select>
                                 </div>
 
