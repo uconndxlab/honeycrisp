@@ -16,6 +16,7 @@ class PaymentAccount extends Model
         'expiration_date',
     ];
 
+
     public function users()
     {
         return $this->belongsToMany(User::class)
@@ -26,7 +27,7 @@ class PaymentAccount extends Model
     public function owner()
     {
         // owner is pivot on user
-        return $this->belongsTo(User::class, 'account_owner');
+        return $this->users()->wherePivot('role', 'owner')->first();
     }
 
     public function account_manager()

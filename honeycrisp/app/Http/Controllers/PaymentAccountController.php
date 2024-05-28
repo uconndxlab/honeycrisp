@@ -44,7 +44,16 @@ class PaymentAccountController extends Controller
             'owner.required' => 'The owner field is required.',
         ]);
 
-        $paymentAccount = PaymentAccount::create($request->all());
+        $data ['account_name'] = $request->account_name;
+        $data ['account_number'] = $request->account_number;
+        $data ['account_type'] = $request->account_type;
+        $data ['expiration_date'] = $request->expiration_date;
+
+
+        $paymentAccount = PaymentAccount::create($data);
+
+        // update the user to the account as the owner
+        $paymentAccount->users()->attach($request->account_owner, ['role' => 'owner']);
       
 
         return redirect()->route('payment-accounts.index');

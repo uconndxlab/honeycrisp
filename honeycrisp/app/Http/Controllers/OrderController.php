@@ -35,12 +35,9 @@ class OrderController extends Controller
             $selected_user = $user->id;
             $accounts = [];
 
-            $account_ids =  $user->paymentAccounts();
-           // loop through the accounts and echo the account number
-            foreach ($account_ids as $account_id) {
-                $account = PaymentAccount::all()->where('id', $account_id)->first();
-                $accounts[] = $account;
-            }
+            $accounts =  $user->paymentAccounts()->get();
+
+           
 
 
         } else {
