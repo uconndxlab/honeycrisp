@@ -77,6 +77,7 @@
                                     hx-get = "{{ route('orders.create') }}/{{ $facility->abbreviation }}"
                                     hx-select="#user_accounts"
                                     hx-target="#user_accounts"
+                                    hx-indicator="#user_accounts"
                                     hx-trigger="change"
                                     hx-swap="outerHTML"
                                     name="user_id" id="user_id" class="form-select">

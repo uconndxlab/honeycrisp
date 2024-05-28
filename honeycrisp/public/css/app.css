@@ -6,11 +6,17 @@
 @import url('https://fonts.googleapis.com/css2?family=Roboto+Slab:wght@300;400;500;600;700&display=swap');
 
 :root {
-  --primary-color: #0056b3; /* Different Blue */
-  --primary-color-dark: #004b87; /* Different blue, darker */
-  --secondary-color: /** extremely navy */ #020202;
-  --dark-color: #343a40; /* Dark gray */
-  --accent-color: #e71313; /* Red */
+  --primary-color: #0056b3;
+  /* Different Blue */
+  --primary-color-dark: #004b87;
+  /* Different blue, darker */
+  --secondary-color:
+    /** extremely navy */
+    #020202;
+  --dark-color: #343a40;
+  /* Dark gray */
+  --accent-color: #e71313;
+  /* Red */
 }
 
 .hc-logo {
@@ -21,12 +27,12 @@
   color: white;
   font-weight: bold;
   font-size: 1rem;
-  position:relative;
-  top:2px;
+  position: relative;
+  top: 2px;
 }
 
 .login-hud {
-  font-size:14px;
+  font-size: 14px;
 
 }
 
@@ -54,265 +60,290 @@ h4 {
 
 
 
-  body {
-    overflow-y: scroll;
-  }
+body {
+  overflow-y: scroll;
+}
 
-  .list-group-item-action {
-    color: var(--primary-color)!important;
-  }
+.list-group-item-action {
+  color: var(--primary-color) !important;
+}
 
-  .bg-primary {
-    background-color: var(--primary-color) !important;
-  }
+.bg-primary {
+  background-color: var(--primary-color) !important;
+}
 
-  .text-primary {
-    color: var(--primary-color) !important;
-  }
+.text-primary {
+  color: var(--primary-color) !important;
+}
 
-  .bg-secondary {
-    background-color: var(--secondary-color) !important;
-  }
+.bg-secondary {
+  background-color: var(--secondary-color) !important;
+}
 
-  .text-secondary {
-    color: var(--secondary-color) !important;
-  }
+.text-secondary {
+  color: var(--secondary-color) !important;
+}
 
-  .bg-dark {
-    background-color: var(--dark-color) !important;
-  }
+.bg-dark {
+  background-color: var(--dark-color) !important;
+}
 
-  .text-dark {
-    color: var(--dark-color) !important;
-  }
+.text-dark {
+  color: var(--dark-color) !important;
+}
 
-  .bg-accent {
-    background-color: var(--accent-color) !important;
-  }
+.bg-accent {
+  background-color: var(--accent-color) !important;
+}
 
-  .text-accent {
-    color: var(--accent-color) !important;
-  }
-  
-  body {
-    background-color: #f8f9fa; /* Light gray */
-    font-family: 'Open Sans', sans-serif;
-  }
+.text-accent {
+  color: var(--accent-color) !important;
+}
 
-  h1,h2,h3,h4,h5,h6 {
-    font-family: 'Roboto Slab', serif;
-  }
-  
-  .navbar {
-    background-color: var(--primary-color);
-  }
-  
-  .navbar .navbar-brand {
-    color: white;
-    font-family: 'Roboto Slab', serif;
-    padding-right: 8px;
-    border-right: 1px solid #4e4e4e;
-    font-size:16px;
-  }
-  
-  .navbar .nav-link {
-    color: white;
-    padding-right: 2rem!important;
-    font-size: 14px;
-    font-family: 'Roboto Slab', serif;
-  }
-  
-  .navbar .nav-link:hover {
-    color: white;
-  }
-  
-  .btn-primary {
-    background-color: var(--primary-color);
-    border-color: var(--primary-color);
-  }
+body {
+  background-color: #f8f9fa;
+  /* Light gray */
+  font-family: 'Open Sans', sans-serif;
+}
 
-  .btn-outline-primary {
-    color: var(--primary-color);
-    border-color: var(--primary-color);
-  }
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  font-family: 'Roboto Slab', serif;
+}
 
-  
-  .btn-primary:hover {
-    background-color: var(--primary-color-dark);
-    border-color: var(--primary-color-dark);
-  }
-  
-  .btn-secondary {
-    background-color: var(--secondary-color);
-    border-color: var(--secondary-color);
-    color:#343a40;
-  }
-  
-  .btn-secondary:hover {
-    background-color: #004b87; /* Darker UConn blue */
-    border-color: #00437d; /* Darker UConn blue */
-  }
-  
-  .card {
-    border: 1px solid rgba(0, 0, 0, 0.125);
-    border-radius: 0.25rem;450
-  }
-  
-  .card-footer {
-    background-color: var(--dark-color);
-    color: white;
-  }
+.navbar {
+  background-color: var(--primary-color);
+}
 
-  .accordion-header, .accordion-button, .accordion-button:not(.collapsed) {
-    background-color: var(--dark-color)!important;
-    color: white!important;
-  }
+.navbar .navbar-brand {
+  color: white;
+  font-family: 'Roboto Slab', serif;
+  padding-right: 8px;
+  border-right: 1px solid #4e4e4e;
+  font-size: 16px;
+}
 
-  .accordion-button:after {
-    background-image: url("data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16' fill='%23ffffff'><path fill-rule='evenodd' d='M1.646 4.646a.5.5 0 0 1 .708 0L8 10.293l5.646-5.647a.5.5 0 0 1 .708.708l-6 6a.5.5 0 0 1-.708 0l-6-6a.5.5 0 0 1 0-.708z'/></svg>") !important;
-  }
-  
-  .list-group li, .list-group-item a {
-    font-size:14px;
-    text-decoration: none!important;
-  }
+.navbar .nav-link {
+  color: white;
+  padding-right: 2rem !important;
+  font-size: 14px;
+  font-family: 'Roboto Slab', serif;
+}
 
-  h5, h6 {
-    color: var(--dark-color);
-    text-transform: uppercase;
-    font-weight: bold;
-  }
+.navbar .nav-link:hover {
+  color: white;
+}
 
-  /** style cards to have square corners and material design shadow */
+.btn-primary {
+  background-color: var(--primary-color);
+  border-color: var(--primary-color);
+}
 
-  .card, .accordion-item, .list-group, .alert, .modal-content {
-    border-radius: 0px!important;
-    /** subtle shadow */
-    box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.08);
-  }
+.btn-outline-primary {
+  color: var(--primary-color);
+  border-color: var(--primary-color);
+}
 
-  input,textarea {
-    border-radius: 0px!important;
-  }
 
-  input:focus, textarea:focus {
-    border-color: var(--primary-color)!important;
-    box-shadow: 0 0 0 0.2rem rgba(0, 86, 179, 0.25)!important;
-  }
+.btn-primary:hover {
+  background-color: var(--primary-color-dark);
+  border-color: var(--primary-color-dark);
+}
 
-  label {
-    cursor: pointer;
-  }
-  
-  /** style the buttons to be a little more material design in terms of shape and shadow */
+.btn-secondary {
+  background-color: var(--secondary-color);
+  border-color: var(--secondary-color);
+  color: #343a40;
+}
 
-  .btn {
-    border-radius: 0px!important;
-    box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.15);
-  }
+.btn-secondary:hover {
+  background-color: #004b87;
+  /* Darker UConn blue */
+  border-color: #00437d;
+  /* Darker UConn blue */
+}
 
-  .btn-primary {
-    background-color: var(--primary-color);
-    border-color: var(--primary-color);
-  }
+.card {
+  border: 1px solid rgba(0, 0, 0, 0.125);
+  border-radius: 0.25rem;
+  450
+}
 
-  .btn-primary:hover {
-    background-color: var(--primary-color-dark);
-    border-color: var(--primary-color-dark);
-  }
+.card-footer {
+  background-color: var(--dark-color);
+  color: white;
+}
 
-  .btn-secondary {
-    background-color: var(--secondary-color);
-    border-color: var(--secondary-color);
-    color: white;
-  }
+.accordion-header,
+.accordion-button,
+.accordion-button:not(.collapsed) {
+  background-color: var(--dark-color) !important;
+  color: white !important;
+}
 
-  .btn-secondary:hover {
-    background-color: #004b87; /* Darker UConn blue */
-    border-color: #00437d; /* Darker UConn blue */
-  }
+.accordion-button:after {
+  background-image: url("data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16' fill='%23ffffff'><path fill-rule='evenodd' d='M1.646 4.646a.5.5 0 0 1 .708 0L8 10.293l5.646-5.647a.5.5 0 0 1 .708.708l-6 6a.5.5 0 0 1-.708 0l-6-6a.5.5 0 0 1 0-.708z'/></svg>") !important;
+}
 
-  .btn-accent {
-    background-color: var(--accent-color);
-    border-color: var(--accent-color);
-    color: white;
-  }
+.list-group li,
+.list-group-item a {
+  font-size: 14px;
+  text-decoration: none !important;
+}
 
-  .btn-accent:hover {
-    background-color: #e71313; /* Darker red */
-    border-color: #e71313; /* Darker red */
-  }
+h5,
+h6 {
+  color: var(--dark-color);
+  text-transform: uppercase;
+  font-weight: bold;
+}
 
-  .btn-outline-primary {
-    color: var(--primary-color);
-    border-color: var(--primary-color);
-  }
+/** style cards to have square corners and material design shadow */
 
-  .btn-outline-primary:hover {
-    background-color: var(--primary-color);
-    color: white;
-  }
+.card,
+.accordion-item,
+.list-group,
+.alert,
+.modal-content {
+  border-radius: 0px !important;
+  /** subtle shadow */
+  box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.08);
+}
 
-  .btn-outline-secondary {
-    color: var(--secondary-color);
-    border-color: var(--secondary-color);
-  }
+input,
+textarea {
+  border-radius: 0px !important;
+}
 
-  .btn-outline-secondary:hover {
-    background-color: var(--secondary-color);
-    color: white;
-  }
+input:focus,
+textarea:focus {
+  border-color: var(--primary-color) !important;
+  box-shadow: 0 0 0 0.2rem rgba(0, 86, 179, 0.25) !important;
+}
 
-  .btn-outline-accent {
-    color: var(--accent-color);
-    border-color: var(--accent-color);
-  }
+label {
+  cursor: pointer;
+}
 
-  .btn-outline-accent:hover {
-    background-color: var(--accent-color);
-    color: white;
-  }
+/** style the buttons to be a little more material design in terms of shape and shadow */
 
-  .btn-outline-dark {
-    color: var(--dark-color);
-    border-color: var(--dark-color);
-  }
+.btn {
+  border-radius: 0px !important;
+  box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.15);
+}
 
-  .btn-outline-dark:hover {
-    background-color: var(--dark-color);
-    color: white;
-  }
+.btn-primary {
+  background-color: var(--primary-color);
+  border-color: var(--primary-color);
+}
 
-  .btn-outline-light {
-    color: white;
-    border-color: white;
-  }
+.btn-primary:hover {
+  background-color: var(--primary-color-dark);
+  border-color: var(--primary-color-dark);
+}
 
-  .btn-outline-light:hover {
-    background-color: white;
-    color: var(--dark-color);
-  }
+.btn-secondary {
+  background-color: var(--secondary-color);
+  border-color: var(--secondary-color);
+  color: white;
+}
 
-  #uc-footer {
-    background-color: var(--secondary-color);
-    color: white;
-    padding: 1rem;
-  }
+.btn-secondary:hover {
+  background-color: #004b87;
+  /* Darker UConn blue */
+  border-color: #00437d;
+  /* Darker UConn blue */
+}
 
-  #uc-footer ul {
-    list-style-type: none;
-  }
+.btn-accent {
+  background-color: var(--accent-color);
+  border-color: var(--accent-color);
+  color: white;
+}
 
-  #uc-footer ul li {
-    display: inline;
-    padding-right: 1rem;
-  }
+.btn-accent:hover {
+  background-color: #e71313;
+  /* Darker red */
+  border-color: #e71313;
+  /* Darker red */
+}
 
-  #uc-footer a {
-    color: white;
-  }
+.btn-outline-primary {
+  color: var(--primary-color);
+  border-color: var(--primary-color);
+}
 
-  /** set height of main so that footer is always at the bottom of the page */
-  main {
-    min-height: calc(100vh - 180px);
-  }
+.btn-outline-primary:hover {
+  background-color: var(--primary-color);
+  color: white;
+}
+
+.btn-outline-secondary {
+  color: var(--secondary-color);
+  border-color: var(--secondary-color);
+}
+
+.btn-outline-secondary:hover {
+  background-color: var(--secondary-color);
+  color: white;
+}
+
+.btn-outline-accent {
+  color: var(--accent-color);
+  border-color: var(--accent-color);
+}
+
+.btn-outline-accent:hover {
+  background-color: var(--accent-color);
+  color: white;
+}
+
+.btn-outline-dark {
+  color: var(--dark-color);
+  border-color: var(--dark-color);
+}
+
+.btn-outline-dark:hover {
+  background-color: var(--dark-color);
+  color: white;
+}
+
+.btn-outline-light {
+  color: white;
+  border-color: white;
+}
+
+.btn-outline-light:hover {
+  background-color: white;
+  color: var(--dark-color);
+}
+
+#uc-footer {
+  background-color: var(--secondary-color);
+  color: white;
+  padding: 1rem;
+}
+
+#uc-footer ul {
+  list-style-type: none;
+}
+
+#uc-footer ul li {
+  display: inline;
+  padding-right: 1rem;
+}
+
+#uc-footer a {
+  color: white;
+}
+
+/** set height of main so that footer is always at the bottom of the page */
+main {
+  min-height: calc(100vh - 180px);
+}
+
+.
