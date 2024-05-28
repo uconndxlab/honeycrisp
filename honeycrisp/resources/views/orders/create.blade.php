@@ -80,6 +80,7 @@
                                     hx-indicator="#user_accounts"
                                     hx-trigger="change"
                                     hx-swap="outerHTML"
+                                    hx-push-url="true"
                                     name="user_id" id="user_id" class="form-select">
                                         <option value="">Select a User</option>
                                         @foreach ($users as $user)
@@ -97,7 +98,7 @@
                                     name="payment_account" id="payment_account" class="form-select">
                                         <option value="">Select a Payment Account</option>
                                         @foreach ($accounts as $payment_account)
-                                        <option value="{{ $payment_account }}">{{ strtoupper($payment_account->account_name) }} ( {{ strtoupper($payment_account->account_type) }} - {{ $payment_account->account_number }})</option>
+                                        <option value="{{ $payment_account }}">{{ $payment_account->account_name }} ({{ strtoupper($payment_account->account_type) }}-{{ $payment_account->account_number }})</option>
                                         @endforeach
 
                                     </select>
