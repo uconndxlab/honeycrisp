@@ -17,7 +17,12 @@ class OrderController extends Controller
     public function index()
     {
 
-        $orders = Order::all();
+        // if request[status] is not null, filter orders by status
+        if (request('status')) {
+            $orders = Order::all()->where('status', request('status'));
+        } else {
+            $orders = Order::all();
+        }
 
 
 
@@ -56,12 +61,26 @@ class OrderController extends Controller
      */
     public function store(Request $request)
     {
+
+        $request->validate([
+            'title' => 'required',
+            'date' => 'required',
+            'user_id' => 'required',
+            'facility_id' => 'exists:facilities,id',
+            'payment_account' => 'required'
+        ]);
+
         $user_id = User::all()->where('netid', $request->user_id)->first()->id;
-        $facility_id = Facility::all()->where('abbreviation', $request->facility_abbreviation)->first()->id;
+        $facility_id = $request->facility_id;
         $payment_account = PaymentAccount::find($request->payment_account)->id;
 
         $order = new Order();
         $order->user_id = $user_id;
+
+        $order->title = $request->title;
+        $order->description = $request->description;
+        $order->date = $request->date;
+    
         $order->facility_id = $facility_id;
         $order->payment_account = $payment_account;
         $order->status = 'draft';
@@ -74,15 +93,7 @@ class OrderController extends Controller
 
         $order->save();
     
-        foreach ($request->items as $item) {
-            $orderItem = new OrderItem();
-            $orderItem->order_id = $order->id;
-            $orderItem->product_id = $item['id'];
-            $orderItem->name = $item['name'];
-            $orderItem->price = $item['price'];
-            $orderItem->quantity = $item['quantity'];
-            $orderItem->save();
-        }
+
     
         return redirect()->route('orders.index')->with('success', 'Order created successfully!');
     }
@@ -92,7 +103,9 @@ class OrderController extends Controller
      */
     public function show(Order $order)
     {
-        //
+        $order_items = OrderItem::all()->where('order_id', $order->id);
+        $payment_account = PaymentAccount::find($order->payment_account);
+        return view('orders.show', compact('order', 'order_items', 'payment_account'));
     }
 
     /**
@@ -100,7 +113,28 @@ class OrderController extends Controller
      */
     public function edit(Order $order)
     {
-        //
+        $order = Order::find($order->id);
+        $facility = Facility::find($order->facility_id);
+        $users = User::all()->where('status', 'active');
+        $selected_user = $order->user_id;
+
+        if (request('user_id') or $order->user_id) {
+            if (request('user_id')) {
+                $user = User::all()->where('netid', request('user_id'))->first();
+            } else {
+                $user = User::find($order->user_id);
+            }
+
+            $selected_user = $user->id;
+            $accounts = [];
+
+            $accounts =  $user->paymentAccounts()->get();
+        } else {
+            $accounts = null;
+        }
+
+        
+        return view('orders.edit', compact('order', 'facility', 'users', 'selected_user', 'accounts'));
     }
 
     /**
@@ -108,7 +142,31 @@ class OrderController extends Controller
      */
     public function update(Request $request, Order $order)
     {
-        //
+       
+        $request->validate([
+            'title' => 'required',
+            'date' => 'required',
+            'user_id' => 'required',
+            'facility_id' => 'exists:facilities,id',
+            'payment_account' => 'required'
+        ]);
+
+        $user_id = User::all()->where('netid', $request->user_id)->first()->id;
+        $facility_id = $request->facility_id;
+        $payment_account = PaymentAccount::find($request->payment_account)->id;
+
+        $order->user_id = $user_id;
+
+        $order->title = $request->title;
+        $order->description = $request->description;
+        $order->date = $request->date;
+        $order->facility_id = $facility_id;
+        $order->payment_account = $payment_account;
+        $order->status = $request->status;
+
+        $order->save();
+
+        return redirect()->route('orders.show', $order)->with('success', 'Order updated successfully!');
     }
 
     /**
@@ -116,6 +174,7 @@ class OrderController extends Controller
      */
     public function destroy(Order $order)
     {
-        //
+        $order->delete();
+        return redirect()->route('orders.index')->with('success', 'Order deleted successfully!');
     }
 }

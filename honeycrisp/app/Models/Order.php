@@ -10,7 +10,7 @@ class Order extends Model
 {
     use HasFactory;
 
-    protected $fillable = ['facility_id', 'status', 'payment_account'];
+    protected $fillable = ['title', 'description', 'date', 'user_id', 'facility_id', 'payment_account', 'status', 'tags'];
 
     public function items()
     {

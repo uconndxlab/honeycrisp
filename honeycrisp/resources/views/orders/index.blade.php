@@ -43,28 +43,30 @@
                 <!-- subnav of order statuses: draft, pending, approved, in progress, complete, ledgered, archived -->
                     <ul class="nav flex-column">
                         <li class="nav-item">
-                            <a class="nav-link" href="#">Draft</a>
+                            <a class="nav-link {{ request('status') == 'draft' ? 'active' : '' }}" href="{{ route('orders.index', ['status' => 'draft']) }}">Draft</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link" href="#">Pending</a>
+                            <a class="nav-link {{ request('status') == 'pending' ? 'active' : '' }}" href="{{ route('orders.index', ['status' => 'pending']) }}">Pending</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link" href="#">Approved</a>
+                            <a class="nav-link {{ request('status') == 'approved' ? 'active' : '' }}" href="{{ route('orders.index', ['status' => 'approved']) }}">Approved</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link" href="#">In Progress</a>
+                            <a class="nav-link {{ request('status') == 'in_progress' ? 'active' : '' }}" href="{{ route('orders.index', ['status' => 'in_progress']) }}">In Progress</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link" href="#">Complete</a>
+                            <a class="nav-link {{ request('status') == 'complete' ? 'active' : '' }}" href="{{ route('orders.index', ['status' => 'complete']) }}">Complete</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link" href="#">Ledgered</a>
+                            <a class="nav-link {{ request('status') == 'ledgered' ? 'active' : '' }}" href="{{ route('orders.index', ['status' => 'ledgered']) }}">Ledgered</a>
                         </li>
 
                         <!-- archive, muted and right-aligned -->
                         <li class="nav-item">
-                            <a class="nav-link text-muted" href="#">Archived</a>
+                            <a class="nav-link text-muted {{ request('status') == 'archived' ? 'active' : '' }}" href="{{ route('orders.index', ['status' => 'archived']) }}">Archived</a>
                         </li>
+                    </ul>
+                    </ul>
                     </ul>
                 
             </div>
@@ -73,7 +75,10 @@
                     <thead>
                         <tr>
                             <th>Order ID</th>
+                            
                             <th>Facility</th>
+                            <th>User</th>
+                            <th>Title</th>
                             <th>Order Date</th>
                             <th>Order Status</th>
                             <th>Actions</th>
@@ -83,9 +88,11 @@
                         @foreach ($orders as $order)
                             <tr>
                                 <td>{{ $order->id }}</td>
-                                <td>{{ $order->facility->name }}</td>
-                                <td>{{ $order->order_date }}</td>
-                                <td>{{ $order->order_status }}</td>
+                                <td>{{ $order->facility->abbreviation }}</td>
+                                <td>{{ $order->user->name }}</td>
+                                <td>{{ $order->title }}</td>
+                                <td>{{ $order->date }}</td>
+                                <td>{{ $order->status }}</td>
                                 <td>
                                     <a href="{{ route('orders.show', $order->id) }}" class="btn btn-primary">View</a>
                                     <a href="{{ route('orders.edit', $order->id) }}" class="btn btn-secondary">Edit</a>
@@ -100,6 +107,11 @@
                         @endforeach
                     </tbody>
                 </table>
+
+                @if ($orders->count() == 0)
+                    <p>No orders found matching your criteria.</p>
+                @endif
+
             </div>
         </div>
 

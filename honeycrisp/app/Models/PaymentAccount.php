@@ -39,7 +39,12 @@ class PaymentAccount extends Model
     public function fiscal_officer()
     {
         // fiscal officer is pivot on user
-        return $this->belongsTo(User::class, 'fiscal_officer');
+        return $this->belongsTo(User::class, 'fidscal_officer');
+    }
+
+    public function formatted()
+    {
+        return strtoupper($this->account_type) . '-' . $this->account_number;
     }
   
     public static function types()
