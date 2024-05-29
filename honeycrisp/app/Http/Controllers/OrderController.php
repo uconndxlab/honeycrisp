@@ -8,6 +8,7 @@ use App\Models\Facility;
 use App\Models\PaymentAccount;
 use App\Models\User;
 use App\Models\OrderItem;
+use App\Models\Product;
 
 class OrderController extends Controller
 {
@@ -85,17 +86,9 @@ class OrderController extends Controller
         $order->payment_account = $payment_account;
         $order->status = 'draft';
         
-
-        
-
-
+        $orderr = $order->save();
     
-
-        $order->save();
-    
-
-    
-        return redirect()->route('orders.index')->with('success', 'Order created successfully!');
+        return redirect()->route('orders.edit', $order)->with('success', 'Order created successfully!');
     }
 
     /**
@@ -176,5 +169,25 @@ class OrderController extends Controller
     {
         $order->delete();
         return redirect()->route('orders.index')->with('success', 'Order deleted successfully!');
+    }
+
+    public function addItem(Request $request)
+    {
+        $request->validate([
+            'order_id' => 'required',
+            'product_id' => 'required',
+            'quantity' => 'required',
+        ]);
+
+        $order_item = new OrderItem();
+        $order_product = Product::find($request->product_id);
+        $order_item->order_id = $request->order_id;
+        $order_item->product_id = $request->product_id;
+        $order_item->quantity = $request->quantity;
+        $order_item->price = $order_product->unit_price;
+
+        $order_item->save();
+
+        return redirect()->route('orders.show', $request->order_id)->with('success', 'Item added to order successfully!');
     }
 }

@@ -1,8 +1,4 @@
-@extends('layouts.app')
 
-@section('title', isset($order) ? 'Edit Order ' . $order->id : 'Create Order')
-
-@section('content')
     <div class="container">
         <!-- Header Section -->
         <div class="row my-3">
@@ -52,6 +48,7 @@
                                         <input type="date" name="date" id="date" class="form-control" value="{{ old('date', isset($order) ? $order->date : '') }}">
                                     </div>
 
+                                @if (isset($order))
                                 <div class="form-group my-2">
                                     <label for="status">Status:</label>
                                     <select name="status" id="status" class="form-select">
@@ -63,6 +60,9 @@
                                         <option value="complete" @if (old('status', isset($order) && $order->status == 'complete')) selected @endif>Complete</option>
                                     </select>
                                 </div>
+                                @endif
+
+
                                     
                                 </div>
                             </div>
@@ -147,4 +147,3 @@
             </div>
         </form>
     </div>
-@endsection

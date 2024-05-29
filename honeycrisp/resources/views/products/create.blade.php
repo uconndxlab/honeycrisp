@@ -47,8 +47,9 @@
             <div class="form-group">
                 <label for="is_deleted">Is Deleted</label>
                 <select class="form-select" id="is_deleted" name="is_deleted">
-                    <option value="1">Yes</option>
                     <option value="0">No</option>
+
+                    <option value="1">Yes</option>
                 </select>
             </div>
 
@@ -56,8 +57,9 @@
             <div class="form-group">
                 <label for="requires_approval">Requires Approval</label>
                 <select class="form-select" id="requires_approval" name="requires_approval">
-                    <option value="1">Yes</option>
                     <option value="0">No</option>
+                    <option value="1">Yes</option>
+
                 </select>
             </div>
 
@@ -67,12 +69,6 @@
                 <input type="file" class="form-control " id="image" name="image_url">
             </div>
 
-
-            <!-- unit and price -->
-            <div class="form-group">
-                <label for="unit">Unit</label>
-                <input type="text" class="form-control" id="unit" name="unit" required>
-            </div>
             <div class="form-group my-3">
                 <label for="price">Price</label>
                 <input type="number" class="form-control" id="price" name="unit_price">

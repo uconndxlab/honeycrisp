@@ -17,7 +17,7 @@ return new class extends Migration
 
             $table->string('name');
             $table->string('description');
-            $table->string('unit');
+            $table->string('unit')->nullable();
             $table->string('unit_price');
             
             // requires approval?

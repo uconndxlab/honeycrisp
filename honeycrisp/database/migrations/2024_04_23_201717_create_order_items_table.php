@@ -19,7 +19,9 @@ return new class extends Migration
             $table->unsignedBigInteger('product_id');
 
             $table->unsignedBigInteger('order_id');
-            // Add columns for other attributes like product_id, quantity, price, etc.
+            
+            $table->integer('quantity');
+            $table->decimal('price', 10, 2);
 
             // Define foreign key constraint
             $table->foreign('order_id')->references('id')->on('orders')->onDelete('cascade');

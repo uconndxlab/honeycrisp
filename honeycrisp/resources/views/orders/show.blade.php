@@ -57,10 +57,10 @@
                     <tbody>
                         @foreach($order->items as $item)
                             <tr>
-                                <td>{{ $item->name }}</td>
-                                <td>{{ $item->pivot->quantity }}</td>
+                                <td>{{ $item->product->name }}</td>
+                                <td>{{ $item->quantity }}</td>
                                 <td>${{ number_format($item->price, 2) }}</td>
-                                <td>${{ number_format($item->pivot->quantity * $item->price, 2) }}</td>
+                                <td>${{ number_format($item->quantity * $item->price, 2) }}</td>
                             </tr>
                         @endforeach
                     </tbody>
