@@ -28,12 +28,17 @@
 
                     <div class="form-group my-2">
                         <label for="facility">Facility:</label>
-                        <select name="facility" id="facility" class="form-select">
+                        <select name="facility_id" id="facility" class="form-select">
                             <option value="">Select a Facility</option>
                             @foreach($facilities as $facility)
                                 <option value="{{ $facility->id }}" @if (old('facility', isset($ledger) && $ledger->facility_id == $facility->id)) selected @endif>{{ $facility->name }}</option>
                             @endforeach
                         </select>
+                    </div>
+
+                    <div class="form-group my-2">
+                        <label for="title">Title:</label>
+                        <input type="text" name="title" id="title" class="form-control" value="{{ old('title', isset($ledger) ? $ledger->title : '') }}">
                     </div>
 
 
@@ -68,7 +73,7 @@
                     @if (isset($ledger))
                         <button type="submit" id="update-ledger" class="btn btn-primary">Update Ledger Meta <i class="bi bi-check"></i></button>
                     @else
-                        <button type="submit" id="save-ledger" class="btn btn-primary">Save Ledger Meta <i class="bi bi-arrow-right"></i></button>
+                        <button type="submit" id="save-ledger" class="btn btn-primary">Add Orders <i class="bi bi-arrow-right"></i></button>
                     @endif
                 </div>
             </div>

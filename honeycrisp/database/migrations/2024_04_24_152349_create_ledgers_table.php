@@ -19,6 +19,7 @@ return new class extends Migration
             $table->date('date');
             $table->enum('status', ['draft','complete', 'pending', 'cancelled', 'failed']);
             $table->string('notes')->nullable();
+            $table->foreignId('facility_id')->constrained();
         });
     }
 

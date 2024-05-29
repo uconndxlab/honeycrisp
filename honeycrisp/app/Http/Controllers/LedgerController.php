@@ -22,6 +22,8 @@ class LedgerController extends Controller
      */
     public function create()
     {
+
+        
         // facilities that have orders with a status of complete
         $facilities = Facility::whereHas('orders', function ($query) {
             $query->where('status', 'complete');
@@ -35,8 +37,9 @@ class LedgerController extends Controller
      */
     public function store(Request $request)
     {
-        Ledger::create($request->all());
-        return redirect()->route('ledgers.index');
+        $ledger = Ledger::create($request->all());
+        
+        return redirect()->route('ledgers.edit', $ledger);
     }
 
     /**
@@ -44,7 +47,7 @@ class LedgerController extends Controller
      */
     public function show(Ledger $ledger)
     {
-        
+        dd($ledger);
     }
 
     /**
@@ -52,6 +55,7 @@ class LedgerController extends Controller
      */
     public function edit(Ledger $ledger)
     {
+       
         
         return view('ledgers.edit', compact('ledger'));
     }
@@ -69,6 +73,10 @@ class LedgerController extends Controller
      */
     public function destroy(Ledger $ledger)
     {
-        //
+        $ledger->delete();
+        // redirect with a message "ledger deleted"
+
+        return redirect()->route('ledgers.index')->with('success', 'Ledger deleted successfully!');
+        
     }
 }

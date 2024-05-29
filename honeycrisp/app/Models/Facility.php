@@ -22,5 +22,15 @@ class Facility extends Model
         return $this->hasMany(Product::class);
     }
 
+    public function users()
+    {
+        return $this->belongsToMany(User::class);
+    }
+
+    public function ledgers()
+    {
+        return $this->hasMany(Ledger::class);
+    }
+
     
 }

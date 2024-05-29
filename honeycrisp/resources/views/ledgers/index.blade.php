@@ -37,7 +37,7 @@
                         @foreach ($ledgers as $ledger)
                             <tr>
                                 <td>{{ $ledger->id }}</td>
-                                <td>{{ $ledger->facility->name }}</td>
+                                
                                 <td>{{ $ledger->order_date }}</td>
                                 <td>{{ $ledger->order_status }}</td>
                                 <td>
