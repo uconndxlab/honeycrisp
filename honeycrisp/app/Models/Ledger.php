@@ -9,8 +9,15 @@ class Ledger extends Model
 {
     use HasFactory;
 
+    protected $fillable = ['facility_id', 'title', 'description', 'status', 'date'];
+
     public function orders()
     {
         return $this->hasMany(Order::class);
+    }
+
+    public function facility()
+    {
+        return $this->belongsTo(Facility::class);
     }
 }

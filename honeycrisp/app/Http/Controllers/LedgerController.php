@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Ledger;
 use Illuminate\Http\Request;
+use App\Models\Facility;
 
 class LedgerController extends Controller
 {
@@ -21,7 +22,12 @@ class LedgerController extends Controller
      */
     public function create()
     {
-        //
+        // facilities that have orders with a status of complete
+        $facilities = Facility::whereHas('orders', function ($query) {
+            $query->where('status', 'complete');
+        })->get();
+
+        return view('ledgers.create', compact('facilities'));
     }
 
     /**
@@ -29,7 +35,8 @@ class LedgerController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        Ledger::create($request->all());
+        return redirect()->route('ledgers.index');
     }
 
     /**
@@ -37,7 +44,7 @@ class LedgerController extends Controller
      */
     public function show(Ledger $ledger)
     {
-        //
+        
     }
 
     /**
@@ -45,7 +52,8 @@ class LedgerController extends Controller
      */
     public function edit(Ledger $ledger)
     {
-        //
+        
+        return view('ledgers.edit', compact('ledger'));
     }
 
     /**

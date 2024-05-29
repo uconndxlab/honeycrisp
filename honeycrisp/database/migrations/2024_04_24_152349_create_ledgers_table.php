@@ -14,6 +14,11 @@ return new class extends Migration
         Schema::create('ledgers', function (Blueprint $table) {
             $table->id();
             $table->timestamps();
+            $table->string('title');
+            $table->string('description');
+            $table->date('date');
+            $table->enum('status', ['draft','complete', 'pending', 'cancelled', 'failed']);
+            $table->string('notes')->nullable();
         });
     }
 

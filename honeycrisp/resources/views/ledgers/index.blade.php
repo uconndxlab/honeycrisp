@@ -15,7 +15,7 @@
                             placeholder="Search for a Ledger">
                     </div>
                     <div>
-                        <a href={{ route('facilities.create') }} id="addFacility" class="btn btn-primary">Start a Ledger</a>
+                        <a href={{ route('ledgers.create') }}  class="btn btn-primary">Start a Ledger</a>
                     </div>
                 </div>
 
