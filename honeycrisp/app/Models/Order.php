@@ -12,7 +12,7 @@ class Order extends Model
 
     protected $fillable = ['facility_id', 'status', 'payment_account'];
 
-    public function OrderItems()
+    public function items()
     {
         return $this->hasMany(OrderItem::class); 
     }

@@ -11,27 +11,7 @@
 
                 <div class="d-flex justify-content-between align-items-center">
                     <div class="d-flex">                   
-                        <select class="form-select" id="facility" name="facility">
-                            <option value="all">All Facilities</option>
-                            @foreach($facilities as $facility)
-                            <option value="{{ $facility->id }}">{{ $facility->name }}</option>
-                            @endforeach
-                        </select>
 
-                        <select class="form-select ms-2" id="status" name="status">
-                            <option value="all">All Statuses</option>
-                            <option value="pending">Pending</option>
-                            <option value="approved">Approved</option>
-                            <option value="rejected">Rejected</option>
-                        </select>
-
-                        <div class="d-flex ms-3 align-items-center">
-                            <label for="start_date">Dates: </label>
-                            <input type="date" class="form-control ms-2" id="start_date" name="start_date">
-                            <input type="date" class="form-control ms-2" id="end_date" name="end_date">
-                        </div>
-
-                        <button class="btn btn-primary ms-2">Filter</button>
                         
                     </div>
                  
@@ -57,7 +37,38 @@
         </div>
 
         <div class="row">
-            <div class="col">
+
+            <div class="col-md-2 subnav">
+                <h5>Order Status:</h5>
+                <!-- subnav of order statuses: draft, pending, approved, in progress, complete, ledgered, archived -->
+                    <ul class="nav flex-column">
+                        <li class="nav-item">
+                            <a class="nav-link" href="#">Draft</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="#">Pending</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="#">Approved</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="#">In Progress</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="#">Complete</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="#">Ledgered</a>
+                        </li>
+
+                        <!-- archive, muted and right-aligned -->
+                        <li class="nav-item">
+                            <a class="nav-link text-muted" href="#">Archived</a>
+                        </li>
+                    </ul>
+                
+            </div>
+            <div class="col-md-10">
                 <table class="table">
                     <thead>
                         <tr>

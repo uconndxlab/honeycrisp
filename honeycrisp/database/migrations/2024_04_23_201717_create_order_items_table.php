@@ -15,11 +15,15 @@ return new class extends Migration
             $table->id();
             $table->timestamps();
 
+            // foreign key to the products table so we can look up the product details later
+            $table->unsignedBigInteger('product_id');
+
             $table->unsignedBigInteger('order_id');
             // Add columns for other attributes like product_id, quantity, price, etc.
 
             // Define foreign key constraint
             $table->foreign('order_id')->references('id')->on('orders')->onDelete('cascade');
+            $table->foreign('product_id')->references('id')->on('products');
         
         });
     }

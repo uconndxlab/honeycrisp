@@ -18,7 +18,7 @@ return new class extends Migration
             $table->unsignedBigInteger('user_id');
             $table->unsignedBigInteger('facility_id');
             $table->unsignedBigInteger('payment_account');
-            $table->string('status');
+            $table->string('status')->enum(['draft', 'pending', 'approved', 'in progress', 'complete', 'ledgered', 'archived']);
             $table->json('tags')->nullable();
 
             $table->foreign('user_id')->references('id')->on('users');
