@@ -10,11 +10,7 @@
                 <!-- filter UI and a spot for an admin menu like "Add Facility" go here -->
 
                 <div class="d-flex justify-content-between align-items-center">
-                    <div class="d-flex">                   
-
-                        
-                    </div>
-                 
+                
 
                     <div>
                         <!-- create order with facility dropdown -->

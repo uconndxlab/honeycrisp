@@ -67,7 +67,7 @@
 
                 <!-- Submit Button -->
                 <div class="form-group">
-                    <button type="submit" class="btn btn-primary">Update Facility</button>
+                    <button type="submit" class="btn btn-primary">Save Facility</button>
                 </div>
             </form>
         </div>
@@ -79,7 +79,9 @@
             <a href="{{ route('products.create') }}/{{$facility->abbreviation}} " class="btn btn-primary">Add Product</a>
     
             @if ($facility->products->isEmpty())
-                <p>No products available at this time.</p>
+                <div class="alert alert-info my-3">
+                    <p>No products available at this time.</p>
+                </div>
             @else
     
                 <ul class="list-group my-4" >

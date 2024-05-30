@@ -11,10 +11,6 @@
 
                 <div class="d-flex justify-content-between align-items-center">
                     <div>
-                        <input type="text" id="filter" name="filter" class="form-control"
-                            placeholder="Search for a Ledger">
-                    </div>
-                    <div>
                         <a href={{ route('ledgers.create') }}  class="btn btn-primary">Start a Ledger</a>
                     </div>
                 </div>

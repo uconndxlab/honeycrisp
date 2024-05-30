@@ -47,7 +47,7 @@ class ProductController extends Controller
 
         $product->save();
 
-        return redirect()->route('facilities.show', $product->facility_id);
+        return redirect()->route('facilities.edit', $product->facility_id)->with('success', 'Product created successfully.');
     }
 
     /**
@@ -84,7 +84,7 @@ class ProductController extends Controller
 
         $product->save();
 
-        return redirect()->route('facilities.show', $product->facility_id);
+        return redirect()->route('facilities.edit', $product->facility_id)->with('success', 'Product updated successfully.');
 
     }
 

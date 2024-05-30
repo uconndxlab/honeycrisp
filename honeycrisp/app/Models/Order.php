@@ -26,7 +26,12 @@ class Order extends Model
     {
         return $this->belongsTo(User::class);
     }
-
+    
+    public function paymentAccount()
+    {
+        return $this->belongsTo(PaymentAccount::class);
+    }
+    
     public function updateTotal()
     {
         $total = 0;

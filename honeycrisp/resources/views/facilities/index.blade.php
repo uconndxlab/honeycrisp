@@ -11,10 +11,6 @@
 
                 <div class="d-flex justify-content-between align-items-center">
                     <div>
-                        <input type="text" id="filter" name="filter" class="form-control"
-                            placeholder="Search for a Facility">
-                    </div>
-                    <div>
                         <a href={{ route('facilities.create') }} id="addFacility" class="btn btn-primary">Add Facility</a>
                     </div>
                 </div>

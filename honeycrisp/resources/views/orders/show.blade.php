@@ -18,6 +18,10 @@
                         <h2>Order Items</h2>
                     </div>
                     <div class="card-body">
+                        @if ($order->items->count() == 0)
+                            <div class="alert alert-info">No items have been added to this order yet.</div>
+                        @else
+
                         <table class="table table-hover">
                             <thead>
                                 <tr>
@@ -43,6 +47,7 @@
                                 </tr>
                             </tbody>
                         </table>
+                        @endif
                     </div>
                 </div>
             </div>

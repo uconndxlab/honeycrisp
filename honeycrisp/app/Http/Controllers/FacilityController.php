@@ -80,7 +80,7 @@ class FacilityController extends Controller
             $msg = $facility->name . ' has been updated';
         } else {
             $state = 'alert';
-            $msg = $facility->name . ' was not updated';
+            $msg = $facility->name . ' was not updated (no changes)';
         }
 
         return redirect()->route('facilities.index')->with($state, $msg);

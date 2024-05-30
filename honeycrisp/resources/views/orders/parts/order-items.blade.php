@@ -7,6 +7,10 @@
                     <h2>Order Items</h2>
                 </div>
                 <div class="card-body">
+                    @if ($order->items->count() == 0)
+                        <div class="alert alert-info">No items in this order.
+                        </div>
+                    @else
                     <table class="table table-hover">
                         <thead>
                             <tr>
@@ -35,13 +39,14 @@
                                 </tr>
                             @endforeach
                             <tr>
-                                <td colspan="3" class="text-start bg-dark text-white"><strong>Order Total:</strong></td>
-                                <td class="bg-dark text-white">
+                                <td colspan="3" class="text-start"><strong>Order Total:</strong></td>
+                                <td class="">
                                     ${{ number_format($order->total, 2) }}</td>
                                 <td></td>
                             </tr>
                         </tbody>
                     </table>
+                    @endif
                 </div>
             </div>
         </div>
@@ -52,7 +57,7 @@
             <h2>Available Products:</h2>
             <div class="row">
                 @foreach ($order->facility->products as $product)
-                    <div class="col-md-4">
+                    <div class="col-md-3">
                         <div class="card my-2">
                             <div class="card-body">
                                 <h5 class="card-title">{{ $product->name }}</h5>

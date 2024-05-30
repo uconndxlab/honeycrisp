@@ -117,6 +117,18 @@ class OrderController extends Controller
         $users = User::all()->where('status', 'active');
         $selected_user = $order->user_id;
 
+        $current_account = PaymentAccount::find($order->payment_account);
+        // check to see if the expiration date of the account is coming up
+        $expiration_date = $current_account->expiration_date;
+        $today = date('Y-m-d');
+        $days_until_expiration = (strtotime($expiration_date) - strtotime($today)) / (60 * 60 * 24);
+
+        if ($days_until_expiration < 30) {
+            $account_warning = 'This account will expire in ' . $days_until_expiration . ' days.';
+        } else {
+            $account_warning = null;
+        }
+
         if (request('user_id') or $order->user_id) {
             if (request('user_id')) {
                 $user = User::all()->where('netid', request('user_id'))->first();
@@ -133,7 +145,7 @@ class OrderController extends Controller
         }
 
         
-        return view('orders.edit', compact('order', 'facility', 'users', 'selected_user', 'accounts'));
+        return view('orders.edit', compact('order', 'facility', 'users', 'selected_user', 'accounts', 'account_warning'));
     }
 
     /**
@@ -165,7 +177,7 @@ class OrderController extends Controller
 
         $order->save();
 
-        return redirect()->route('orders.show', $order)->with('success', 'Order updated successfully!');
+        return redirect()->route('orders.edit', $order)->with('success', 'Order updated successfully!');
     }
 
     /**

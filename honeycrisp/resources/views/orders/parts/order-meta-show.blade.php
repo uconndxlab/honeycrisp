@@ -48,10 +48,22 @@
                     <h2>Order Details</h2>
                 </div>
                 <div class="card-body">
-                    <p><strong>Order Title:</strong> {{ $order->title }}</p>
-                    <p><strong>Order Description:</strong> {{ $order->description }}</p>
-                    <p><strong>Order Status:</strong> {{ $order->status }}</p>
-                    <p><strong>Order Date:</strong> {{ $order->created_at->format('m/d/Y') }}</p>
+                    <p><strong>Title:</strong> {{ $order->title }}</p>
+                    <p><strong>Description:</strong> {{ $order->description }}</p>
+                    <p><strong>Status:</strong> 
+                    @if ($order->status == 'complete') 
+                    <span class="badge badge-success">{{ $order->status }}</span>
+                    @elseif ($order->status == 'approved')
+                    <span class="badge badge-primary">{{ $order->status }}</span>
+                    @elseif ($order->status == 'in_progress')
+                    <span class="badge badge-info">{{ $order->status }}</span>
+                    @else <span class="badge badge-warning">{{ $order->status }}</span> 
+                    
+                    @endif
+                        
+                        </p>
+
+                    <p><strong>Submitted Date:</strong> {{ $order->created_at->format('m/d/Y') }}</p>
                 </div>
             </div>
         </div>
