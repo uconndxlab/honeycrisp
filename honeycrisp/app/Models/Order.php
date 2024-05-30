@@ -10,7 +10,7 @@ class Order extends Model
 {
     use HasFactory;
 
-    protected $fillable = ['title', 'description', 'date', 'user_id', 'facility_id', 'payment_account', 'status', 'tags'];
+    protected $fillable = ['title', 'description', 'date', 'user_id', 'facility_id', 'payment_account', 'status', 'tags', 'total'];
 
     public function items()
     {
@@ -25,5 +25,15 @@ class Order extends Model
     public function user()
     {
         return $this->belongsTo(User::class);
+    }
+
+    public function updateTotal()
+    {
+        $total = 0;
+        foreach ($this->items as $item) {
+            $total += $item->price * $item->quantity;
+        }
+        $this->total = $total;
+        $this->save();
     }
 }

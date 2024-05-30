@@ -56,8 +56,10 @@ class LedgerController extends Controller
     public function edit(Ledger $ledger)
     {
        
+        // complete orders for the facility
+        $orders = $ledger->facility->orders()->where('status', 'complete')->get();
         
-        return view('ledgers.edit', compact('ledger'));
+        return view('ledgers.edit', compact('ledger', 'orders'));
     }
 
     /**

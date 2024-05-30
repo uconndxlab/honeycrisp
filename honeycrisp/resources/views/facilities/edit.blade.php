@@ -73,7 +73,7 @@
         </div>
 
     </div>
-    <div class="row">
+    <div class="row my-4">
         <div class="col-md-12">
             <h3>Products & Services Available</h3>
             <a href="{{ route('products.create') }}/{{$facility->abbreviation}} " class="btn btn-primary">Add Product</a>
@@ -86,7 +86,7 @@
                     @foreach ($facility->products as $product)
                         <li class="list-group-item">
                             <a href="{{ route('products.show', $product->id) }}">
-                                {{ $product->name }} - (${{ $product->unit_price }} / {{ $product->unit }})
+                                {{ $product->name }} - (${{ $product->unit_price }} each)
                             </a>
                         </li>
                     @endforeach

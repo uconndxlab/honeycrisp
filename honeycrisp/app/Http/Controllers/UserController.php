@@ -65,7 +65,7 @@ class UserController extends Controller
      */
     public function show(string $id)
     {
-        $user = \App\Models\User::find($id)->first();
+        $user = \App\Models\User::find($id);
         return view('users.show', compact('user'));
     }
 
@@ -75,7 +75,7 @@ class UserController extends Controller
     public function edit(string $id)
     {
         // load the create view but with the user data
-        $user = \App\Models\User::find($id)->first();
+        $user = \App\Models\User::find($id);
         return view('users.create', compact('user'));
     }
 
@@ -84,7 +84,7 @@ class UserController extends Controller
      */
     public function update(Request $request, string $id)
     {
-        $user = \App\Models\User::find($id)->first();
+        $user = \App\Models\User::find($id);
 
         if ($request->has('name') && $request->name !== $user->name) {
             $user->name = $request->name;

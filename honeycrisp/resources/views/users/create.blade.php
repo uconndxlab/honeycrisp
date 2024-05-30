@@ -11,7 +11,9 @@
         <div class="row">
             <div class="col-md-8 offset-md-2">
                 <div class="card">
-                    <div class="card-header">Create User</div>
+                    <div class="card-header">
+                        <h2>{{ isset($user) ? 'Edit' : 'Create' }} User</h2>
+                    </div>
                     <div class="card-body">
                         @if ($errors->any())
                         <div class="alert alert-danger">
@@ -93,7 +95,9 @@ id') }}" required>
         @if(isset($user))
             <div class="row mt-3">
                 <div class="col-md-12">
-                    <h2>Accounts</h2>
+                    <h2>Payment Accounts</h2>
+
+                    @if (!$user->paymentAccounts->isEmpty())
                     <table class="table">
                         <thead>
                             <tr>
@@ -123,6 +127,15 @@ id') }}" required>
                             @endforeach
                         </tbody>
                     </table>
+                    @endif
+
+                    <!-- if no accounts -->
+                    @if($user->paymentAccounts->isEmpty())
+                        <div class="alert alert-info">
+                            <p>No payment accounts found for this user.</p>
+                        </div>
+                    @endif
+
                 </div>
             </div>
         @endif

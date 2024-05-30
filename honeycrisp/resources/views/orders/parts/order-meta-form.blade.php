@@ -102,8 +102,9 @@
                                         </select>
                                     </div>
 
-                                    <div id="user_accounts" class="form-group my-2">
-                                        @if ($accounts != null)
+                                    <div id="user_accounts" class="form-group my-2 py-2">                                       
+
+                                        @if ($accounts != null && count($accounts) > 0)
                                             <label for="payment_account">Payment Account:</label>
                                             <select name="payment_account" id="payment_account" class="form-select">
                                                 <option value="">Select a Payment Account</option>
@@ -113,9 +114,13 @@
                                                     </option>
                                                 @endforeach
                                             </select>
-                                        @else
+                                        @elseif ($accounts == null)
                                             <div class="alert alert-warning" role="alert">
                                                 Select a User to see Payment Accounts
+                                            </div>
+                                        @elseif (count($accounts) == 0 && $accounts != null)
+                                            <div class="alert alert-warning" role="alert">
+                                                No Payment Accounts found for this User
                                             </div>
                                         @endif
                                     </div>
@@ -137,7 +142,6 @@
             <!-- Action Buttons -->
             <div class="row">
                 <div class="col-md-6">
-                    <button type="reset" id="clear-order" class="btn btn-danger">Clear Order</button>
                     @if (isset($order))
                         <button type="submit" id="save-draft" class="btn btn-primary">Update Order Details <i class="bi bi-check"></i></button>
                     @else

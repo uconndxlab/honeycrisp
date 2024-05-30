@@ -22,6 +22,7 @@ Route::resource('products', ProductController::class);
 Route::get('products/create/{facilityAbbreviation}', [ProductController::class, 'create']);
 Route::resource('orders', OrderController::class);
 Route::post('orders/add-item', [OrderController::class, 'addItem'])->name('orders.add-item');
+Route::post('orders/remove-item', [OrderController::class, 'removeItem'])->name('orders.remove-item');
 
 Route::get('orders/create/{facilityAbbreviation}', [OrderController::class, 'create']);
 

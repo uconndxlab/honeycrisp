@@ -91,19 +91,20 @@
             <div class="row">
                 <div class="col-md-12">
                     @if(session('success'))
-                    <div class="alert alert-success">
+                    <div class="alert alert-success alert-dismissable">
                         {{ session('success') }}
+                        
                     </div>
                     @endif
 
                     @if(session('error'))
-                    <div class="alert alert-danger">
+                    <div class="alert alert-danger dismissable">
                         {{ session('error') }}
                     </div>
                     @endif
 
                     @if(session('alert'))
-                    <div class="alert alert-warning">
+                    <div class="alert alert-warning dismissable">
                         {{ session('alert') }}
                     </div>
                     @endif

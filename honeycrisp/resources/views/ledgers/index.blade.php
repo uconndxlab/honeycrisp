@@ -30,6 +30,7 @@
                             <th>Facility</th>
                             <th>Ledger Date</th>
                             <th>Ledger Status</th>
+                            <th>Total</th>  
                             <th>Actions</th>
                         </tr>
                     </thead>
@@ -37,9 +38,10 @@
                         @foreach ($ledgers as $ledger)
                             <tr>
                                 <td>{{ $ledger->id }}</td>
-                                
-                                <td>{{ $ledger->order_date }}</td>
-                                <td>{{ $ledger->order_status }}</td>
+                                <td>{{ $ledger->facility->name }}</td>
+                                <td>{{ $ledger->date }}</td>
+                                <td>{{ $ledger->status }}</td>
+                                <td>{{ $ledger->total }}</td>
                                 <td>
                                     <a href="{{ route('ledgers.show', $ledger->id) }}" class="btn btn-primary">View</a>
                                     <a href="{{ route('ledgers.edit', $ledger->id) }}" class="btn btn-secondary">Edit</a>

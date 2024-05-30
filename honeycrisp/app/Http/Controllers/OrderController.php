@@ -98,6 +98,12 @@ class OrderController extends Controller
     {
         $order_items = OrderItem::all()->where('order_id', $order->id);
         $payment_account = PaymentAccount::find($order->payment_account);
+        
+        $order->total = 0;
+        foreach ($order_items as $order_item) {
+            $order->total += $order_item->price * $order_item->quantity;
+        }
+
         return view('orders.show', compact('order', 'order_items', 'payment_account'));
     }
 
@@ -181,6 +187,7 @@ class OrderController extends Controller
 
         $order_item = new OrderItem();
         $order_product = Product::find($request->product_id);
+        $order = Order::find($request->order_id);
         $order_item->order_id = $request->order_id;
         $order_item->product_id = $request->product_id;
         $order_item->quantity = $request->quantity;
@@ -188,6 +195,23 @@ class OrderController extends Controller
 
         $order_item->save();
 
-        return redirect()->route('orders.show', $request->order_id)->with('success', 'Item added to order successfully!');
+        $order->updateTotal();
+
+        return redirect()->route('orders.edit', $request->order_id)->with('success', 'Item added to order successfully!');
+    }
+
+    public function removeItem(Request $request)
+    {
+        $request->validate([
+            'order_id' => 'required',
+            'order_item_id' => 'required',
+        ]);
+        $order = Order::find($request->order_id);
+        $order_item = OrderItem::find($request->order_item_id);
+        $order_item->delete();
+
+        $order->updateTotal();
+
+        return redirect()->route('orders.edit', $request->order_id)->with('success', 'Item removed from order successfully!');
     }
 }
