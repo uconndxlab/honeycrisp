@@ -39,7 +39,6 @@
         <div class="row">
 
             <div class="col-md-2 subnav">
-                <h5>Order Status:</h5>
                 <!-- subnav of order statuses: draft, pending, approved, in progress, complete, ledgered, archived -->
                     <ul class="nav flex-column">
                         <li class="nav-item">
@@ -47,6 +46,7 @@
                         </li>
                         <li class="nav-item">
                             <a class="nav-link {{ request('status') == 'pending' ? 'active' : '' }}" href="{{ route('orders.index', ['status' => 'pending']) }}">Pending</a>
+                        </li>
                         </li>
                         <li class="nav-item">
                             <a class="nav-link {{ request('status') == 'approved' ? 'active' : '' }}" href="{{ route('orders.index', ['status' => 'approved']) }}">Approved</a>
@@ -92,7 +92,10 @@
                                 <td>{{ $order->user->name }}</td>
                                 <td>{{ $order->title }}</td>
                                 <td>{{ $order->date }}</td>
-                                <td>{{ $order->status }}</td>
+                                <td>
+                                    <span class="badge {{ $order->status == 'draft' ? 'badge-secondary' : ($order->status == 'pending' ? 'badge-warning' : ($order->status == 'approved' ? 'badge-primary' : ($order->status == 'in_progress' ? 'badge-info' : ($order->status == 'complete' ? 'badge-success' : ($order->status == 'ledgered' ? 'badge-dark' : 'badge-muted'))))) }}">{{ $order->status }}</span>
+                                </td>
+                                </td>
                                 <td>
                                     <a href="{{ route('orders.show', $order->id) }}" class="btn btn-primary">View</a>
                                     <a href="{{ route('orders.edit', $order->id) }}" class="btn btn-secondary">Edit</a>

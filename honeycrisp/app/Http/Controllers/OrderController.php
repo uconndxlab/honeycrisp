@@ -20,9 +20,9 @@ class OrderController extends Controller
 
         // if request[status] is not null, filter orders by status
         if (request('status')) {
-            $orders = Order::all()->where('status', request('status'));
+            $orders = Order::all()->where('status', request('status'))->sortByDesc('date');
         } else {
-            $orders = Order::all();
+            $orders = Order::all()->where('status', '!=','complete')->sortByDesc('date');
         }
 
 
