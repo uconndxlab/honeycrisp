@@ -106,7 +106,7 @@
                                     </div>
                                     @elseif (count($accounts) == 0 && $accounts != null)
                                     <div class="alert alert-warning" role="alert">
-                                        No Payment Accounts found for this User
+                                        No Payment Accounts found for this user.
                                     </div>
                                     @endif
 

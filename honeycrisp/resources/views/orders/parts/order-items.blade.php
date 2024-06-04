@@ -56,29 +56,40 @@
         <div class="col-md-12 my-3">
             <h2>Available Products:</h2>
             <div class="row">
-                @foreach ($order->facility->products as $product)
-                    <div class="col-md-3">
-                        <div class="card my-2">
-                            <div class="card-body">
-                                <h5 class="card-title">{{ $product->name }}</h5>
-                                <p class="card-text">{{ $product->description }}</p>
-                                <p class="card-text">${{ $product->unit_price }}</p>
-                                <form action="{{ route('orders.add-item') }}" method="POST">
-                                    @csrf
-
-                                    <input type="hidden" name="order_id" value="{{ $order->id }}">
-                                    <input type="hidden" name="product_id" value="{{ $product->id }}">
-                                    <div class="form-group my-3">
-                                        <label for="quantity">Quantity:</label>
-                                        <input type="number" name="quantity" class="form-control" value="1"
-                                            required>
-                                    </div>
-                                    <button type="submit" class="btn btn-primary">Add to Order</button>
-                                </form>
-                            </div>
-                        </div>
+                    <div class="col-md-12">
+                        <table class="table table-hover">
+                            <thead>
+                                <tr>
+                                    <th>Product</th>
+                                    <th>Description</th>
+                                    <th>Price</th>
+                                    <th>Add to Order</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @foreach($order->facility->products as $product)
+                                    <tr>
+                                        <td>{{ $product->name }}</td>
+                                        <td>{{ $product->description }}</td>
+                                        <td>${{ $product->unit_price }}</td>
+                                        <td>
+                                            <form action="{{ route('orders.add-item') }}" method="POST">
+                                                @csrf
+                                                <input type="hidden" name="order_id" value="{{ $order->id }}">
+                                                <input type="hidden" name="product_id" value="{{ $product->id }}">
+                                                <div class="form-group my-3">
+                                                    <label for="quantity">Quantity:</label>
+                                                    <input type="number" name="quantity" class="form-control" value="1"
+                                                        required>
+                                                </div>
+                                                <button type="submit" class="btn btn-primary">Add to Order</button>
+                                            </form>
+                                        </td>
+                                    </tr>
+                                @endforeach
+                            </tbody>
+                        </table>
                     </div>
-                @endforeach
 
                 @if ($order->facility->products->count() == 0)
                     <div class ='col-md-12'>

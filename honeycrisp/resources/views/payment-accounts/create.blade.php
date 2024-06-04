@@ -29,6 +29,7 @@
                     <label for="account_owner" class="form-label">Account Owner</label>
                     <small>(You can add authorized users to this account later.)</small>
                     <select class="form-select" id="account_owner" name="account_owner">
+                        <option value="">Select an owner</option>
                         @foreach ($users as $user)
                             <option value="{{ $user->id }}">{{ $user->name }}</option>
                         @endforeach
