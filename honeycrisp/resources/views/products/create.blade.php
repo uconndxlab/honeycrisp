@@ -27,6 +27,16 @@
                     <textarea class="form-control" id="description" name="description" rows="3"></textarea>
                 </div>
 
+                <div class="form-group">
+                    <label for="category">Category</label>
+                    <select class="form-select" id="category" name="category_id">
+                        @foreach($facility->categories as $category)
+                        <option value="{{ $category->id }}">{{ $category->name }}</option>
+                        @endforeach
+                        @if ($facility->categories->isEmpty()) <option value="">No categories found</option> @endif
+                    </select>
+                </div>
+
                 <!-- is active-->
                 <div class="form-group">
                     <label for="is_active">Is Active</label>

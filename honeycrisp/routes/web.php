@@ -9,6 +9,7 @@ use App\Http\Controllers\OrderController;
 use App\Http\Controllers\PaymentAccountController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\LedgerController;
+use App\Http\Controllers\CategoryController;
 
 Route::get('/', function () {
     // facilities.index controller
@@ -18,8 +19,10 @@ Route::get('/', function () {
 
 
 Route::resource('facilities', FacilityController::class);
+
 Route::resource('products', ProductController::class);
 Route::get('products/create/{facilityAbbreviation}', [ProductController::class, 'create']);
+
 Route::resource('orders', OrderController::class);
 Route::post('orders/add-item', [OrderController::class, 'addItem'])->name('orders.add-item');
 Route::post('orders/remove-item', [OrderController::class, 'removeItem'])->name('orders.remove-item');
@@ -30,7 +33,8 @@ Route::resource('ledgers', LedgerController::class);
 
 Route::resource('payment-accounts', PaymentAccountController::class);
 
-
+Route::resource('categories', CategoryController::class);
+Route::get('categories/create/{facilityAbbreviation}', [CategoryController::class, 'create']);
 
 /**
  * User Routes

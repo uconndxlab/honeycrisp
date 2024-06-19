@@ -19,9 +19,15 @@ class CategoryController extends Controller
     /**
      * Show the form for creating a new resource.
      */
-    public function create()
+    public function create($facilityAbbreviation = null)
     {
         $facilities = Facility::all();
+
+        if ($facilityAbbreviation) {
+            $facility = Facility::where('abbreviation', $facilityAbbreviation)->first();
+            $facilities = Facility::where('id', $facility->id)->get();
+        }
+
         return view('categories.create', ['facilities' => $facilities]);
     }
 
@@ -34,6 +40,11 @@ class CategoryController extends Controller
         $category->name = $request->name;
         $category->description = $request->description;
         $category->facility_id = $request->facility_id;
+
+        $category->save();
+
+        // redirect to facility show page with success message
+        return redirect()->route('facilities.edit', $category->facility_id)->with('success', 'Category created successfully');
     }
 
     /**
