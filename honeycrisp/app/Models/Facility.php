@@ -32,5 +32,10 @@ class Facility extends Model
         return $this->hasMany(Ledger::class);
     }
 
+    public function categories()
+    {
+        return $this->hasMany(Category::class);
+    }
+
     
 }

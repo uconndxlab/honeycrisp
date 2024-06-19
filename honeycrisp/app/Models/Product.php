@@ -21,10 +21,16 @@ class Product extends Model
         'image_url',
         'tags',
         'facility_id',
+        'category_id',
     ];
 
     public function facility()
     {
         return $this->belongsTo(Facility::class);
+    }
+
+    public function category()
+    {
+        return $this->belongsToMany(Category::class);
     }
 }

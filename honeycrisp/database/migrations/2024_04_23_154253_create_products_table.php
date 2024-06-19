@@ -29,6 +29,9 @@ return new class extends Migration
             $table->string('image_url')->nullable();
             $table->json('tags')->nullable();
 
+            // category_id
+            $table->foreignId('category_id')->constrained()->onDelete('cascade')->nullable();
+
             
 
             $table->foreignId('facility_id')->constrained();
