@@ -44,6 +44,7 @@ class ProductController extends Controller
         $product->image_url = $request->image_url;
         $product->tags = $request->tags;
         $product->facility_id = $request->facility_id;
+        $product->category_id = $request->category_id ?? null;
 
         $product->save();
 
@@ -81,6 +82,7 @@ class ProductController extends Controller
         $product->image_url = $request->image_url;
         $product->tags = $request->tags;
         $product->facility_id = $request->facility_id;
+        $product->category_id = $request->category_id ?? null;
 
         $product->save();
 

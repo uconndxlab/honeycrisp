@@ -30,7 +30,7 @@ return new class extends Migration
             $table->json('tags')->nullable();
 
             // category_id
-            $table->foreignId('category_id')->constrained()->onDelete('cascade')->nullable();
+            $table->foreignId('category_id')->nullable()->constrained();
 
             
 

@@ -56,6 +56,8 @@
                         <textarea name="description" id="description" class="form-control" rows="5" required>{{ old('description', $facility->description) }}</textarea>
                     </div>
 
+                    
+
                     <!-- Abbreviation -->
                     <div class="form-group mb-2">
                         <label for="abbreviation">Abbreviation</label>

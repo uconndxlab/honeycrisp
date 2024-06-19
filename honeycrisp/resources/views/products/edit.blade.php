@@ -24,6 +24,17 @@
                         <textarea class="form-control" id="description" name="description" rows="3">{{ $product->description }}</textarea>
                     </div>
 
+                    <div class="form-group">
+                        <label for="category">Category</label>
+                        <select class="form-select" id="category" name="category_id">
+                            <option value="">Select a category</option>
+                            @foreach($product->facility->categories as $category)
+                            <option value="{{ $category->id }}" {{ $category->id == $product->category_id ? 'selected' : '' }}>{{ $category->name }}</option>
+                            @endforeach
+                            @if ($product->facility->categories->isEmpty()) <option value="">No categories found</option> @endif
+                        </select>
+                    </div>
+
                     <!-- is active-->
                     <div class="form-group">
                         <label for="is_active">Is Active</label>

@@ -17,6 +17,8 @@
                         <p><strong>Is Active:</strong> {{ $product->is_active ? 'Yes' : 'No' }}</p>
                         <p><strong>Is Deleted:</strong> {{ $product->is_deleted ? 'Yes' : 'No' }}</p>
                         <p><strong>Requires Approval:</strong> {{ $product->requires_approval ? 'Yes' : 'No' }}</p>
+                        <p><strong>Category:</strong> {{ $product->category->name }}</p>
+                        <p><strong>Price:</strong> ${{ $product->unit_price }}</p>
                     </div>
                     <div class="card-footer">
                         <a href="{{ route('products.edit', $product->id) }}" class="btn btn-primary">Edit</a>
