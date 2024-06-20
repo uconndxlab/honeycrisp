@@ -124,7 +124,7 @@
                 </div>
                 @else
 
-                <ul class="list-group">
+                <ul class="list-group my-4">
                     @foreach ($facility->categories as $category)
                     <li class="list-group-item">
                         <a href="{{ route('categories.show', $category->id) }}">
