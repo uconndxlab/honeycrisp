@@ -17,8 +17,13 @@
                         <p><strong>Is Active:</strong> {{ $product->is_active ? 'Yes' : 'No' }}</p>
                         <p><strong>Is Deleted:</strong> {{ $product->is_deleted ? 'Yes' : 'No' }}</p>
                         <p><strong>Requires Approval:</strong> {{ $product->requires_approval ? 'Yes' : 'No' }}</p>
-                        <p><strong>Category:</strong> {{ $product->category->name }}</p>
-                        <p><strong>Price:</strong> ${{ $product->unit_price }}</p>
+                        <p><strong>Category:</strong> {{ $product->category->name ?? 'N/A' }}</p>
+                        <div class="m-3 p-3 border border-primary">
+                            <h3>Pricing</h3>
+                            <p><strong>Internal Unit Cost:</strong> ${{ number_format($product->unit_price_internal, 2) }}</p>
+                            <p><strong>External (Non-Profit) Unit Cost:</strong> ${{ number_format($product->unit_price_external_nonprofit, 2) }}</p>
+                            <p><strong>External (For-Profit) Unit Cost:</strong> ${{ number_format($product->unit_price_external_forprofit, 2) }}</p>
+
                     </div>
                     <div class="card-footer">
                         <a href="{{ route('products.edit', $product->id) }}" class="btn btn-primary">Edit</a>

@@ -26,16 +26,24 @@
                 @if ($facility->products->isEmpty())
                     <p>No products available at this time.</p>
                 @else
-                    <ul class="list-group my-4">
-                        @foreach ($facility->products as $product)
-                            <li class="list-group-item">
-                                <a href="{{ route('products.show', $product->id) }}">
-                                    {{ $product->name }} - (${{ $product->unit_price }} each)
-                                </a>
-                            </li>
-                        @endforeach
+                    @foreach ($facility->products->groupBy('category_id') as $categoryId => $products)
+                        @php
+                            $categoryName = $products->first()->category
+                                ? $products->first()->category->name
+                                : 'Uncategorized';
+                        @endphp
+                        <h4>{{ $categoryName }}</h4>
+                        <ul class="list-group my-4">
+                            @foreach ($products as $product)
+                                <li class="list-group-item">
+                                    <a href="{{ route('products.show', $product->id) }}">
+                                        {{ $product->name }} - (${{ $product->unit_price }} each)
+                                    </a>
+                                </li>
+                            @endforeach
+                        </ul>
+                    @endforeach
 
-                    </ul>
                 @endif
             </div>
 

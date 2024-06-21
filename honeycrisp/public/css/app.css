@@ -374,3 +374,16 @@ main {
   background-color: #28a745;
   color: white;
 }
+
+fieldset {
+  border: 1px solid #dee2e6;
+  border-radius: 0.25rem;
+  margin: 0.25rem;
+  padding:0.5rem;
+}
+
+legend {
+  font-size: 1rem;
+  font-weight: bold;
+}
+

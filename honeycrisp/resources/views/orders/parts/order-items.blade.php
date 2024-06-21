@@ -51,7 +51,7 @@
             </div>
         </div>
 
-        <!-- availabe products -->
+        <!-- available products -->
 
         <div class="col-md-12 my-3">
             <h2>Available Products:</h2>
@@ -67,6 +67,33 @@
                                 </tr>
                             </thead>
                             <tbody>
+                                <!-- row for a custom product -->
+                                <tr>
+                                    <td>
+                                        <input type="text" name="custom_product" class="form-control" placeholder="Custom Product" required>
+                                    </td>
+                                    <td>
+                                        <input type="text" name="custom_product_description" class="form-control" placeholder="Custom Product Description" required>
+                                    </td>
+                                    <td>
+                                        <input type="number" name="custom_product_price" class="form-control" placeholder="Custom Product Price" required>
+                                    </td>
+                                    <td>
+                                        <form action="{{ route('orders.add-item') }}" method="POST">
+                                            @csrf
+                                            <input type="hidden" name="order_id" value="{{ $order->id }}">
+                                            <input type="hidden" name="product_id" value="0">
+                                            <div class="form-group
+                                                my-3">
+                                                <label for="quantity">Quantity:</label>
+                                                <input type="number" name="quantity" class="form-control" value="1"
+                                                    required>
+                                            </div>
+                                            <button type="submit" class="btn btn-primary">Add to Order</button>
+                                        </form>
+                                    </td>
+                                </tr>
+
                                 @foreach($order->facility->products as $product)
                                     <tr>
                                         <td>{{ $product->name }}</td>

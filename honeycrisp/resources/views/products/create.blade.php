@@ -17,7 +17,7 @@
                 @csrf
                 <input type="hidden" name="facility_id" value="{{ $facility->id }}">
 
-                <div class="form-group">
+                <div class="form-group my-2">
                     <label for="name">Product Name</label>
                     <input type="text" class="form-control" id="name" name="name">
                 </div>
@@ -27,7 +27,7 @@
                     <textarea class="form-control" id="description" name="description" rows="3"></textarea>
                 </div>
 
-                <div class="form-group">
+                <div class="form-group my-2">
                     <label for="category">Category</label>
                     <select class="form-select" id="category" name="category_id">
                         @foreach($facility->categories as $category)
@@ -38,7 +38,7 @@
                 </div>
 
                 <!-- is active-->
-                <div class="form-group">
+                <div class="form-group my-2">
                     <label for="is_active">Is Active</label>
                     <select class="form-select" id="is_active" name="is_active">
                         <option value="1">Yes</option>
@@ -47,7 +47,7 @@
                 </div>
 
                 <!-- is_deleted -->
-                <div class="form-group">
+                <div class="form-group my-2">
                     <label for="is_deleted">Is Deleted</label>
                     <select class="form-select" id="is_deleted" name="is_deleted">
                         <option value="0">No</option>
@@ -57,7 +57,7 @@
                 </div>
 
                 <!-- requires approval -->
-                <div class="form-group">
+                <div class="form-group my-2">
                     <label for="requires_approval">Requires Approval</label>
                     <select class="form-select" id="requires_approval" name="requires_approval">
                         <option value="0">No</option>
@@ -67,15 +67,26 @@
                 </div>
 
                 <!-- image -->
-                <div class="form-group">
-                    <label for="image">Image</label>
-                    <input type="file" class="form-control " id="image" name="image_url">
-                </div>
 
-                <div class="form-group my-3">
-                    <label for="price">Price</label>
-                    <input type="number" class="form-control" id="price" name="unit_price">
-                </div>
+
+                <fieldset>
+                    <legend>Pricing</legend>
+                    <div class="form-group my-2">
+                        <label for="price">Internal Price</label>
+                        <input type="number" class="form-control" id="price" name="unit_price_internal">
+                    </div>
+
+                    <div class="form-group my-2">
+                        <label for="price">External Price (Non-Profit)</label>
+                        <input type="number" class="form-control" id="price" name="unit_price_external_nonprofit">
+                    </div>
+
+                    <div class="form-group my-2">
+                        <label for="price">External Price (For Profit)</label>
+                        <input type="number" class="form-control" id="price" name="unit_price_external_forprofit">
+                    </div>
+                </fieldset>
+
                 <button type="submit" class="btn btn-primary">Save</button>
                 <a href="{{ route('facilities.show', $facility->abbreviation) }}" class="btn btn-secondary">Cancel</a>
             </form>

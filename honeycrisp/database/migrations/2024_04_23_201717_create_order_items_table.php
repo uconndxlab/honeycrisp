@@ -14,11 +14,14 @@ return new class extends Migration
         Schema::create('order_items', function (Blueprint $table) {
             $table->id();
             $table->timestamps();
+            
 
-            // foreign key to the products table so we can look up the product details later
-            $table->unsignedBigInteger('product_id');
+            // foreign key to the products table so we can look up the product details later, but product_id can be null if we're adding a custom item
+            $table->unsignedBigInteger('product_id')->nullable();
 
             $table->unsignedBigInteger('order_id');
+            $table->string('description');
+            $table->string('name');
             
             $table->integer('quantity');
             $table->decimal('price', 10, 2);

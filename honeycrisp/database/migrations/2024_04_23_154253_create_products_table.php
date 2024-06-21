@@ -18,7 +18,9 @@ return new class extends Migration
             $table->string('name');
             $table->string('description');
             $table->string('unit')->nullable();
-            $table->string('unit_price');
+            $table->string('unit_price_internal')->nullable();
+            $table->string('unit_price_external_nonprofit')->nullable();
+            $table->string('unit_price_external_forprofit')->nullable();
             
             // requires approval?
             $table->boolean('requires_approval')->default(false);

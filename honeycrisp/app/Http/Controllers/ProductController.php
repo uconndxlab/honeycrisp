@@ -37,7 +37,9 @@ class ProductController extends Controller
         $product->name = $request->name;
         $product->description = $request->description;
         $product->unit = $request->unit;
-        $product->unit_price = $request->unit_price;
+        $product->unit_price_internal = $request->unit_price_internal;
+        $product->unit_price_external_nonprofit = $request->unit_price_external_nonprofit;
+        $product->unit_price_external_forprofit = $request->unit_price_external_forprofit;
         $product->requires_approval = $request->requires_approval;
         $product->is_active = $request->is_active;
         $product->is_deleted = $request->is_deleted;
@@ -75,7 +77,9 @@ class ProductController extends Controller
         $product->name = $request->name;
         $product->description = $request->description;
         $product->unit = $request->unit;
-        $product->unit_price = $request->unit_price;
+        $product->unit_price_internal = $request->unit_price_internal;
+        $product->unit_price_external_nonprofit = $request->unit_price_external_nonprofit;
+        $product->unit_price_external_forprofit = $request->unit_price_external_forprofit;
         $product->requires_approval = $request->requires_approval;
         $product->is_active = $request->is_active;
         $product->is_deleted = $request->is_deleted;

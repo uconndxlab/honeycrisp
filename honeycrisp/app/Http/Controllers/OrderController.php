@@ -193,20 +193,24 @@ class OrderController extends Controller
     {
         $request->validate([
             'order_id' => 'required',
-            'product_id' => 'required',
             'quantity' => 'required',
         ]);
 
         $order_item = new OrderItem();
-        $order_product = Product::find($request->product_id);
-        $order = Order::find($request->order_id);
+        if ($request->product_id == 0) {
+            $order_item->name = $request->name;
+            $order_item->price = $request->price;
+        } else {
+            $order_product = Product::find($request->product_id);
+            $order_item->product_id = $request->product_id;
+            $order_item->price = $order_product->unit_price;
+        }
         $order_item->order_id = $request->order_id;
-        $order_item->product_id = $request->product_id;
         $order_item->quantity = $request->quantity;
-        $order_item->price = $order_product->unit_price;
 
         $order_item->save();
 
+        $order = Order::find($request->order_id);
         $order->updateTotal();
 
         return redirect()->route('orders.edit', $request->order_id)->with('success', 'Item added to order successfully!');
