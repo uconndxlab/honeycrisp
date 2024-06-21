@@ -21,6 +21,10 @@ return new class extends Migration
             $table->string('role')->default('user');
             $table->string('netid')->nullable();
             $table->boolean('external_rates')->default(false);
+            
+            $table->string('external_organization')->nullable();
+            $table->string('external_customer_id')->nullable();
+
             $table->rememberToken();
             $table->timestamps();
         });

@@ -12,9 +12,36 @@ class Order extends Model
 
     protected $fillable = ['title', 'description', 'date', 'user_id', 'facility_id', 'payment_account', 'status', 'tags', 'total'];
 
+    // set status color based on status
+
+    // Accessor to get the status color based on the status
+    public function getStatusColorAttribute()
+    {
+        switch ($this->status) {
+            case 'draft':
+                return 'secondary';
+            case 'pending':
+                return 'warning';
+            case 'approved':
+                return 'success';
+            case 'in progress':
+                return 'info';
+            case 'canceled':
+                return 'danger';
+            case 'complete':
+                return 'success';
+            case 'invoiced':
+                return 'primary';
+            case 'archived':
+                return 'secondary';
+            default:
+                return 'secondary';
+        }
+    }
+
     public function items()
     {
-        return $this->hasMany(OrderItem::class); 
+        return $this->hasMany(OrderItem::class);
     }
 
     public function facility()
@@ -26,12 +53,14 @@ class Order extends Model
     {
         return $this->belongsTo(User::class);
     }
-    
+
     public function paymentAccount()
     {
         return $this->belongsTo(PaymentAccount::class);
     }
-    
+
+
+
     public function updateTotal()
     {
         $total = 0;

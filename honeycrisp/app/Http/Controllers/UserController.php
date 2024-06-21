@@ -54,6 +54,8 @@ class UserController extends Controller
             'role' => $request->role,
             'status' => $request->status,
             'external_rates' => $request->external_rates,
+            'external_organization' => $request->external_organization,
+            'external_customer_id' => $request->external_customer_id,
             'password' => bcrypt($request->password),
         ]);
 
@@ -90,6 +92,10 @@ class UserController extends Controller
             $user->name = $request->name;
         }
 
+        if ($request->has('netid') && $request->netid !== $user->netid) {
+            $user->netid = $request->netid;
+        }
+
         if ($request->has('email') && $request->email !== $user->email) {
             $user->email = $request->email;
         }
@@ -106,6 +112,16 @@ class UserController extends Controller
             $user->external_rates = $request->external_rates;
         }
 
+        // external_organization and kuali_customer_id
+
+        if ($request->has('external_organization') && $request->external_organization !== $user->external_organization) {
+            $user->external_organization = $request->external_organization;
+        }
+
+        if ($request->has('external_customer_id') && $request->external_customer_id !== $user->external_customer_id) {
+            $user->external_customer_id = $request->external_customer_id;
+        }
+
         if ($request->has('password') && $request->password !== $user->password) {
             $user->password = bcrypt($request->password);
         }
@@ -120,6 +136,8 @@ class UserController extends Controller
      */
     public function destroy(string $id)
     {
-        //
+        $user = \App\Models\User::find($id);
+        $user->delete();
+        return redirect()->route('users.index')->with('success', 'User deleted successfully.');
     }
 }

@@ -73,6 +73,19 @@ id') }}" required>
                                 </select>
                             </div>
 
+                            
+                            <div class="form-group mx-3 bg-light p-2 ">
+                                <!-- external_organization -->
+                                <label for="external_organization">External Organization</label>
+                                <input type="text" name="external_organization" id="external_organization" class="form-control" value="{{ isset($user) ? $user->external_organization : old('external_organization') }}" required>
+                            </div>
+
+                            <div class="form-group mx-3 bg-light p-2 mb-3">
+                                <!-- external_customer_id -->
+                                <label for="external_customer_id">External Customer ID</label>
+                                <input type="text" name="external_customer_id" id="external_customer_id" class="form-control" value="{{ isset($user) ? $user->external_customer_id : old('external_customer_id') }}" required>
+                            </div>
+
 
                             @if(!isset($user))
                                 <div class="form-group mb-3">
@@ -133,12 +146,31 @@ id') }}" required>
                     @if($user->paymentAccounts->isEmpty())
                         <div class="alert alert-info">
                             <p>No payment accounts found for this user.</p>
-                            <a href="{{ route('payment-accounts.create') }}?user_id={{ $user->id }}" class="btn btn-primary">Add Payment Account</a>
+                            <a href="{{ route('payment-accounts.create') }}?user_id={{ $user->netid }}" class="btn btn-primary">Add Payment Account</a>
                         </div>
                     @endif
 
                 </div>
             </div>
         @endif
+
+        <script>
+            // if external rates is no, hide external organization and external customer id
+            document.getElementById('external_rates').addEventListener('change', function() {
+                if (this.value === 'no') {
+                    document.getElementById('external_organization').parentElement.style.display = 'none';
+                    document.getElementById('external_customer_id').parentElement.style.display = 'none';
+                } else {
+                    document.getElementById('external_organization').parentElement.style.display = 'block';
+                    document.getElementById('external_customer_id').parentElement.style.display = 'block';
+                }
+            });
+
+            // on load too 
+            if ((document.getElementById('external_rates').value === 'no') || (document.getElementById('external_rates').value === '')){
+                document.getElementById('external_organization').parentElement.style.display = 'none';
+                document.getElementById('external_customer_id').parentElement.style.display = 'none';
+            }
+        </script>
     </div>
 @endsection

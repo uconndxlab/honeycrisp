@@ -66,7 +66,10 @@ class PaymentAccountController extends Controller
      */
     public function show(PaymentAccount $paymentAccount)
     {
-        //
+        return view('payment-accounts.show', [
+            'paymentAccount' => $paymentAccount,
+            'users' => User::all(),
+        ]);
     }
 
     /**

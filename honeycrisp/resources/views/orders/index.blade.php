@@ -91,7 +91,7 @@
                         <td>{{ $order->title }}</td>
                         <td>{{ $order->date }}</td>
                         <td>
-                            <span class="badge {{ $order->status == 'draft' ? 'badge-secondary' : ($order->status == 'pending' ? 'badge-warning' : ($order->status == 'approved' ? 'badge-primary' : ($order->status == 'in_progress' ? 'badge-info' : ($order->status == 'complete' ? 'badge-success' : ($order->status == 'invoiced' ? 'badge-dark' : 'badge-muted'))))) }}">{{ $order->status }}</span>
+                            <span class="badge badge-{{ $order->status_color }}">{{ $order->status }}</span>
                         </td>
                         </td>
                         <td>

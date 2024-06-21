@@ -88,8 +88,8 @@ class OrderController extends Controller
         $order->status = 'draft';
         $order->price_group = $request->price_group;
 
-        if ($request->company_name) {
-            $order->company_name = $request->company_name;
+        if ($request->external_company_name) {
+            $order->company_name = $request->external_company_name;
         }
         
         $order = $order->save();
@@ -184,8 +184,8 @@ class OrderController extends Controller
         $order->status = $request->status;
         $order->price_group = $request->price_group;
 
-        if ($request->company_name) {
-            $order->company_name = $request->company_name;
+        if ($request->external_company_name) {
+            $order->company_name = $request->external_company_name;
         }
 
         $order->save();

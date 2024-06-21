@@ -2,7 +2,12 @@
     <!-- Header Section -->
     <div class="row my-3">
         <div class="col-md-12">
-            <h1>{{ isset($order) ? 'Edit Order #' . $order->id : 'Create Order' }}</h1>
+            <h1>{{ isset($order) ? 'Edit Order #' . $order->id : 'Create Order' }}
+                <!-- status badge -->
+                @if (isset($order))
+                <span class="badge badge-{{ $order->status_color }}">{{ $order->status }}</span>
+                @endif
+            </h1>
             <h2>{{ $facility->name }} ({{ $facility->abbreviation }})</h2>
         </div>
     </div>
@@ -56,9 +61,6 @@
                                     </select>
                                 </div>
                                 @endif
-
-
-
                             </div>
                         </div>
                     </div>
@@ -88,7 +90,7 @@
                                     </select>
                                 </div>
 
-                                <div id="user_accounts" class="form-group my-2 py-2">
+                                <div id="user_accounts" class="form-group my-2">
 
                                     @if ($accounts != null && count($accounts) > 0)
                                     <label for="payment_account">Payment Account:</label>
@@ -133,7 +135,7 @@
                                 <!-- extrernal company name -->
                                 <div class="form-group my-2">
                                     <label for="external_company_name">External Company Name:</label>
-                                    <input value="{{ old('external_company_name', isset($order) ? $order->external_company_name : '') }}" type="text" name="external_company_name" id="external_company_name" class="form-control">
+                                    <input value="{{ old('company_name', isset($order) ? $order->company_name : '') }}" type="text" name="external_company_name" id="external_company_name" class="form-control">
                                 </div>
                             </div>
                         </div>
@@ -160,13 +162,13 @@
             const priceGroup = document.getElementById('price_group');
             const externalCompanyName = document.getElementById('external_company_name');
 
-            externalCompanyName.classList.add('d-none')
+            externalCompanyName.parentElement.classList.add('d-none');
 
             priceGroup.addEventListener('change', function() {
                 if (priceGroup.value === 'external_nonprofit' || priceGroup.value === 'external_forprofit') {
                     externalCompanyName.required = true;
                     externalCompanyName.disabled = false;
-                    externalCompanyName.classList.remove('d-none');
+                    externalCompanyName.parentElement.classList.remove('d-none');
                 } else {
                     externalCompanyName.required = false;
                     externalCompanyName.disabled = true;
@@ -177,7 +179,7 @@
             if (priceGroup.value === 'external_nonprofit' || priceGroup.value === 'external_forprofit') {
                 externalCompanyName.required = true;
                 externalCompanyName.disabled = false;
-                externalCompanyName.classList.remove('d-none');
+                externalCompanyName.parentElement.classList.remove('d-none');
             } else {
                 externalCompanyName.required = false;
                 externalCompanyName.disabled = true;
