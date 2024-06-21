@@ -52,7 +52,11 @@
                     <a class="nav-link {{ request('status') == 'complete' ? 'active' : '' }}" href="{{ route('orders.index', ['status' => 'complete']) }}">Complete</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link {{ request('status') == 'ledgered' ? 'active' : '' }}" href="{{ route('orders.index', ['status' => 'ledgered']) }}">Ledgered</a>
+                    <a class="nav-link {{ request('status') == 'invoiced' ? 'active' : '' }}" href="{{ route('orders.index', ['status' => 'invoiced']) }}">Invoiced</a>
+                </li>
+
+                <li class="nav-item">
+                    <a class="nav-link {{ request('status') == 'canceled' ? 'active' : '' }}" href="{{ route('orders.index', ['status' => 'canceled']) }}">Canceled</a>
                 </li>
 
                 <!-- archive, muted and right-aligned -->
@@ -87,7 +91,7 @@
                         <td>{{ $order->title }}</td>
                         <td>{{ $order->date }}</td>
                         <td>
-                            <span class="badge {{ $order->status == 'draft' ? 'badge-secondary' : ($order->status == 'pending' ? 'badge-warning' : ($order->status == 'approved' ? 'badge-primary' : ($order->status == 'in_progress' ? 'badge-info' : ($order->status == 'complete' ? 'badge-success' : ($order->status == 'ledgered' ? 'badge-dark' : 'badge-muted'))))) }}">{{ $order->status }}</span>
+                            <span class="badge {{ $order->status == 'draft' ? 'badge-secondary' : ($order->status == 'pending' ? 'badge-warning' : ($order->status == 'approved' ? 'badge-primary' : ($order->status == 'in_progress' ? 'badge-info' : ($order->status == 'complete' ? 'badge-success' : ($order->status == 'invoiced' ? 'badge-dark' : 'badge-muted'))))) }}">{{ $order->status }}</span>
                         </td>
                         </td>
                         <td>

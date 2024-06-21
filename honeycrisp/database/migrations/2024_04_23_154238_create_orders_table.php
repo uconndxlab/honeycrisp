@@ -23,7 +23,7 @@ return new class extends Migration
             $table->unsignedBigInteger('user_id');
             $table->unsignedBigInteger('facility_id');
             $table->unsignedBigInteger('payment_account');
-            $table->string('status')->enum(['draft', 'pending', 'approved', 'in progress', 'canceled', 'complete', 'ledgered', 'archived']);
+            $table->string('status')->enum(['draft', 'pending', 'approved', 'in progress', 'canceled', 'complete', 'invoiced', 'archived']);
             $table->json('tags')->nullable();
             $table->decimal('total', 10, 2)->nullable();
 
