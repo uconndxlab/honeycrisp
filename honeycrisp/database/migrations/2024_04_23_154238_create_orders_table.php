@@ -27,6 +27,9 @@ return new class extends Migration
             $table->json('tags')->nullable();
             $table->decimal('total', 10, 2)->nullable();
 
+            $table->text('price_group')->enum('internal', 'external_nonprofit', 'external_forprofit');
+            $table->text('company_name')->nullable();
+
             $table->foreign('user_id')->references('id')->on('users');
             $table->foreign('facility_id')->references('id')->on('facilities');
             $table->foreign('payment_account')->references('id')->on('payment_accounts');

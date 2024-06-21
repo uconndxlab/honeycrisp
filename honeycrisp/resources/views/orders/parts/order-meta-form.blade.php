@@ -121,10 +121,19 @@
 
                                 <div class="form-group my-2">
                                     <label for="price_group">Price Group:</label>
-                                    <div class="form-check form-switch">
-                                        <input class="form-check-input" type="checkbox" role="switch" id="flexSwitchCheckChecked">
-                                        <label class="form-check-label" for="flexSwitchCheckChecked">Use External Rates</label>
-                                    </div>
+                                    <!-- dropdown for internal price group, external_nonprofit, external_forprofit -->
+                                    <select name="price_group" id="price_group" class="form-select">
+                                        <option value="">Select a Price Group</option>
+                                        <option value="internal" @if (old('price_group', isset($order) && $order->price_group == 'internal')) selected @endif>Internal</option>
+                                        <option value="external_nonprofit" @if (old('price_group', isset($order) && $order->price_group == 'external_nonprofit')) selected @endif>External Nonprofit</option>
+                                        <option value="external_forprofit" @if (old('price_group', isset($order) && $order->price_group == 'external_forprofit')) selected @endif>External For-Profit</option>
+                                    </select>
+                                </div>
+
+                                <!-- extrernal company name -->
+                                <div class="form-group my-2">
+                                    <label for="external_company_name">External Company Name:</label>
+                                    <input value="{{ old('external_company_name', isset($order) ? $order->external_company_name : '') }}" type="text" name="external_company_name" id="external_company_name" class="form-control">
                                 </div>
                             </div>
                         </div>
@@ -144,4 +153,38 @@
             </div>
         </div>
     </form>
+
+    <script>
+        // external company name should only be visible, required, and enabled when price group is external
+        document.addEventListener('DOMContentLoaded', function() {
+            const priceGroup = document.getElementById('price_group');
+            const externalCompanyName = document.getElementById('external_company_name');
+
+            externalCompanyName.classList.add('d-none')
+
+            priceGroup.addEventListener('change', function() {
+                if (priceGroup.value === 'external_nonprofit' || priceGroup.value === 'external_forprofit') {
+                    externalCompanyName.required = true;
+                    externalCompanyName.disabled = false;
+                    externalCompanyName.classList.remove('d-none');
+                } else {
+                    externalCompanyName.required = false;
+                    externalCompanyName.disabled = true;
+                    externalCompanyName.parentElement.classList.add('d-none');
+                }
+            });
+
+            if (priceGroup.value === 'external_nonprofit' || priceGroup.value === 'external_forprofit') {
+                externalCompanyName.required = true;
+                externalCompanyName.disabled = false;
+                externalCompanyName.classList.remove('d-none');
+            } else {
+                externalCompanyName.required = false;
+                externalCompanyName.disabled = true;
+                externalCompanyName.parentElement.classList.add('d-none');
+            }
+        });
+
+    </script>
+        
 </div>

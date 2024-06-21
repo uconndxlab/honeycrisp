@@ -31,34 +31,36 @@
                     <select class="form-select" id="account_owner" name="account_owner">
                         <option value="">Select an owner</option>
                         @foreach ($users as $user)
-                            <option value="{{ $user->id }}">{{ $user->name }}</option>
+                            <option value="{{ $user->id }}" @if(old('account_owner') == $user->id) selected @endif>{{ $user->name }}</option>
                         @endforeach
                     </select>
+                </div>
                 </div>
 
                 <div class="mb-3">
                     <label for="account_name" class="form-label">Account Name</label>
-                    <input type="text" class="form-control" id="account_name" name="account_name">
+                    <input type="text" class="form-control" id="account_name" name="account_name" value="{{ old('account_name') }}">
                 </div>
 
                 <!-- type which is enum -->
                 <div class="mb-3">
                     <label for="account_type" class="form-label">Type</label>
                     <select class="form-select" id="type" name="account_type">
-                        <option value="kfs">KFS</option>
-                        <option value="uch">Banner/UCH</option>
-                        <option value="other">Other</option>
+                        <option value="kfs" @if(old('account_type') == 'kfs') selected @endif>KFS</option>
+                        <option value="uch" @if(old('account_type') == 'uch') selected @endif>Banner/UCH</option>
+                        <option value="other" @if(old('account_type') == 'other') selected @endif>Other</option>
                     </select>
+                </div>
                 </div>
 
                 <div class="mb-3">
                     <label for="account_number" class="form-label">Account Number</label>
-                    <input type="text" class="form-control" id="account_number" name="account_number">
+                    <input type="text" class="form-control" id="account_number" name="account_number" value="{{ old('account_number') }}">
                 </div>
 
                 <div class="mb-3">
                     <label for="expiration_date" class="form-label">Expiration Date</label>
-                    <input type="date" class="form-control" id="expiration_date" name="expiration_date">
+                    <input type="date" class="form-control" id="expiration_date" name="expiration_date" value="{{ old('expiration_date') }}">
                 </div>
 
 

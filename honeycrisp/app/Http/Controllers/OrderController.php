@@ -68,7 +68,8 @@ class OrderController extends Controller
             'date' => 'required',
             'user_id' => 'required',
             'facility_id' => 'exists:facilities,id',
-            'payment_account' => 'required'
+            'payment_account' => 'required',
+            'price_group' => 'required',
         ]);
 
         $user_id = User::all()->where('netid', $request->user_id)->first()->id;
@@ -85,8 +86,13 @@ class OrderController extends Controller
         $order->facility_id = $facility_id;
         $order->payment_account = $payment_account;
         $order->status = 'draft';
+        $order->price_group = $request->price_group;
+
+        if ($request->company_name) {
+            $order->company_name = $request->company_name;
+        }
         
-        $orderr = $order->save();
+        $order = $order->save();
     
         return redirect()->route('orders.edit', $order)->with('success', 'Order created successfully!');
     }
@@ -159,7 +165,9 @@ class OrderController extends Controller
             'date' => 'required',
             'user_id' => 'required',
             'facility_id' => 'exists:facilities,id',
-            'payment_account' => 'required'
+            'payment_account' => 'required',
+            'status' => 'required',
+            'price_group' => 'required',
         ]);
 
         $user_id = User::all()->where('netid', $request->user_id)->first()->id;
@@ -174,6 +182,11 @@ class OrderController extends Controller
         $order->facility_id = $facility_id;
         $order->payment_account = $payment_account;
         $order->status = $request->status;
+        $order->price_group = $request->price_group;
+
+        if ($request->company_name) {
+            $order->company_name = $request->company_name;
+        }
 
         $order->save();
 

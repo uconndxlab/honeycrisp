@@ -37,11 +37,13 @@ class PaymentAccountController extends Controller
             'account_number' => 'required',
             'account_type' => 'required',
             'account_owner' => 'required',
+            'expiration_date' => 'required',
         ], [
             'name.required' => 'The name field is required.',
             'account_number.required' => 'The account number field is required.',
             'type.required' => 'The type field is required.',
             'owner.required' => 'The owner field is required.',
+            'expiration_date.required' => 'The expiration date field is required.',
         ]);
 
         $data ['account_name'] = $request->account_name;
