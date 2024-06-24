@@ -24,7 +24,9 @@
                         <tbody>
                             @foreach($order->items as $item)
                                 <tr>
-                                    <td>{{ $item->product->name }}</td>
+                                    <td>{{ $item->name }} <br>
+                                        <small class="text-muted">{{ $item->description }}</small>
+                                    </td>
                                     <td>{{ $item->quantity }}</td>
                                     <td>${{ number_format($item->price, 2) }}</td>
                                     <td>${{ number_format($item->quantity * $item->price, 2) }}</td>
@@ -63,55 +65,80 @@
                                     <th>Product</th>
                                     <th>Description</th>
                                     <th>Price</th>
-                                    <th>Add to Order</th>
+                                    <th>Quantity</th>
+                                    <th>Actions</th>
                                 </tr>
                             </thead>
                             <tbody>
                                 <!-- row for a custom product -->
                                 <tr>
+                                    <form action="{{ route('orders.add-item') }}" method="POST">
+                                        @csrf
                                     <td>
-                                        <input type="text" name="custom_product" class="form-control" placeholder="Custom Product" required>
+                                        <input type="text" name="name" class="form-control" placeholder="Custom Product" required>
                                     </td>
                                     <td>
-                                        <input type="text" name="custom_product_description" class="form-control" placeholder="Custom Product Description" required>
+                                        <textarea type="text" name="description" class="form-control" placeholder="Custom Product Description" required>
+                                        </textarea>
                                     </td>
                                     <td>
-                                        <input type="number" name="custom_product_price" class="form-control" placeholder="Custom Product Price" required>
+                                        
+                                        <input type="number" name="price" class="form-control" placeholder="Custom Product Price" required>
                                     </td>
                                     <td>
-                                        <form action="{{ route('orders.add-item') }}" method="POST">
-                                            @csrf
+                                        <input type="number" name="quantity" class="form-control" value="1"
+                                        required>
+                                    </td>
+                                    <td>
+
                                             <input type="hidden" name="order_id" value="{{ $order->id }}">
                                             <input type="hidden" name="product_id" value="0">
-                                            <div class="form-group
-                                                my-3">
-                                                <label for="quantity">Quantity:</label>
-                                                <input type="number" name="quantity" class="form-control" value="1"
-                                                    required>
-                                            </div>
+
                                             <button type="submit" class="btn btn-primary">Add to Order</button>
-                                        </form>
                                     </td>
+                                </form>
+
                                 </tr>
 
                                 @foreach($order->facility->products as $product)
                                     <tr>
+                                        <form action="{{ route('orders.add-item') }}" method="POST">
+                                            @csrf
                                         <td>{{ $product->name }}</td>
-                                        <td>{{ $product->description }}</td>
-                                        <td>${{ $product->unit_price }}</td>
                                         <td>
-                                            <form action="{{ route('orders.add-item') }}" method="POST">
-                                                @csrf
+                                            <textarea type="text" name="description" class="form-control">{{ $product->description }}</textarea>
+
+                                        </td>
+                                        <td>
+                                            <!-- if price group is internal, show internal price.
+                                                if price gorup is external_non_profit, show external non profit price.
+                                                if price group is external_for_profit, show external for profit price.
+                                            -->
+                                            @if ($order->price_group == 'internal')
+                                                ${{ number_format($product->unit_price_internal, 2) }}
+                                                <input type="hidden" name="price" value="{{ $product->unit_price_internal }}">
+                                            @elseif ($order->price_group == 'external_nonprofit')
+                                                ${{ number_format($product->unit_price_external_nonprofit, 2) }}
+                                                <input type="hidden" name="price" value="{{ $product->unit_price_external_nonprofit }}">
+                                            @elseif ($order->price_group == 'external_forprofit')
+                                                ${{ number_format($product->unit_price_external_forprofit, 2) }}
+                                                <input type="hidden" name="price" value="{{ $product->unit_price_external_forprofit }}">
+                                            @endif
+                                        </td>
+                                        <td>
+                                            <input type="number" name="quantity" class="form-control" value="1"
+                                            required>
+                                        </td>
+                                        <td>
+
                                                 <input type="hidden" name="order_id" value="{{ $order->id }}">
                                                 <input type="hidden" name="product_id" value="{{ $product->id }}">
-                                                <div class="form-group my-3">
-                                                    <label for="quantity">Quantity:</label>
-                                                    <input type="number" name="quantity" class="form-control" value="1"
-                                                        required>
-                                                </div>
+                                                
+
                                                 <button type="submit" class="btn btn-primary">Add to Order</button>
-                                            </form>
+
                                         </td>
+                                    </form>
                                     </tr>
                                 @endforeach
                             </tbody>

@@ -60,6 +60,17 @@ class User extends Authenticatable
             ->withTimestamps();
     }
 
+    // custom attribute for price_group based on external_rates
+
+    public function getPriceGroupAttribute()
+    {
+        if ($this->external_rates) {
+            return 'external';
+        } else {
+            return 'internal';
+        }
+    }
+
     /** get owned accounts */
     public function ownedAccounts()
     {

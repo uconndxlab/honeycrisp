@@ -212,14 +212,17 @@ class OrderController extends Controller
         $order_item = new OrderItem();
         if ($request->product_id == 0) {
             $order_item->name = $request->name;
-            $order_item->price = $request->price;
+
         } else {
             $order_product = Product::find($request->product_id);
             $order_item->product_id = $request->product_id;
-            $order_item->price = $order_product->unit_price;
+            $order_item->name = $order_product->name;
         }
+        $order_item->price = $request->price;
         $order_item->order_id = $request->order_id;
         $order_item->quantity = $request->quantity;
+
+        $order_item->description = $request->description;
 
         $order_item->save();
 

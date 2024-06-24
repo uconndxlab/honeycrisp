@@ -36,6 +36,8 @@
                     <p><strong>Payment Account:</strong> {{ $payment_account->account_name }}
                         ({{ $payment_account->formatted() }})</p>
 
+                    <p><strong>Price Group:</strong> {{ $order->price_group}}</p>
+
 
                 </div>
             </div>
