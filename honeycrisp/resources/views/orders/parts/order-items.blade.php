@@ -1,7 +1,7 @@
 <!-- List of current items in the order -->
 <div class="container my-5">
     <div class="row">
-        <div class="col-md-12">
+        <div id="order_items" class="col-md-12">
             <div class="card">
                 <div class="card-header">
                     <h2>Order Items</h2>
@@ -55,14 +55,14 @@
 
         <!-- available products -->
 
-        <div class="col-md-12 my-3">
-            <h2>Available Products:</h2>
+        <div id="available_products" class="col-md-12 my-3">
             <div class="row">
                     <div class="col-md-12">
+                        <h3> Add a Custom Item:</h3>
                         <table class="table table-hover">
                             <thead>
                                 <tr>
-                                    <th>Product</th>
+                                    <th>Name</th>
                                     <th>Description</th>
                                     <th>Price</th>
                                     <th>Quantity</th>
@@ -71,8 +71,14 @@
                             </thead>
                             <tbody>
                                 <!-- row for a custom product -->
-                                <tr>
-                                    <form action="{{ route('orders.add-item') }}" method="POST">
+                                <tr id="custom_product_row">
+                                    <form action="{{ route('orders.add-item') }}" 
+                                    hx-post="{{ route('orders.add-item') }}"
+                                    hx-swap="outerHTML"
+                                    hx-target="#order_items tbody"
+                                    hx-select="#order_items tbody"
+                                    hx-reset="true"
+                                    method="POST">
                                         @csrf
                                     <td>
                                         <input type="text" name="name" class="form-control" placeholder="Custom Product" required>
@@ -99,10 +105,47 @@
                                 </form>
 
                                 </tr>
+                            </tbody>
+
+                        </table>
+
+                        <h3> {{ $order->facility->name }} Products:</h3>
+
+                        <!-- cattegory filter dropdown button -->
+                        <div class="dropdown">
+                            <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton" data-bs-toggle="dropdown" aria-expanded="false">
+                                Filter by Category
+                            </button>
+                            <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                                <li><a class="dropdown-item" href="#">All</a></li>
+                                @foreach($order->facility->categories as $category)
+                                    <li><a class="dropdown-item" href="#">{{ $category->name }}</a></li>
+                                @endforeach
+                            </ul>
+                        </div>
+
+                        <table id = "products_table" class="table table-hover">
+                            <thead>
+                                <tr>
+                                    <th>Product</th>
+                                    <th>Description</th>
+                                    <th>Price</th>
+                                    <th>Quantity</th>
+                                    <th>Actions</th>
+                                </tr>
+                            </thead>
+
+                            <tbody
 
                                 @foreach($order->facility->products as $product)
                                     <tr>
-                                        <form action="{{ route('orders.add-item') }}" method="POST">
+                                        <form action="{{ route('orders.add-item') }}" method="POST"
+                                        hx-post="{{ route('orders.add-item') }}"
+                                        hx-swap="outerHTML"
+                                        hx-target="#order_items tbody"
+                                        hx-select="#order_items tbody"
+                                        >
+
                                             @csrf
                                         <td>{{ $product->name }}</td>
                                         <td>
