@@ -75,8 +75,8 @@
                                     <form action="{{ route('orders.add-item') }}" 
                                     hx-post="{{ route('orders.add-item') }}"
                                     hx-swap="outerHTML"
-                                    hx-target="#order_items tbody"
-                                    hx-select="#order_items tbody"
+                                    hx-target="#order_items"
+                                    hx-select="#order_items"
                                     hx-reset="true"
                                     method="POST">
                                         @csrf

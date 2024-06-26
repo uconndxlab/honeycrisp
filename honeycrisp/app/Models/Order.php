@@ -77,9 +77,9 @@ class Order extends Model
             'quote' => 'Quote',
             'accepted' => 'Accepted',
             'in_progress' => 'In Progress',
-            'canceled' => 'Canceled',
-            'reconciled' => 'Reconciled',
             'invoice' => 'Invoice',
+            'reconciled' => 'Reconciled',
+            'canceled' => 'Canceled',
             'archived' => 'Archived'
         ];
     }

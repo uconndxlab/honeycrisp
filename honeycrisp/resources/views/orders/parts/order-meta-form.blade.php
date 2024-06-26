@@ -141,13 +141,13 @@
                                     <!-- dropdown for internal price group, external_nonprofit, external_forprofit -->
                                     <select name="price_group" id="price_group" class="form-select">
                                         <option value="">Select a Price Group</option>
-                                        <option value="internal" @if (old('price_group', isset($order) && $order->price_group == 'internal')) selected @endif>
+                                        <option value="internal" @if (old('price_group', isset($order) && $order->price_group == 'internal') || !isset($order)) selected @endif>
                                             Internal</option>
                                         <option value="external_nonprofit"
-                                            @if (old('price_group', isset($order) && $order->price_group == 'external_nonprofit')) selected @endif>External Nonprofit
+                                            @if (old('price_group', isset($order) && $order->price_group == 'external_nonprofit') || !isset($order)) selected @endif>External Nonprofit
                                         </option>
                                         <option value="external_forprofit"
-                                            @if (old('price_group', isset($order) && $order->price_group == 'external_forprofit')) selected @endif>External For-Profit
+                                            @if (old('price_group', isset($order) && $order->price_group == 'external_forprofit') || !isset($order)) selected @endif>External For-Profit
                                         </option>
                                     </select>
                                 </div>
@@ -162,14 +162,12 @@
 
 
                                     <!-- if external, show external_customer_id -->
-                                    @if (old('price_group', isset($order) && $order->price_group) == 'external_nonprofit' ||
-                                            old('price_group', isset($order) && $order->price_group) == 'external_forprofit')
                                         <label for="external_customer_id">External Customer ID:</label>
                                         <input
                                             value="{{ old('external_customer_id', isset($order) ? $order->user->external_customer_id : '') }}"
                                             type="text" name="external_customer_id" id="external_customer_id"
                                             class="form-control">
-                                    @endif
+
 
                                 </div>
                             </div>
