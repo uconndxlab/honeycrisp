@@ -35,37 +35,14 @@
         <div class="col-md-2 subnav">
             <!-- subnav of order statuses: draft, pending, approved, in progress, complete, ledgered, archived -->
             <ul class="nav flex-column">
+                <!-- loop through status_options, which is an associative array of status['slug'] = 'Status Name' -->
+                @foreach($status_options as $slug => $name)
                 <li class="nav-item">
-                    <a class="nav-link {{ request('status') == 'draft' ? 'active' : '' }}" href="{{ route('orders.index', ['status' => 'draft']) }}">Draft</a>
+                    <a class="nav-link" href="{{ route('orders.index', ['status' => $slug]) }}">{{ $name }}</a>
                 </li>
-                <li class="nav-item">
-                    <a class="nav-link {{ request('status') == 'pending' ? 'active' : '' }}" href="{{ route('orders.index', ['status' => 'pending']) }}">Pending</a>
-                </li>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link {{ request('status') == 'approved' ? 'active' : '' }}" href="{{ route('orders.index', ['status' => 'approved']) }}">Approved</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link {{ request('status') == 'in_progress' ? 'active' : '' }}" href="{{ route('orders.index', ['status' => 'in_progress']) }}">In Progress</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link {{ request('status') == 'complete' ? 'active' : '' }}" href="{{ route('orders.index', ['status' => 'complete']) }}">Complete</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link {{ request('status') == 'invoiced' ? 'active' : '' }}" href="{{ route('orders.index', ['status' => 'invoiced']) }}">Invoiced</a>
-                </li>
+                @endforeach
+            </ul>
 
-                <li class="nav-item">
-                    <a class="nav-link {{ request('status') == 'canceled' ? 'active' : '' }}" href="{{ route('orders.index', ['status' => 'canceled']) }}">Canceled</a>
-                </li>
-
-                <!-- archive, muted and right-aligned -->
-                <li class="nav-item">
-                    <a class="nav-link text-muted {{ request('status') == 'archived' ? 'active' : '' }}" href="{{ route('orders.index', ['status' => 'archived']) }}">Archived</a>
-                </li>
-            </ul>
-            </ul>
-            </ul>
 
         </div>
         <div class="col-md-10">

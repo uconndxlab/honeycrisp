@@ -59,16 +59,11 @@
                                         <label for="status">Status:</label>
                                         <select name="status" id="status" class="form-select">
                                             <option value="">Select a Status</option>
-                                            <option value="draft" @if (old('status', isset($order) && $order->status == 'draft')) selected @endif>
-                                                Draft</option>
-                                            <option value="pending" @if (old('status', isset($order) && $order->status == 'pending')) selected @endif>
-                                                Pending</option>
-                                            <option value="approved" @if (old('status', isset($order) && $order->status == 'approved')) selected @endif>
-                                                Approved</option>
-                                            <option value="in_progress"
-                                                @if (old('status', isset($order) && $order->status == 'in_progress')) selected @endif>In Progress</option>
-                                            <option value="complete" @if (old('status', isset($order) && $order->status == 'complete')) selected @endif>
-                                                Complete</option>
+                                            @foreach ($status_options as $slug => $name)
+                                                <option value="{{ $slug }}"
+                                                    @if (old('status', isset($order) && $order->status == $slug)) selected @endif>
+                                                    {{ $name }}</option>
+                                            @endforeach
                                         </select>
                                     </div>
                                 @endif

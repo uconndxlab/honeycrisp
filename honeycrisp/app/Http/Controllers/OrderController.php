@@ -18,6 +18,8 @@ class OrderController extends Controller
     public function index()
     {
 
+        $status_options = Order::statusOptions();
+
         // if request[status] is not null, filter orders by status
         if (request('status')) {
             $orders = Order::all()->where('status', request('status'))->sortByDesc('date');
@@ -27,7 +29,7 @@ class OrderController extends Controller
 
 
 
-        return view('orders.index', compact('orders'));
+        return view('orders.index', compact('orders', 'status_options'));
     }
 
     /**
@@ -85,7 +87,7 @@ class OrderController extends Controller
     
         $order->facility_id = $facility_id;
         $order->payment_account = $payment_account;
-        $order->status = 'draft';
+        $order->status = 'quote';
         $order->price_group = $request->price_group;
 
         if ($request->external_company_name) {
@@ -122,6 +124,7 @@ class OrderController extends Controller
         $facility = Facility::find($order->facility_id);
         $users = User::all()->where('status', 'active');
         $selected_user = $order->user_id;
+        $status_options = Order::statusOptions();
 
         $current_account = PaymentAccount::find($order->payment_account);
         // check to see if the expiration date of the account is coming up
@@ -151,7 +154,7 @@ class OrderController extends Controller
         }
 
         
-        return view('orders.edit', compact('order', 'facility', 'users', 'selected_user', 'accounts', 'account_warning'));
+        return view('orders.edit', compact('order', 'facility', 'users', 'selected_user', 'accounts', 'account_warning', 'status_options'));
     }
 
     /**

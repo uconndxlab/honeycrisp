@@ -12,6 +12,10 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('orders', function (Blueprint $table) {
+
+
+            
+
             $table->id();
             $table->timestamps();
 
@@ -22,8 +26,10 @@ return new class extends Migration
 
             $table->unsignedBigInteger('user_id');
             $table->unsignedBigInteger('facility_id');
-            $table->unsignedBigInteger('payment_account');
-            $table->string('status')->enum(['draft', 'pending', 'approved', 'in progress', 'canceled', 'complete', 'invoiced', 'archived']);
+            $table->unsignedBigInteger('payment_account')->nullable();
+
+            $table->text('status')->enum('quote', 'pending', 'approved', 'in_progress', 'canceled', 'reconciled', 'invoice', 'archived');
+
             $table->json('tags')->nullable();
             $table->decimal('total', 10, 2)->nullable();
 
@@ -33,6 +39,7 @@ return new class extends Migration
             $table->foreign('user_id')->references('id')->on('users');
             $table->foreign('facility_id')->references('id')->on('facilities');
             $table->foreign('payment_account')->references('id')->on('payment_accounts');
+
         });
     }
 

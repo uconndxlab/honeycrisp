@@ -70,4 +70,17 @@ class Order extends Model
         $this->total = $total;
         $this->save();
     }
+
+    public static function statusOptions()
+    {
+        return [
+            'quote' => 'Quote',
+            'accepted' => 'Accepted',
+            'in_progress' => 'In Progress',
+            'canceled' => 'Canceled',
+            'reconciled' => 'Reconciled',
+            'invoice' => 'Invoice',
+            'archived' => 'Archived'
+        ];
+    }
 }
