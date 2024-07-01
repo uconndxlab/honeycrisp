@@ -65,7 +65,7 @@ id') }}" required>
 
                             <div class="form-group mb-3">
                                 <label for="external_rates">External Rates</label>
-                                <select name="external_rates" id="external_rates" class="form-select" required>
+                                <select name="external_rates" id="external_rates" class="form-select">
                                     <option value="">Select External Rates</option>
                                     <option value="no" {{ isset($user) && $user->external_rates == 'no' ? 'selected' : '' }}>No</option>
 
@@ -77,13 +77,13 @@ id') }}" required>
                             <div class="form-group mx-3 bg-light p-2 ">
                                 <!-- external_organization -->
                                 <label for="external_organization">External Organization</label>
-                                <input type="text" name="external_organization" id="external_organization" class="form-control" value="{{ isset($user) ? $user->external_organization : old('external_organization') }}" required>
+                                <input type="text" name="external_organization" id="external_organization" class="form-control" value="{{ isset($user) ? $user->external_organization : old('external_organization') }}">
                             </div>
 
                             <div class="form-group mx-3 bg-light p-2 mb-3">
                                 <!-- external_customer_id -->
                                 <label for="external_customer_id">External Customer ID</label>
-                                <input type="text" name="external_customer_id" id="external_customer_id" class="form-control" value="{{ isset($user) ? $user->external_customer_id : old('external_customer_id') }}" required>
+                                <input type="text" name="external_customer_id" id="external_customer_id" class="form-control" value="{{ isset($user) ? $user->external_customer_id : old('external_customer_id') }}">
                             </div>
 
 

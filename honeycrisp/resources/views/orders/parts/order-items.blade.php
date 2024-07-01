@@ -73,6 +73,7 @@
                                 <!-- row for a custom product -->
                                 <tr id="custom_product_row">
                                     <form action="{{ route('orders.add-item') }}" 
+                                    hx-on::after-request="this.reset()"
                                     hx-post="{{ route('orders.add-item') }}"
                                     hx-swap="outerHTML"
                                     hx-target="#order_items"

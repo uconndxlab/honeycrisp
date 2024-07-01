@@ -54,8 +54,8 @@ class UserController extends Controller
             'role' => $request->role,
             'status' => $request->status,
             'external_rates' => $request->external_rates,
-            'external_organization' => $request->external_organization,
-            'external_customer_id' => $request->external_customer_id,
+            'external_organization' => $request->external_organization ?? null,
+            'external_customer_id' => $request->external_customer_id ?? null,
             'password' => bcrypt($request->password),
         ]);
 
