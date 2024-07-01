@@ -199,3 +199,16 @@
 
 
     </div>
+
+    <script>
+
+        // after a form is submitted, reset the form
+        document.addEventListener('DOMContentLoaded', function() {
+            document.querySelectorAll('form').forEach(form => {
+                form.addEventListener('submit', function() {
+                    form.reset();
+                });
+            });
+        });
+
+    </script>
