@@ -39,7 +39,15 @@ class PaymentAccount extends Model
     public function fiscal_officer()
     {
         // fiscal officer is pivot on user
-        return $this->belongsTo(User::class, 'fidscal_officer');
+        return $this->belongsTo(User::class, 'fiscal_officer');
+    }
+
+    public function authorized_users()
+    {
+        // authorized users are pivot on user in the payment_account_user table
+        return $this->belongsToMany(User::class)
+            ->wherePivot('role', 'authorized_user')
+            ->withTimestamps();
     }
 
     public function formatted()

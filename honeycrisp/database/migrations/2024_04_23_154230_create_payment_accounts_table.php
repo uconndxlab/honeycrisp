@@ -17,6 +17,11 @@ return new class extends Migration
             $table->string('account_name');
             $table->string('account_number');
 
+            // fiscal_manager   
+            $table->foreignId('fiscal_manager_id')->constrained('users');
+
+            $table->foreignId('fiscal_officer_id')->constrained('users');
+
             
             
             //expiration date
