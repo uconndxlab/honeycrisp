@@ -106,6 +106,22 @@ class PaymentAccountController extends Controller
 
         return redirect()->route('payment-accounts.index');
     }
+            
+
+    public function addUser(Request $request, PaymentAccount $paymentAccount)
+    {
+        $request->validate([
+            'user_id' => 'required',
+            'role' => 'required',
+        ], [
+            'user_id.required' => 'The user field is required.',
+            'role.required' => 'The role field is required.',
+        ]);
+
+        $paymentAccount->users()->attach($request->user_id, ['role' => $request->role]);
+
+        return redirect()->route('payment-accounts.show', $paymentAccount);
+    }
 
     /**
      * Remove the specified resource from storage.

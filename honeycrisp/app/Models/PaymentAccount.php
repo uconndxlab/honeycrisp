@@ -33,13 +33,13 @@ class PaymentAccount extends Model
     public function account_manager()
     {
         // account manager is pivot on user
-        return $this->belongsTo(User::class, 'account_manager');
+        return $this->users()->wherePivot('role', 'account_manager')->first();
     }
 
     public function fiscal_officer()
     {
         // fiscal officer is pivot on user
-        return $this->belongsTo(User::class, 'fiscal_officer');
+        return $this->users()->wherePivot('role', 'fiscal_officer')->first();
     }
 
     public function authorized_users()

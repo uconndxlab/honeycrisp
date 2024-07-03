@@ -27,12 +27,22 @@ class UserFactory extends Factory
             'name' => fake()->name(),
             'email' => fake()->unique()->safeEmail(),
             'email_verified_at' => now(),
-            'netid' => fake()->unique()->userName(),
+            // three lowercase letters , 5 random numbers
+            'netid' => $this->generateNetid(),
             'status' => 'active',
             'role' => 'user',
             'password' => static::$password ??= Hash::make('password'),
             'remember_token' => Str::random(10),
         ];
+    }
+
+    function generateNetid() {
+        $letters = Str::lower(Str::random(3));
+        $numbers = '';
+        for ($i = 0; $i < 5; $i++) {
+            $numbers .= rand(0, 9);
+        }
+        return $letters . $numbers;
     }
 
     /**
