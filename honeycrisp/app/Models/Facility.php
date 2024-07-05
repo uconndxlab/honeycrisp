@@ -49,7 +49,9 @@ class Facility extends Model
         $products = [];
 
         foreach ($order_items as $order_item) {
-            $products[] = Product::find($order_item->product_id);
+            $product_id = $order_item->product_id;
+            if ($product_id != null)
+                $products[] = Product::find($order_item->product_id);
         }
 
         return $products;

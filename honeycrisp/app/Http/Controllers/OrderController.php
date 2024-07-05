@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Category;
 use App\Models\Order;
 use Illuminate\Http\Request;
 use App\Models\Facility;
@@ -132,6 +133,13 @@ class OrderController extends Controller
         $today = date('Y-m-d');
         $days_until_expiration = (strtotime($expiration_date) - strtotime($today)) / (60 * 60 * 24);
 
+        if (request('categoryRequested')) {
+            $categoryRequested = Category::find(request('categoryRequested'));
+            
+        } else {
+            $categoryRequested = null;
+        }
+
       $account_warning = null;
 
        if ($days_until_expiration <= 0) {
@@ -170,7 +178,7 @@ class OrderController extends Controller
         }
 
         
-        return view('orders.edit', compact('order', 'facility', 'users', 'selected_user', 'accounts', 'account_warning_array', 'status_options'));
+        return view('orders.edit', compact('order', 'facility', 'users', 'selected_user', 'accounts', 'account_warning_array', 'status_options', 'categoryRequested'));
     }
 
     /**

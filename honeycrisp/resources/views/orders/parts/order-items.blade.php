@@ -82,48 +82,82 @@
                 <div class="tab-pane fade show active pt-3" id="shopByCategory" role="tabpanel"
                     aria-labelledby="shopByCategory-tab">
 
-                    <!-- Category filter dropdown button -->
-                    <div class="dropdown mb-3">
-                        <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton"
-                            data-bs-toggle="dropdown" aria-expanded="false">
-                            Filter by Category
-                        </button>
-                        <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-                            <li><a class="dropdown-item" href="#">All</a></li>
-                            @foreach($order->facility->categories as $category)
-                            <li><a class="dropdown-item" href="#">{{ $category->name }}</a></li>
-                            @endforeach
-                        </ul>
+                    <!-- Category filter select -->
+                    <div class="mb-3">
+                        <form action="{{route('orders.edit', $order->id)}}" method="GET"
+                            hx-get="{{route('orders.edit', $order->id)}}" hx-trigger="change" hx-push-url="true"
+                            hx-swap="outerHTML" hx-select="#results_wrap" hx-target="#results_wrap">
+
+                            <div class="form-group">
+                                <label for=" category_select" class="form-label">Filter by Category</label>
+                                <select hx-trigger="change" class="form-select" id="category_select"
+                                    name="categoryRequested">
+                                    <option value="">Select a Category</option>
+                                    @foreach($order->facility->categories as $category)
+                                    <option value="{{ $category->id }}" {{ $categoryRequested==$category ? 'selected'
+                                        : '' }}>
+                                        {{ $category->name }}</option>
+                                    @endforeach
+                                </select>
+                            </div>
+                        </form>
                     </div>
 
-                    <h6>Recently Used:</h6>
+                    <!-- if isset($category) -->
 
-                    @if (count($order->facility->recently_used_products) == 0)
-                        <div class="alert alert-info">No recently used products for this facility.</div>
-                    @else
-                        <table id="products_table" class="table table-hover">
-                            <thead>
-                                <tr>
-                                    <th>Product</th>
-                                    <th>Description</th>
-                                    <th>Price</th>
-                                    <th>Quantity</th>
-                                    <th>Actions</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                <!-- for each recentlyUsedProducts (on Facility) -->
-                                @foreach($order->facility->recently_used_products as $product)
+
+                    @if (isset($categoryRequested) && $categoryRequested != null)
+                    <div id="results_wrap">
+
+                        <div id="category_resuts">
+                            <h6>Products in {{ $categoryRequested->name }}:</h6>
+
+                            <table id="products_table" class="table table-hover">
+                                <thead>
                                     <tr>
-                                        <form action="{{ route('orders.add-item') }}" hx-on::after-request="this.reset()"
-                                            hx-post="{{ route('orders.add-item') }}" hx-swap="outerHTML"
-                                            hx-target="#order_items" hx-select="#order_items" hx-reset="true" method="POST">
+                                        <th>Product</th>
+                                        <th>Description</th>
+                                        <th>Price</th>
+                                        <th>Quantity</th>
+                                        <th>Actions</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                   
+                                    @foreach($category->products as $product)
+
+                                    <tr>
+                                        <form action="{{ route('orders.add-item') }}"
+                                            
+                                            hx-on::after-request="this.reset()" 
+                                            hx-post="{{ route('orders.add-item') }}"
+                                            hx-swap="outerHTML" hx-target="#order_items" hx-select="#order_items"
+                                            hx-reset="true" method="POST">
                                             @csrf
                                             <td>{{ $product->name }}</td>
-                                            <td>{{ $product->description }}</td>
-                                            <td>${{ number_format($product->unit_price, 2) }}</td>
                                             <td>
-                                                <input type="number" name="quantity" class="form-control" value="1" required>
+                                                <textarea type="text" name="description" class="form-control">{{ $product->description }}</textarea>
+
+                                            </td>
+                                            <td>
+                                                @if ($order->price_group == 'internal')
+                                                ${{ number_format($product->unit_price_internal, 2) }}
+                                                <input type="hidden" name="price"
+                                                    value="{{ $product->unit_price_internal }}">
+                                                @elseif ($order->price_group == 'external_nonprofit')
+                                                ${{ number_format($product->unit_price_external_nonprofit, 2) }}
+                                                <input type="hidden" name="price"
+                                                    value="{{ $product->unit_price_external_nonprofit }}">
+                                                @elseif ($order->price_group == 'external_forprofit')
+                                                ${{ number_format($product->unit_price_external_forprofit, 2) }}
+                                                <input type="hidden" name="price"
+                                                    value="{{ $product->unit_price_external_forprofit }}">
+                                                @endif
+                                            </td>
+
+                                            <td>
+                                                <input type="number" name="quantity" class="form-control" value="1"
+                                                    required>
                                             </td>
                                             <td>
                                                 <input type="hidden" name="order_id" value="{{ $order->id }}">
@@ -132,12 +166,65 @@
                                             </td>
                                         </form>
                                     </tr>
-                                @endforeach
-                            </tbody>
-                        </table>
+                                    @endforeach
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                    @else
+
+                    <div id="results_wrap">
+
+                        <div id="recently_used">
+                            <h6>Recently Used:</h6>
+
+                            @if (count($order->facility->recently_used_products) == 0)
+                            <div class="alert alert-info">No recently used products for this facility.</div>
+                            @else
+                            <table id="products_table" class="table table-hover">
+                                <thead>
+                                    <tr>
+                                        <th>Product</th>
+                                        <th>Description</th>
+                                        <th>Price</th>
+                                        <th>Quantity</th>
+                                        <th>Actions</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <!-- for each recentlyUsedProducts (on Facility) -->
+                                    @foreach($order->facility->recently_used_products as $product)
+                                    <tr>
+                                        <form action="{{ route('orders.add-item') }}"
+                                            hx-on::after-request="this.reset()" hx-post="{{ route('orders.add-item') }}"
+                                            hx-swap="outerHTML" hx-target="#order_items" hx-select="#order_items"
+                                            hx-reset="true" method="POST">
+                                            @csrf
+                                            <td>{{ $product->name }}</td>
+                                            <td>{{ $product->description }}</td>
+                                            <td>${{ number_format($product->unit_price, 2) }}</td>
+                                            <td>
+                                                <input type="number" name="quantity" class="form-control" value="1"
+                                                    required>
+                                            </td>
+                                            <td>
+                                                <input type="hidden" name="order_id" value="{{ $order->id }}">
+                                                <input type="hidden" name="product_id" value="{{ $product->id }}">
+                                                <button type="submit" class="btn btn-primary">Add to Order</button>
+                                            </td>
+                                        </form>
+                                    </tr>
+                                    @endforeach
+                                </tbody>
+                            </table>
+                            @endif
+                        </div>
+                    </div>
+
                     @endif
 
                     @if ($order->facility->products->count() == 0)
+
                     <div class='col-md-12'>
                         <div class="alert alert-info">No products available.</div>
                     </div>
