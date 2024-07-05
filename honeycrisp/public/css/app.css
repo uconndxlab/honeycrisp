@@ -391,3 +391,23 @@ legend {
   font-weight: bold;
 }
 
+/** improved styles for bootstrtap tabs */
+.nav-tabs .nav-link {
+  border: 1px solid var(--dark-color);
+  border-radius: 0px;
+  color: var(--dark-color);
+}
+
+.nav-tabs .nav-link.active {
+  background-color: var(--dark-color);
+  border-color: var(--dark-color);
+  color: white;
+}
+
+.nav-tabs .nav-link:hover {
+  background-color: var(--dark-color);
+  border-color: var(--dark-color);
+  color: white;
+}
+
+/** improved styles for bootstrap pills */

@@ -26,6 +26,7 @@ Route::get('products/create/{facilityAbbreviation}', [ProductController::class, 
 Route::resource('orders', OrderController::class);
 Route::post('orders/add-item', [OrderController::class, 'addItem'])->name('orders.add-item');
 Route::post('orders/remove-item', [OrderController::class, 'removeItem'])->name('orders.remove-item');
+Route::post('ordres/import-csv', [OrderController::class, 'importCsv'])->name('orders.import-csv');
 
 Route::get('orders/create/{facilityAbbreviation}', [OrderController::class, 'create']);
 

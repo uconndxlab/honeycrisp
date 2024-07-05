@@ -265,4 +265,33 @@ class OrderController extends Controller
 
         return redirect()->route('orders.edit', $request->order_id)->with('success', 'Item removed from order successfully!');
     }
+
+    public function importCSV(Request $request)
+    {
+        $request->validate([
+            'order_id' => 'required',
+            'csv_file' => 'required',
+        ]);
+
+        $order_id = $request->order_id;
+        $csv_file = $request->file('csv_file');
+
+        $file = fopen($csv_file, 'r');
+        $data = fgetcsv($file);
+
+        while (($data = fgetcsv($file)) !== false) {
+            $order_item = new OrderItem();
+            $order_item->order_id = $order_id;
+            $order_item->name = $data[0];
+            $order_item->price = $data[1];
+            $order_item->quantity = $data[2];
+            $order_item->description = $data[3];
+            $order_item->save();
+        }
+
+        $order = Order::find($order_id);
+        $order->updateTotal();
+
+        return redirect()->route('orders.edit', $order_id)->with('success', 'Items imported successfully!');
+    }
 }
