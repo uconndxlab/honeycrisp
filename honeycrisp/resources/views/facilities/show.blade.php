@@ -14,12 +14,14 @@
                     <div class="card-body">
                         <p><strong>Status:</strong> {{ $facility->status }}</p>
                         <p><strong>Description:</strong> {{ $facility->description }}</p>
+
+                        <a href="{{ route('facilities.edit', $facility->id) }}" class="btn btn-primary">Edit Facility</a>
                     </div>
                 </div>
             </div>
         </div>
 
-        <div class="row my-4">
+        <div id="facility-meta" class="row my-4">
             <div class="col-md-12">
                 <h3>Products & Services Available</h3>
 
@@ -46,7 +48,26 @@
 
                 @endif
             </div>
+        </div>
 
+        <div id="facility-categories" class="row my-4">
+            <div class="col-md-12">
+                <h3>Product Categories</h3>
+
+                @if ($facility->categories->isEmpty())
+                    <p>No categories available at this time.</p>
+                @else
+                    <ul class="list-group">
+                        @foreach ($facility->categories as $category)
+                            <li class="list-group-item">
+                                <a href="{{ route('categories.show', $category->id) }}">
+                                    {{ $category->name }}
+                                </a>
+                            </li>
+                        @endforeach
+                    </ul>
+                @endif
+            </div>
         </div>
 
     </div>

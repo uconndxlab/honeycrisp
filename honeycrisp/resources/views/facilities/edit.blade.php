@@ -24,19 +24,22 @@
         <div class="col-md-2 subnav">
             <ul class="nav flex-column">
                 <li class="nav-item">
-                    <a class="nav-link">Facility Information</a>
+                    <a href="#facility-meta" 
+                    class="nav-link">Facility Information</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link"> Products & Services</a>
+                    <a href="#facility-products"
+                     class="nav-link"> Products & Services</a>
                 </li>
 
                 <li class="nav-item">
-                    <a class="nav-link"> Product Categories</a>
+                    <a href="#facility-categories"
+                    class="nav-link"> Product Categories</a>
                 </li>
             </ul>
         </div>
         <div class="col-md-6">
-            <div class="facility-information">
+            <div id="facility-meta" class="facility-information">
                 <h3 class="mb-3">{{ $facility->name }} Info</h3>
 
                 <!-- Form for editing the facility -->
@@ -91,7 +94,7 @@
                     </div>
                 </form>
             </div>
-            <div class="products-services my-4">
+            <div id="facility-products" class="products-services my-4">
                 <h3>Products & Services Available</h3>
                 <a href="{{ route('products.create') }}/{{$facility->abbreviation}} " class="btn btn-primary">Add Product</a>
 
@@ -114,7 +117,7 @@
                 @endif
             </div>
 
-            <div class="product-categories my-4">
+            <div id="facility-categories" class="product-categories my-4">
                 <h3>Product Categories</h3>
                 <a href="{{ route('categories.create') }}/{{$facility->abbreviation}}" class="btn btn-primary">Add Category</a>
 

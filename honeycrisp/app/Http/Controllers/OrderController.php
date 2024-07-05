@@ -132,10 +132,26 @@ class OrderController extends Controller
         $today = date('Y-m-d');
         $days_until_expiration = (strtotime($expiration_date) - strtotime($today)) / (60 * 60 * 24);
 
-        if ($days_until_expiration < 30) {
+      $account_warning = null;
+
+       if ($days_until_expiration <= 0) {
+            $account_warning = 'This account has expired.';
+            $warning_type = 'danger';
+        } 
+        
+        
+
+       else if ($days_until_expiration < 30) {
             $account_warning = 'This account will expire in ' . $days_until_expiration . ' days.';
-        } else {
+            $warning_type = 'warning';
+        } 
+        
+        else {
             $account_warning = null;
+        }
+
+        if($account_warning){
+            $account_warning_array = array('warning' => $account_warning, 'type' => $warning_type);
         }
 
         if (request('user_id') or $order->user_id) {
@@ -154,7 +170,7 @@ class OrderController extends Controller
         }
 
         
-        return view('orders.edit', compact('order', 'facility', 'users', 'selected_user', 'accounts', 'account_warning', 'status_options'));
+        return view('orders.edit', compact('order', 'facility', 'users', 'selected_user', 'accounts', 'account_warning_array', 'status_options'));
     }
 
     /**

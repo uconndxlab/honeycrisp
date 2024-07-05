@@ -127,9 +127,9 @@
                                         </div>
                                     @endif
 
-                                    @if (isset($account_warning))
-                                        <div class="alert alert-warning" role="alert">
-                                            {{ $account_warning }}
+                                    @if (isset($account_warning_array) && count($account_warning_array) > 0)
+                                        <div class="alert alert-{{ $account_warning_array['type'] }}" role="alert">
+                                            {{ $account_warning_array['warning'] }}
                                         </div>
                                     @endif
 
@@ -141,13 +141,13 @@
                                     <!-- dropdown for internal price group, external_nonprofit, external_forprofit -->
                                     <select name="price_group" id="price_group" class="form-select">
                                         <option value="">Select a Price Group</option>
-                                        <option value="internal" @if (old('price_group', isset($order) && $order->price_group == 'internal') || !isset($order)) selected @endif>
+                                        <option value="internal" @if (old('price_group', isset($order) && $order->price_group == 'internal')) selected @endif>
                                             Internal</option>
                                         <option value="external_nonprofit"
-                                            @if (old('price_group', isset($order) && $order->price_group == 'external_nonprofit') || !isset($order)) selected @endif>External Nonprofit
+                                            @if (old('price_group', isset($order) && $order->price_group == 'external_nonprofit')) selected @endif>External Nonprofit
                                         </option>
                                         <option value="external_forprofit"
-                                            @if (old('price_group', isset($order) && $order->price_group == 'external_forprofit') || !isset($order)) selected @endif>External For-Profit
+                                            @if (old('price_group', isset($order) && $order->price_group == 'external_forprofit')) selected @endif>External For-Profit
                                         </option>
                                     </select>
                                 </div>

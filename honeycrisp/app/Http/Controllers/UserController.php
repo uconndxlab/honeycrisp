@@ -108,9 +108,12 @@ class UserController extends Controller
             $user->status = $request->status;
         }
 
-        if ($request->has('external_rates') && $request->external_rates !== $user->external_rates) {
+        if ($request->has('external_rates') && $request->external_rates !== $user->external_rates && $request->external_rates !== null) {
             $user->external_rates = $request->external_rates;
         }
+
+
+     
 
         // external_organization and kuali_customer_id
 
