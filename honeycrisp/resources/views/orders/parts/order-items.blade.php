@@ -89,7 +89,6 @@
                             hx-swap="outerHTML" hx-select="#results_wrap" hx-target="#results_wrap">
 
                             <div class="form-group">
-                                <label for=" category_select" class="form-label">Filter by Category</label>
                                 <select hx-trigger="change" class="form-select" id="category_select"
                                     name="categoryRequested">
                                     <option value="">Select a Category</option>
@@ -202,7 +201,21 @@
                                             @csrf
                                             <td>{{ $product->name }}</td>
                                             <td>{{ $product->description }}</td>
-                                            <td>${{ number_format($product->unit_price, 2) }}</td>
+                                            <td>
+                                                @if ($order->price_group == 'internal')
+                                                ${{ number_format($product->unit_price_internal, 2) }}
+                                                <input type="hidden" name="price"
+                                                    value="{{ $product->unit_price_internal }}">
+                                                @elseif ($order->price_group == 'external_nonprofit')
+                                                ${{ number_format($product->unit_price_external_nonprofit, 2) }}
+                                                <input type="hidden" name="price"
+                                                    value="{{ $product->unit_price_external_nonprofit }}">
+                                                @elseif ($order->price_group == 'external_forprofit')
+                                                ${{ number_format($product->unit_price_external_forprofit, 2) }}
+                                                <input type="hidden" name="price"
+                                                    value="{{ $product->unit_price_external_forprofit }}">
+                                                @endif
+                                            </td>
                                             <td>
                                                 <input type="number" name="quantity" class="form-control" value="1"
                                                     required>
