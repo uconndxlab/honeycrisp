@@ -209,6 +209,9 @@ class OrderController extends Controller
         $order->facility_id = $facility_id;
         $order->payment_account = $payment_account;
         $order->status = $request->status;
+
+        die(var_dump($request->status));
+
         $order->price_group = $request->price_group;
 
         if ($request->external_company_name) {
@@ -278,13 +281,13 @@ class OrderController extends Controller
     {
         $request->validate([
             'order_id' => 'required',
-            'csv_file' => 'required',
+            'csv_file' => 'required|file',
         ]);
 
         $order_id = $request->order_id;
         $csv_file = $request->file('csv_file');
 
-        $file = fopen($csv_file, 'r');
+        $file = fopen($csv_file->getPathname(), 'r');
         $data = fgetcsv($file);
 
         while (($data = fgetcsv($file)) !== false) {
@@ -301,5 +304,13 @@ class OrderController extends Controller
         $order->updateTotal();
 
         return redirect()->route('orders.edit', $order_id)->with('success', 'Items imported successfully!');
+    }
+
+    public function sendToCustomer(Order $order)
+    {
+        $order->status = 'pending';
+        $order->save();
+
+        return redirect()->route('orders.edit', $order)->with('success', 'Order sent to customer successfully!');
     }
 }

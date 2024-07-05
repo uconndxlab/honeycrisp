@@ -7,6 +7,11 @@
                 @if (isset($order))
                     <span class="badge badge-{{ $order->status_color }}">{{ $order->status }}</span>
                 @endif
+                <!-- if order is quote, a button to send to customer -->
+                @if (isset($order) && $order->status == 'quote')
+                    <a href="{{ route('orders.sendToCustomer', ['order' => $order]) }}" class="btn btn-outline-primary">
+                        <i class="bi bi-envelope"></i> Send to Customer</a>
+                @endif
             </h1>
             <h2>{{ $facility->name }} ({{ $facility->abbreviation }})</h2>
         </div>
@@ -61,7 +66,7 @@
                                             <option value="">Select a Status</option>
                                             @foreach ($status_options as $slug => $name)
                                                 <option value="{{ $slug }}"
-                                                    @if (old('status', isset($order) && $order->status == $slug)) selected @endif>
+                                                    @if ($order->status == $slug)) selected @endif>
                                                     {{ $name }}</option>
                                             @endforeach
                                         </select>
