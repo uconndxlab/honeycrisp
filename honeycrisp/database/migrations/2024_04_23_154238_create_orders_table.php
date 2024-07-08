@@ -29,7 +29,7 @@ return new class extends Migration
             $table->unsignedBigInteger('payment_account')->nullable();
 
             $table->text('status')->enum('quote', 'pending', 'approved', 'in_progress', 'canceled', 'reconciled', 'invoice', 'archived');
-
+            
             $table->json('tags')->nullable();
             $table->decimal('total', 10, 2)->nullable();
 

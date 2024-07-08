@@ -5,7 +5,7 @@
 
 @section('content')
 
-@include('orders.parts.order-meta-show');
+@include('orders.parts.order-meta-show')
 
     <div class="container">
         <div class="row">
@@ -26,6 +26,7 @@
                             <thead>
                                 <tr>
                                     <th>Item</th>
+                                    
                                     <th>Quantity</th>
                                     <th>Price</th>
                                     <th>Total</th>
@@ -34,7 +35,9 @@
                             <tbody>
                                 @foreach ($order->items as $item)
                                     <tr>
-                                        <td>{{ $item->name }}</td>
+                                        <td>{{ $item->name }}
+                                            <small class="text-muted">({{ $item->description }})</small>
+                                        </td>
                                         <td>{{ $item->quantity }}</td>
                                         <td>${{ number_format($item->price, 2) }}</td>
                                         <td>${{ number_format($item->quantity * $item->price, 2) }}</td>

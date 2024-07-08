@@ -68,6 +68,15 @@
 
                         @endif
 
+                        <!-- if order is invoice, and price_group is 'internal', display "awaiting processing in KFS" -->
+                        @if ($order->status == 'invoice' && $order->price_group == 'internal')
+                        <span class="badge badge-warning">Awaiting Processing in KFS</span>
+                        @endif
+
+                        <!-- if order status is reconciled and price_group is 'internal', display "reconciled in KFS" -->
+                        @if ($order->status == 'reconciled' && $order->price_group == 'internal')
+                        <span class="badge badge-success">Reconciled in KFS</span>
+                        @endif
                     </p>
 
                     <p><strong>Submitted Date:</strong> {{ $order->created_at->format('m/d/Y') }}</p>

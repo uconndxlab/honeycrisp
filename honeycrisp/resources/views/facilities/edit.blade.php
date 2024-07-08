@@ -108,7 +108,7 @@
                     @foreach ($facility->products as $product)
                     <li class="list-group-item">
                         <a href="{{ route('products.show', $product->id) }}">
-                            {{ $product->name }} - (${{ $product->unit_price }} each)
+                            {{ $product->name }} 
                         </a>
                     </li>
                     @endforeach
