@@ -110,7 +110,12 @@
 
                         <div id="category_resuts">
                             <h6>Products in {{ $categoryRequested->name }}:</h6>
-
+                            <form action="{{ route('orders.add-item') }}"
+                            hx-on::after-request="this.reset()" 
+                            hx-post="{{ route('orders.add-item') }}"
+                            hx-swap="outerHTML" hx-target="#order_items" hx-select="#order_items"
+                            hx-reset="true" method="POST">
+                            @csrf
                             <table id="products_table" class="table table-hover">
                                 <thead>
                                     <tr>
@@ -126,14 +131,10 @@
                                     @foreach($category->products as $product)
 
                                     <tr>
-                                        <form action="{{ route('orders.add-item') }}"
-                                            
-                                            hx-on::after-request="this.reset()" 
-                                            hx-post="{{ route('orders.add-item') }}"
-                                            hx-swap="outerHTML" hx-target="#order_items" hx-select="#order_items"
-                                            hx-reset="true" method="POST">
-                                            @csrf
-                                            <td>{{ $product->name }}</td>
+
+                                            <td>
+
+                                                {{ $product->name }}</td>
                                             <td>
                                                 <textarea type="text" name="description" class="form-control">{{ $product->description }}</textarea>
 
@@ -162,12 +163,14 @@
                                                 <input type="hidden" name="order_id" value="{{ $order->id }}">
                                                 <input type="hidden" name="product_id" value="{{ $product->id }}">
                                                 <button type="submit" class="btn btn-primary">Add to Order</button>
+                                            
                                             </td>
-                                        </form>
+                                        
                                     </tr>
                                     @endforeach
                                 </tbody>
                             </table>
+                        </form>
                         </div>
                     </div>
                     @else

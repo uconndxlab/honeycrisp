@@ -41,20 +41,24 @@ class Facility extends Model
     {
         // Order Item is the table to get this from. Order_item has a field called "product_id".
         // Just get the most recent 5 order items from orders that are in this facility and list all the products that were ordered.
-
+    
         $order_items = OrderItem::whereHas('order', function ($query) {
             $query->where('facility_id', $this->id);
         })->orderBy('created_at', 'desc')->limit(5)->get();
-
-        $products = [];
-
+    
+        $products = collect();
+    
         foreach ($order_items as $order_item) {
             $product_id = $order_item->product_id;
-            if ($product_id != null)
-                $products[] = Product::find($order_item->product_id);
+            if ($product_id != null) {
+                $product = Product::find($product_id);
+                if ($product) {
+                    $products->push($product);
+                }
+            }
         }
-
-        return $products;
-        
+    
+        return $products->unique('id')->values();
     }
+    
 }

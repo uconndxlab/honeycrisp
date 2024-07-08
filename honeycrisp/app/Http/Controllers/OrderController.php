@@ -212,8 +212,6 @@ class OrderController extends Controller
         $order->payment_account = $payment_account;
         $order->status = $request->status;
 
-        die(var_dump($request->status));
-
         $order->price_group = $request->price_group;
 
         if ($request->external_company_name) {
