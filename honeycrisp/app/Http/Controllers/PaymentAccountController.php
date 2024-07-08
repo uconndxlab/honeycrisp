@@ -21,10 +21,13 @@ class PaymentAccountController extends Controller
     /**
      * Show the form for creating a new resource.
      */
-    public function create()
+    public function create(Request $request)
     {
         $users =  User::all();
-        return view('payment-accounts.create')->with('users', $users);
+        // $request->netid is the netid of the user that was selected
+        $selectedUser = User::where('netid', $request->netid)->first();
+        
+        return view('payment-accounts.create')->with(compact('users', 'selectedUser'));
     }
 
     /**

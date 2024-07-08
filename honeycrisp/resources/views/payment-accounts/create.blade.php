@@ -31,11 +31,12 @@
                     <select class="form-select" id="account_owner" name="account_owner">
                         <option value="">Select an owner</option>
                         @foreach ($users as $user)
-                            <option value="{{ $user->id }}" @if(old('account_owner') == $user->id) selected @endif>{{ $user->name }}</option>
+                            <option value="{{ $user->id }}" @if($selectedUser->id == $user->id) selected @endif>{{ $user->name }}</option>
                         @endforeach
                     </select>
+
                 </div>
-                </div>
+              
 
                 <div class="mb-3">
                     <label for="account_name" class="form-label">Account Name</label>

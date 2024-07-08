@@ -160,6 +160,8 @@ class OrderController extends Controller
 
         if($account_warning){
             $account_warning_array = array('warning' => $account_warning, 'type' => $warning_type);
+        } else {
+            $account_warning_array = null;
         }
 
         if (request('user_id') or $order->user_id) {

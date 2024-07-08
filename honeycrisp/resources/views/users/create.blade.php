@@ -146,7 +146,7 @@ id') }}" required>
                     @if($user->paymentAccounts->isEmpty())
                         <div class="alert alert-info">
                             <p>No payment accounts found for this user.</p>
-                            <a href="{{ route('payment-accounts.create') }}?user_id={{ $user->netid }}" class="btn btn-primary">Add Payment Account</a>
+                            <a href="{{ route('payment-accounts.create') }}?netid={{ $user->netid }}" class="btn btn-primary">Add Payment Account</a>
                         </div>
                     @endif
 
