@@ -36,7 +36,7 @@
       @method('POST')
   @endif
 
-  <input type="hidden" readonly name="facility_id" value="{{ $facility->id }}">
+<input type="hidden" name="facility_id" value="{{ $facility->id }}">
 
   <div class="row pb-3">
       <div class="col-md-6">
@@ -187,14 +187,7 @@
 </form>
 
 <script>
-  document.querySelector('.order-meta-form').addEventListener('submit', function(e) {
-      e.preventDefault();
-      const formData = new FormData(e.target);
-      for (let [key, value] of formData.entries()) {
-          console.log(`${key}: ${value}`);
-      }
 
-  });
 </script>
 
 

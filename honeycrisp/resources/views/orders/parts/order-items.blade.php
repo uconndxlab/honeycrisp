@@ -183,6 +183,11 @@
                             @if (count($order->facility->recently_used_products) == 0)
                             <div class="alert alert-info">No recently used products for this facility.</div>
                             @else
+                            <form action="{{ route('orders.add-item') }}"
+                            hx-on::after-request="this.reset()" hx-post="{{ route('orders.add-item') }}"
+                            hx-swap="outerHTML" hx-target="#order_items" hx-select="#order_items"
+                            hx-reset="true" method="POST">
+                            @csrf
                             <table id="products_table" class="table table-hover">
                                 <thead>
                                     <tr>
@@ -197,13 +202,13 @@
                                     <!-- for each recentlyUsedProducts (on Facility) -->
                                     @foreach($order->facility->recently_used_products as $product)
                                     <tr>
-                                        <form action="{{ route('orders.add-item') }}"
-                                            hx-on::after-request="this.reset()" hx-post="{{ route('orders.add-item') }}"
-                                            hx-swap="outerHTML" hx-target="#order_items" hx-select="#order_items"
-                                            hx-reset="true" method="POST">
-                                            @csrf
+
                                             <td>{{ $product->name }}</td>
-                                            <td>{{ $product->description }}</td>
+                                            <td>
+                                                
+                                                <textarea type="text" name="description" class="form-control">{{ $product->description }}</textarea>
+
+                                            </td>
                                             <td>
                                                 @if ($order->price_group == 'internal')
                                                 ${{ number_format($product->unit_price_internal, 2) }}
@@ -228,11 +233,12 @@
                                                 <input type="hidden" name="product_id" value="{{ $product->id }}">
                                                 <button type="submit" class="btn btn-primary">Add to Order</button>
                                             </td>
-                                        </form>
+
                                     </tr>
                                     @endforeach
                                 </tbody>
                             </table>
+                        </form>
                             @endif
                         </div>
                     </div>
@@ -315,15 +321,3 @@
             </div>
         </div>
     </div>
-
-    <script>
-        // after a form is submitted, reset the form
-        document.addEventListener('DOMContentLoaded', function() {
-            document.querySelectorAll('form').forEach(form => {
-                form.addEventListener('submit', function() {
-                    form.reset();
-                });
-            });
-        });
-
-    </script>

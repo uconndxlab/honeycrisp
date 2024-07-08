@@ -22,7 +22,7 @@
                 <span class="navbar-text text-white text-mono login-hud">Logged in as: jrs06005
                     <span class="badge bg-success">Admin</span>
                 </span>
-                <div class="collapse navbar-collapse" id="navbarNav">
+                <div class="collapse navbar-collapse">
                     <ul class="navbar-nav" style="margin-left: auto; display: flex; justify-content: end; width: 100%;">
 
                         <li class="nav-item">
@@ -48,7 +48,7 @@
                 <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
                     <span class="navbar-toggler-icon"></span>
                 </button>
-                <div class="collapse navbar-collapse" id="navbarNav">
+                <div class="collapse navbar-collapse">
                     <ul class="navbar-nav me-auto">
                         <li class="nav-item">
                             <a class="nav-link" href="{{ route('orders.index') }}">Orders</a>
@@ -126,9 +126,9 @@
                     <a href="https://pandemic-journaling-project.chip.uconn.edu/wp-admin/">Webmaster Login</a>
                 </li>
 
-                <a href="#" target="_blank">
+                <li><a href="#" target="_blank">
                     Contact Information
-                </a>
+                </a></li>
 
                                 </ul>
         </div>
