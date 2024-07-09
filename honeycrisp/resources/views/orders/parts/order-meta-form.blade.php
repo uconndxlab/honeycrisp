@@ -104,7 +104,10 @@
                       <div class="accordion-body">
                           <div class="form-group my-2">
                               <label for="user_id">Ordering for User:</label>
-                              <select name="user_id" id="user_id" class="form-select">
+                              <select hx-get="{{ route('orders.create') }}/{{ $facility->abbreviation }}"
+                                hx-select="#user_accounts" hx-target="#user_accounts"
+                                hx-indicator="#user_accounts" hx-trigger="change" hx-swap="outerHTML"
+                                hx-push-url="true" name="user_id" id="user_id" class="form-select">
                                   <option value="">Select a User</option>
                                   @foreach ($users as $user)
                                       <option value="{{ $user->netid }}" {{ old('user_id', isset($selected_user) && $selected_user == $user->id) ? 'selected' : '' }}>
