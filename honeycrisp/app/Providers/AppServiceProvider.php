@@ -28,5 +28,9 @@ class AppServiceProvider extends ServiceProvider
         }
         $facilities = Facility::all()->where('status', 'active');
         View::share('facilities', $facilities);
+
+        // use bootstrap5 pagination
+        \Illuminate\Pagination\Paginator::useBootstrap();
+        
     }
 }

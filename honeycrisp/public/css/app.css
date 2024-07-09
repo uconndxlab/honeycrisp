@@ -414,4 +414,22 @@ legend {
   color: white;
 }
 
-/** improved styles for bootstrap pills */
+/** improved styles for bootsrap pagination */
+.pagination .page-link {
+  border-radius: 0px;
+  color: var(--dark-color);
+}
+
+.pagination .page-link:hover {
+  background-color: var(--dark-color);
+  border-color: var(--dark-color);
+  color: white;
+}
+
+.pagination .page-item.active .page-link {
+  background-color: var(--dark-color);
+  border-color: var(--dark-color);
+  color: white;
+}
+
+/** improved styles for bootstrap form controls */

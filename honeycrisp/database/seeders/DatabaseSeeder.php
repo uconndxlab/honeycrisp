@@ -67,6 +67,9 @@ class DatabaseSeeder extends Seeder
             'expiration_date' => '2024-04-24',
             'account_status' => 'active',
         ]);
+
+        // create 10 random payment accounts
+        PaymentAccount::factory()->count(30)->create();
             
 
 
