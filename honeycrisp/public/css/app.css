@@ -6,6 +6,7 @@
 @import url('https://fonts.googleapis.com/css2?family=Roboto+Slab:wght@300;400;500;600;700&display=swap');
 
 :root {
+  --light-color: #c0dbf5;
   --primary-color: #0056b3;
   /* Different Blue */
   --primary-color-dark: #004b87;
@@ -354,8 +355,8 @@ main {
 }
 
 .subnav a.active {
-  background-color: var(--primary-color);
-  color: white!important;
+  background-color: var(--light-color);
+  color: var(--dark-color)!important;
 }
 
 .badge-secondary {

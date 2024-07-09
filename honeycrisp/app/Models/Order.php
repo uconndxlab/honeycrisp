@@ -75,6 +75,7 @@ class Order extends Model
     {
         return [
             'quote' => 'Quote',
+            'pending' => 'Pending Approval',
             'accepted' => 'Accepted',
             'in_progress' => 'In Progress',
             'invoice' => 'Invoice',

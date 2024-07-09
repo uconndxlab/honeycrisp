@@ -63,31 +63,19 @@
                 <!-- account fiscal_officer is a foreign key -->
                 <div class="mb-3">
                     <label for="fiscal_officer" class="form-label">Fiscal Officer</label>
-                    <select class="form-select" id="fiscal_officer" name="fiscal_officer">
-                        @foreach ($users as $user)
-                            <option value="{{ $user->id }}" {{ $user->id == $paymentAccount->fiscal_officer ? 'selected' : '' }}>{{ $user->name }}</option>
-                        @endforeach
-                    </select>
+                    <strong>Feature not yet implemented</strong>
                 </div>
 
                 <!-- fiscal_manager is a foreign key -->
                 <div class="mb-3">
                     <label for="fiscal_manager" class="form-label">Fiscal Manager</label>
-                    <select class="form-select" id="fiscal_manager" name="fiscal_manager">
-                        @foreach ($users as $user)
-                            <option value="{{ $user->id }}" {{ $user->id == $paymentAccount->fiscal_manager ? 'selected' : '' }}>{{ $user->name }}</option>
-                        @endforeach
-                    </select>
+                    <strong>Feature not yet implemented</strong>
                 </div>
 
                 <!-- authorized users multi select -->
                 <div class="mb-3">
                     <label for="authorized_users" class="form-label">Authorized Users</label>
-                    <select class="form-select" id="authorized_users" name="authorized_users[]" multiple>
-                        @foreach ($users as $user)
-                            <option value="{{ $user->id }}" {{ in_array($user->id, $paymentAccount->authorized_users->pivot->pluck('user_id')->toArray()) ? 'selected' : '' }}>{{ $user->name }}</option>
-                        @endforeach
-                    </select>
+                    <strong>Feature not yet implemented</strong>
                 </div>
 
                 <button type="submit" class="btn btn-primary">Update Payment Account</button>

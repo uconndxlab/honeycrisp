@@ -20,6 +20,7 @@ class OrderController extends Controller
     {
 
         $status_options = Order::statusOptions();
+        $selected_status = request('status') ?? null;
 
         // if request[status] is not null, filter orders by status
         if (request('status')) {
@@ -30,7 +31,7 @@ class OrderController extends Controller
 
 
 
-        return view('orders.index', compact('orders', 'status_options'));
+        return view('orders.index', compact('orders', 'status_options', 'selected_status'));
     }
 
     /**

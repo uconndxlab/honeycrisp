@@ -38,7 +38,8 @@
                 <!-- loop through status_options, which is an associative array of status['slug'] = 'Status Name' -->
                 @foreach($status_options as $slug => $name)
                 <li class="nav-item">
-                    <a class="nav-link" href="{{ route('orders.index', ['status' => $slug]) }}">{{ $name }}</a>
+                    <a class="nav-link {{ $slug == $selected_status ? 'active' : '' }}" 
+                    href="{{ route('orders.index', ['status' => $slug]) }}">{{ $name }}</a>
                 </li>
                 @endforeach
             </ul>
