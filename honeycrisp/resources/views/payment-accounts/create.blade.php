@@ -31,7 +31,7 @@
                     <select class="form-select" id="account_owner" name="account_owner">
                         <option value="">Select an owner</option>
                         @foreach ($users as $user)
-                            <option value="{{ $user->id }}" @if($selectedUser->id == $user->id) selected @endif>{{ $user->name }}</option>
+                            <option value="{{ $user->id }}" @if(isset($selectedUser->id) && $selectedUser->id == $user->id) selected @endif>{{ $user->name }}</option>
                         @endforeach
                     </select>
 

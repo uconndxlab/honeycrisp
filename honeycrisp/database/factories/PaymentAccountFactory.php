@@ -20,7 +20,7 @@ class PaymentAccountFactory extends Factory
     public function definition(): array
     {
         return [
-            'account_name' => $this->faker->name,
+            'account_name' => $this->faker->company,
             'account_number' => $this->faker->creditCardNumber,
             'account_type' => $this->faker->randomElement(['kfs','uch']),
             'expiration_date' => $this->faker->creditCardExpirationDate,

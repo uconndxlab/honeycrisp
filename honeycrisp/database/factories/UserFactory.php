@@ -37,7 +37,10 @@ class UserFactory extends Factory
     }
 
     function generateNetid() {
-        $letters = Str::lower(Str::random(3));
+        $letters = '';
+        for ($i = 0; $i < 3; $i++) {
+            $letters .= chr(rand(97, 122)); // generate a random lowercase letter
+        }
         $numbers = '';
         for ($i = 0; $i < 5; $i++) {
             $numbers .= rand(0, 9);

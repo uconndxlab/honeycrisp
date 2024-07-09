@@ -24,6 +24,7 @@ class PaymentAccountController extends Controller
     public function create(Request $request)
     {
         $users =  User::all();
+    
         // $request->netid is the netid of the user that was selected
         $selectedUser = User::where('netid', $request->netid)->first();
         
