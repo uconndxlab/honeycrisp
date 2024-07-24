@@ -97,6 +97,11 @@ class OrderController extends Controller
         }
         
         $order = $order->save();
+        // get the id of the order that was just created
+        $order = Order::latest()->first();
+        
+
+        
     
         return redirect()->route('orders.edit', $order)->with('success', 'Order created successfully!');
     }

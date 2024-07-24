@@ -31,9 +31,11 @@
                 <div class="card mt-4">
                     <div class="card-body">
                     <h5 class="card-title">{{ $facility->name }} ({{$facility->abbreviation}}) </h5>
-                    <p class="card-text">{{ $facility->description }}</p>
-                    <p class="card-text">{{ $facility->email }}</p>
-                    <p class="card-text">{{ $facility->address }}</p>
+                    <p class="card-text my-2">{{ $facility->description }}</p>
+                    <p class="card-text my-2">{{ $facility->email }}</p>
+                    <p class="card-text my-2">
+                        <address>{{ $facility->address }}</address>
+                    </p>
                     <a href="{{ route('facilities.show', $facility->id) }}" class="btn btn-primary">View</a>
                     <a href="{{ route('facilities.edit', $facility->id) }}" class="btn btn-secondary">Edit</a>
                     <form action="{{ route('facilities.destroy', $facility->id) }}" method="POST" class="d-inline">
