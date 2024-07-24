@@ -9,9 +9,18 @@ class UserController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index(Request $request)
     {
-        $users = \App\Models\User::paginate(30);
+
+        if ($request->has('search')) {
+            $users = \App\Models\User::where('name', 'like', '%' . $request->search . '%')
+                ->orWhere('email', 'like', '%' . $request->search . '%')
+                ->orWhere('netid', 'like', '%' . $request->search . '%')
+                ->paginate(30);
+        } else {
+            $users = \App\Models\User::paginate(30);
+        }
+
         return view('users.index', compact('users'));
     }
 

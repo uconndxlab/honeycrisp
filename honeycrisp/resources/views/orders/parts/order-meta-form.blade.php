@@ -18,180 +18,177 @@
     </div>
 
     @if ($errors->any())
-    <div class="alert alert-danger">
-        <ul>
-            @foreach ($errors->all() as $error)
-                <li>{{ $error }}</li>
-            @endforeach
-        </ul>
-    </div>
-@endif
+        <div class="alert alert-danger">
+            <ul>
+                @foreach ($errors->all() as $error)
+                    <li>{{ $error }}</li>
+                @endforeach
+            </ul>
+        </div>
+    @endif
 
-<form action="{{ isset($order) ? route('orders.update', ['order' => $order]) : route('orders.store') }}"
-    method="POST" class="order-meta-form">
-  @csrf
-  @if (isset($order))
-      @method('PUT')
-  @else
-      @method('POST')
-  @endif
+    <form action="{{ isset($order) ? route('orders.update', ['order' => $order]) : route('orders.store') }}"
+        method="POST" class="order-meta-form">
+        @csrf
+        @if (isset($order))
+            @method('PUT')
+        @else
+            @method('POST')
+        @endif
 
-<input type="hidden" name="facility_id" value="{{ $facility->id }}">
+        <input type="hidden" name="facility_id" value="{{ $facility->id }}">
 
-  <div class="row pb-3">
-      <div class="col-md-6">
-          <!-- Order Details Accordion -->
-          <div class="accordion my-2" id="facilityInformationAccordion">
-              <div class="accordion-item">
-                  <h2 class="accordion-header" id="facilityInformationHeading">
-                      <button class="accordion-button" type="button" data-bs-toggle="collapse"
-                              data-bs-target="#facilityInformationCollapse" aria-expanded="true"
-                              aria-controls="facilityInformationCollapse">
-                          Order Details
-                      </button>
-                  </h2>
-                  <div id="facilityInformationCollapse" class="accordion-collapse collapse show"
-                       aria-labelledby="facilityInformationHeading" data-bs-parent="#facilityInformationAccordion">
-                      <div class="accordion-body">
-                          <div class="form-group my-2">
-                              <label for="title">Title:</label>
-                              <input value="{{ old('title', isset($order) ? $order->title : '') }}" type="text"
-                                     name="title" id="title" class="form-control">
-                          </div>
+        <div class="row pb-3">
+            <div class="col-md-6">
+                <!-- Order Details Accordion -->
+                <div class="accordion my-2" id="facilityInformationAccordion">
+                    <div class="accordion-item">
+                        <h2 class="accordion-header" id="facilityInformationHeading">
+                            <button class="accordion-button" type="button" data-bs-toggle="collapse"
+                                data-bs-target="#facilityInformationCollapse" aria-expanded="true"
+                                aria-controls="facilityInformationCollapse">
+                                Order Details
+                            </button>
+                        </h2>
+                        <div id="facilityInformationCollapse" class="accordion-collapse collapse show"
+                            aria-labelledby="facilityInformationHeading" data-bs-parent="#facilityInformationAccordion">
+                            <div class="accordion-body">
+                                <div class="form-group my-2">
+                                    <label for="title">Title:</label>
+                                    <input value="{{ old('title', isset($order) ? $order->title : '') }}" type="text"
+                                        name="title" id="title" class="form-control">
+                                </div>
 
-                          <div class="form-group my-2">
-                              <label for="description">Description:</label>
-                              <textarea name="description" id="description" class="form-control">{{ old('description', isset($order) ? $order->description : '') }}</textarea>
-                          </div>
+                                <div class="form-group my-2">
+                                    <label for="description">Description:</label>
+                                    <textarea name="description" id="description" class="form-control">{{ old('description', isset($order) ? $order->description : '') }}</textarea>
+                                </div>
 
-                          <div class="form-group my-2">
-                              <label for="date">Date:</label>
-                              <input type="date" name="date" id="date" class="form-control"
-                                     value="{{ old('date', isset($order) ? $order->date : '') }}">
-                          </div>
+                                <div class="form-group my-2">
+                                    <label for="date">Date:</label>
+                                    <input type="date" name="date" id="date" class="form-control"
+                                        value="{{ old('date', isset($order) ? $order->date : '') }}">
+                                </div>
 
-                          @if (isset($order))
-                              <div class="form-group my-2">
-                                  <label for="status">Status:</label>
-                                  <select name="status" id="status" class="form-select">
-                                      <option value="">Select a Status</option>
-                                      @foreach ($status_options as $slug => $name)
-                                          <option value="{{ $slug }}" {{ old('status', $order->status) == $slug ? 'selected' : '' }}>
-                                              {{ $name }}</option>
-                                      @endforeach
-                                  </select>
-                              </div>
-                          @endif
-                      </div>
-                  </div>
-              </div>
-          </div>
-      </div>
+                                @if (isset($order))
+                                    <div class="form-group my-2">
+                                        <label for="status">Status:</label>
+                                        <select name="status" id="status" class="form-select">
+                                            <option value="">Select a Status</option>
+                                            @foreach ($status_options as $slug => $name)
+                                                @if ($slug == 'sent_to_kfs')
+                                                    @continue
+                                                @endif
+                                                <option value="{{ $slug }}"
+                                                    {{ old('status', $order->status) == $slug ? 'selected' : '' }}>
+                                                    {{ $name }}</option>
+                                            @endforeach
+                                        </select>
+                                    </div>
+                                @endif
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
 
-      <div class="col-md-6">
-          <!-- Customer Information Accordion -->
-          <div class="accordion my-2" id="customerInformationAccordion">
-              <div class="accordion-item">
-                  <h2 class="accordion-header" id="customerInformationHeading">
-                      <button class="accordion-button" type="button" data-bs-toggle="collapse"
-                              data-bs-target="#customerInformationCollapse" aria-expanded="true"
-                              aria-controls="customerInformationCollapse">
-                          Customer Information
-                      </button>
-                  </h2>
-                  <div id="customerInformationCollapse" class="accordion-collapse collapse show"
-                       aria-labelledby="customerInformationHeading" data-bs-parent="#customerInformationAccordion">
-                      <div class="accordion-body">
-                          <div class="form-group my-2">
-                              <label for="user_id">Ordering for User:</label>
-                              <select hx-get="{{ route('orders.create') }}/{{ $facility->abbreviation }}"
-                                hx-select="#user_accounts" hx-target="#user_accounts"
-                                hx-indicator="#user_accounts" hx-trigger="change" hx-swap="outerHTML"
-                                hx-push-url="true" name="user_id" id="user_id" class="form-select">
-                                  <option value="">Select a User</option>
-                                  @foreach ($users as $user)
-                                      <option value="{{ $user->netid }}" {{ old('user_id', isset($selected_user) && $selected_user == $user->id) ? 'selected' : '' }}>
-                                          {{ $user->name }} ({{ $user->netid }})
-                                      </option>
-                                  @endforeach
-                              </select>
-                          </div>
+            <div class="col-md-6">
+                <!-- Customer Information Accordion -->
+                <div class="accordion my-2" id="customerInformationAccordion">
+                    <div class="accordion-item">
+                        <h2 class="accordion-header" id="customerInformationHeading">
+                            <button class="accordion-button" type="button" data-bs-toggle="collapse"
+                                data-bs-target="#customerInformationCollapse" aria-expanded="true"
+                                aria-controls="customerInformationCollapse">
+                                Customer Information
+                            </button>
+                        </h2>
+                        <div id="customerInformationCollapse" class="accordion-collapse collapse show"
+                            aria-labelledby="customerInformationHeading" data-bs-parent="#customerInformationAccordion">
+                            <div class="accordion-body">
+                                @if ((isset($order) && $order->user_id != null) or (isset($selected_user)))
+                                    <div class="form-group my-2">
+                                        <label for="user_id">User:</label>
+                                        <input type="hidden" name="user_id" id="user_id"
+                                            value="{{ isset($order) ? $order->user_id : $selected_user->id }}">
+                                        <input type="text" name="user_name" id="user_name"
+                                            value="{{ isset($order) ? $order->user->name : $selected_user->name }}"
+                                            class="form-control" disabled>
+                                    </div>
+                                    <!-- select a new user -->
+                                @else
+                                    <div class="alert alert-warning" role="alert">
+                                        Select a user first to see payment accounts and start an order.
+                                        <a href="{{ route('users.index') }}">Select A User</a>
+                                    
+                                    </div>
+                                @endif
 
-                          <div id="user_accounts" class="form-group my-2">
-                              @if ($accounts != null && count($accounts) > 0)
-                                  <label for="payment_account">Payment Account:</label>
-                                  <select name="payment_account" id="payment_account" class="form-select">
-                                      <option value="">Select a Payment Account</option>
-                                      @foreach ($accounts as $payment_account)
-                                          <option value="{{ $payment_account->id }}" {{ old('payment_account', isset($order) && $order->payment_account == $payment_account->id) ? 'selected' : '' }}>
-                                              {{ $payment_account->account_name }}
-                                              ({{ strtoupper($payment_account->account_type) }}-{{ $payment_account->account_number }})
-                                          </option>
-                                      @endforeach
-                                  </select>
-                              @elseif ($accounts == null)
-                                  <div class="alert alert-warning" role="alert">
-                                      Select a User to see Payment Accounts
-                                  </div>
-                              @elseif (count($accounts) == 0 && $accounts != null)
-                                  <div class="alert alert-warning" role="alert">
-                                      No Payment Accounts found for this user.
-                                  </div>
-                              @endif
+                                <div id="user_accounts" class="form-group my-2">
+                                    @if ($accounts != null && count($accounts) > 0)
+                                        <label for="payment_account">Payment Account:</label>
+                                        <select name="payment_account" id="payment_account" class="form-select">
+                                            <option value="">Select a Payment Account</option>
+                                            @foreach ($accounts as $payment_account)
+                                                <option value="{{ $payment_account->id }}"
+                                                    {{ old('payment_account', isset($order) && $order->payment_account == $payment_account->id) ? 'selected' : '' }}>
+                                                    {{ $payment_account->account_name }}
+                                                    ({{ strtoupper($payment_account->account_type) }}-{{ $payment_account->account_number }})
+                                                </option>
+                                            @endforeach
+                                        </select>
+                                    @elseif ($accounts == null)
+                                        <div class="alert alert-warning" role="alert">
+                                            Select a User to see Payment Accounts
+                                        </div>
+                                    @elseif (count($accounts) == 0 && $accounts != null)
+                                        <div class="alert alert-warning" role="alert">
+                                            No Payment Accounts found for this user.
+                                        </div>
+                                    @endif
 
-                              @if (isset($account_warning_array) && count($account_warning_array) > 0)
-                                  <div class="alert alert-{{ $account_warning_array['type'] }}" role="alert">
-                                      {{ $account_warning_array['warning'] }}
-                                  </div>
-                              @endif
-                          </div>
+                                    @if (isset($account_warning_array) && count($account_warning_array) > 0)
+                                        <div class="alert alert-{{ $account_warning_array['type'] }}" role="alert">
+                                            {{ $account_warning_array['warning'] }}
+                                        </div>
+                                    @endif
+                                </div>
 
-                          <div class="form-group my-2">
-                              <label for="price_group">Price Group:</label>
-                              <select name="price_group" id="price_group" class="form-select">
-                                  <option value="">Select a Price Group</option>
-                                  <option value="internal" {{ old('price_group', isset($order) && $order->price_group == 'internal') ? 'selected' : '' }}>
-                                      Internal</option>
-                                  <option value="external_nonprofit" {{ old('price_group', isset($order) && $order->price_group == 'external_nonprofit') ? 'selected' : '' }}>External Nonprofit
-                                  </option>
-                                  <option value="external_forprofit" {{ old('price_group', isset($order) && $order->price_group == 'external_forprofit') ? 'selected' : '' }}>External For-Profit
-                                  </option>
-                              </select>
-                          </div>
+                                <div class="form-group my-2">
+                                    <label for="price_group">Price Group:</label>
+                                    <select name="price_group" id="price_group" class="form-select">
+                                        <option value="">Select a Price Group</option>
+                                        <option value="internal"
+                                            {{ old('price_group', isset($order) && $order->price_group == 'internal') ? 'selected' : '' }}>
+                                            Internal</option>
 
-                          <div class="form-group my-2">
-                              <label for="external_company_name">External Company Name:</label>
-                              <input value="{{ old('company_name', isset($order) ? $order->user->external_organization : '') }}" type="text"
-                                     name="external_company_name" id="external_company_name" class="form-control">
+                                        <option value="external_non_profit"
+                                            {{ old('price_group', isset($order) && $order->price_group == 'external_non_profit') ? 'selected' : '' }}>
+                                            External Non-Profit</option>
 
-                              <label for="external_customer_id">External Customer ID:</label>
-                              <input value="{{ old('external_customer_id', isset($order) ? $order->user->external_customer_id : '') }}" type="text"
-                                     name="external_customer_id" id="external_customer_id" class="form-control">
-                          </div>
-                      </div>
-                  </div>
-              </div>
-          </div>
-      </div>
-  </div>
+                                        <option value="external_for_profit"
+                                            {{ old('price_group', isset($order) && $order->price_group == 'external_for_profit') ? 'selected' : '' }}>
+                                            External For-Profit</option>
+                                    </select>
+                            </div>
+                        </div>
 
-  <!-- Action Buttons -->
-  <div class="row">
-      <div class="col-md-6">
-          <button type="submit" id="save-draft" class="btn btn-primary">
-              @if (isset($order))
-                  Save Order Details
-              @else
-                  Save Draft and Add items <i class="bi bi-arrow-right"></i>
-              @endif
-          </button>
-      </div>
-  </div>
-</form>
+                    </div>
+                </div>
+            </div>
+        </div>
 
-<script>
-
-</script>
-
-
+        <!-- Action Buttons -->
+        <div class="row">
+            <div class="col-md-6">
+                <button type="submit" id="save-draft" class="btn btn-primary">
+                    @if (isset($order))
+                        Save Order Details
+                    @else
+                        Save Draft and Add items <i class="bi bi-arrow-right"></i>
+                    @endif
+                </button>
+            </div>
+        </div>
+    </form>
 </div>

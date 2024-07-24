@@ -70,6 +70,9 @@ class DatabaseSeeder extends Seeder
 
         // create 10 random payment accounts
         PaymentAccount::factory()->count(30)->create();
+
+        // create 100 random users
+        User::factory()->count(4800)->create();
             
 
 

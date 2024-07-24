@@ -79,6 +79,7 @@ class Order extends Model
             'accepted' => 'Accepted',
             'in_progress' => 'In Progress',
             'invoice' => 'Invoice',
+            'sent_to_kfs' => 'Sent to KFS',
             'reconciled' => 'Reconciled',
             'canceled' => 'Canceled',
             'archived' => 'Archived'

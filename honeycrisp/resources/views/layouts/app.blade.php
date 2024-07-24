@@ -64,7 +64,7 @@
                             <a class="nav-link" href="{{ route('users.index') }}">Users</a>
                         </li>
                     </ul>
-                    <div class="dropdown">
+                    {{-- <div class="dropdown">
                         <button class="btn btn-primary dropdown-toggle" type="button" id="dropdownMenuButton" data-bs-toggle="dropdown" aria-expanded="false">
                             Start an Order
                         </button>
@@ -75,7 +75,8 @@
                                 ">{{ $facility->name }}</a></li>
                             @endforeach
                         </ul>
-                    </div>
+                    </div> --}}
+                    <a href="{{route('users.index')}}" class="btn btn-primary">Start an Order</a>
                 </div>
             </div>
         </nav>

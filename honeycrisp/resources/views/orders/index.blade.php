@@ -12,7 +12,7 @@
             <div class="d-flex justify-content-between align-items-center">
 
                 <!-- create order with facility dropdown -->
-                <div class="dropdown">
+                {{-- <div class="dropdown">
                     <button class="btn btn-primary dropdown-toggle" type="button" id="dropdownMenuButton" data-bs-toggle="dropdown" aria-expanded="false">
                         Start an Order
                     </button>
@@ -23,7 +23,7 @@
                                     ">{{ $facility->name }}</a></li>
                         @endforeach
                     </ul>
-                </div>
+                </div> --}}
 
             </div>
 
@@ -38,7 +38,8 @@
                 <!-- loop through status_options, which is an associative array of status['slug'] = 'Status Name' -->
                 @foreach($status_options as $slug => $name)
                 <li class="nav-item">
-                    <a class="nav-link {{ $slug == $selected_status ? 'active' : '' }}" 
+                    <a class="nav-link {{ $slug == $selected_status ? 'active' : '' }}
+                    @if ($slug == 'archived' || $slug=='canceled') text-muted @endif"
                     href="{{ route('orders.index', ['status' => $slug]) }}">{{ $name }}</a>
                 </li>
                 @endforeach

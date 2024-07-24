@@ -45,9 +45,9 @@ class OrderController extends Controller
         $users = User::all()->where('status', 'active');
         $selected_user = null;
 
-        if (request('user_id')) {
-            $user = User::all()->where('netid', request('user_id'))->first();
-            $selected_user = $user->id;
+        if (request('netid')) {
+            $user = User::all()->where('netid', request('netid'))->first();
+            $selected_user = $user;
             $accounts = [];
 
             $accounts =  $user->paymentAccounts()->get();
@@ -76,7 +76,7 @@ class OrderController extends Controller
             'price_group' => 'required',
         ]);
 
-        $user_id = User::all()->where('netid', $request->user_id)->first()->id;
+        $user_id = $request->user_id;
         $facility_id = $request->facility_id;
         $payment_account = PaymentAccount::find($request->payment_account)->id;
 
@@ -200,7 +200,7 @@ class OrderController extends Controller
             'price_group' => 'required',
         ]);
 
-        $user_id = User::all()->where('netid', $request->user_id)->first()->id;
+        $user_id = $request->user_id;
         $facility_id = $request->facility_id;
         $payment_account = PaymentAccount::find($request->payment_account)->id;
 
