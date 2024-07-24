@@ -140,10 +140,12 @@ class OrderController extends Controller
         $days_until_expiration = (strtotime($expiration_date) - strtotime($today)) / (60 * 60 * 24);
 
         if (request('categoryRequested')) {
-            $categoryRequested = Category::find(request('categoryRequested'));
+            $categoryRequested = Category::find(request('categoryRequested'))->get();
             
         } else {
+            // else, get all categories for the facility and set $categoryRequested to all categories
             $categoryRequested = null;
+            
         }
 
       $account_warning = null;
