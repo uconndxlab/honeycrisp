@@ -76,6 +76,7 @@ class UserController extends Controller
      */
     public function show(string $id)
     {
+
         $user = \App\Models\User::find($id);
         return view('users.show', compact('user'));
     }

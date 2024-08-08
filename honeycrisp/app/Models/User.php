@@ -24,7 +24,7 @@ class User extends Authenticatable
         'email',
         'status',
         'role',
-        'external_rates',
+        'price_group',
         'netid',
         'password',
     ];
@@ -60,16 +60,7 @@ class User extends Authenticatable
             ->withTimestamps();
     }
 
-    // custom attribute for price_group based on external_rates
-
-    public function getPriceGroupAttribute()
-    {
-        if ($this->external_rates) {
-            return 'external';
-        } else {
-            return 'internal';
-        }
-    }
+   
 
     /** get owned accounts */
     public function ownedAccounts()

@@ -1,6 +1,7 @@
 @extends('layouts.app')
 @section('title', 'Viewing User: ' . $user->name)
 
+
 @section('content')
     <div class="container">
         <div class="row">
@@ -16,7 +17,7 @@
                         <p><strong>Email:</strong> {{ $user->email }}</p>
                         <p><strong>Role:</strong> {{ $user->role }}</p>
                         <p><strong>Status:</strong> {{ $user->status }}</p>
-                        <p><strong>External Rates:</strong> {{ $user->external_rates }}</p>
+                        <p><strong>Price Group:</strong> {{ $user->price_group }}</p>
                     </div>
                 </div>
             </div>

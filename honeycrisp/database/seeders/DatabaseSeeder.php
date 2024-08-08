@@ -32,6 +32,7 @@ class DatabaseSeeder extends Seeder
             'email' => 'marlene.schwartz@uconn.edu',
             'role' => 'user',
             'status' => 'active',
+            'price_group' => 'external_nonprofit',
         ]);
 
         Facility::factory()->create([

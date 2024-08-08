@@ -64,12 +64,17 @@ id') }}" required>
                             </div>
 
                             <div class="form-group mb-3">
-                                <label for="external_rates">External Rates</label>
-                                <select name="external_rates" id="external_rates" class="form-select">
+                                <label for="external_rates">Price Group</label>
+                                <select name="price_group" id="external_rates" class="form-select">
                                     <option value="">Select External Rates</option>
-                                    <option value="no" {{ isset($user) && $user->external_rates == 'no' ? 'selected' : '' }}>No</option>
+                                    <!-- internal -->
+                                    <!-- external_for_profit -->
+                                    <!-- external_non_profit -->
 
-                                    <option value="yes" {{ isset($user) && $user->external_rates == 'yes' ? 'selected' : '' }}>Yes</option>
+                                    <option value="no" {{ isset($user) && $user->price_group == 'no' ? 'selected' : '' }}>Internal</option>
+                                    <option value="external_forprofit" {{ isset($user) && $user->price_group == 'external_forprofit' ? 'selected' : '' }}>External For Profit</option>
+                                    <option value="external_nonprofit" {{ isset($user) && $user->price_group == 'external_nonprofit' ? 'selected' : '' }}>External Non Profit</option>
+
                                 </select>
                             </div>
 
