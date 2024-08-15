@@ -437,6 +437,37 @@ legend {
   .no-print {
     display: none;
   }
+
+  /** hide the footer when printing */
+  #uc-footer {
+    display: none;
+  }
+
+  .order-show .card {
+    border: none;
+    box-shadow: none!important;
+  }
+
+  .order-show .card-header {
+    border: none;
+  }
+
+  .order-show .card-body {
+    border: none;
+  }
+
+  .order-show .card-footer {
+    border: none;
+  }
+
+  .order-show .card-title {
+    font-size: 1.5rem;
+  }
+
+  .order-show .card-text {
+    font-size: 1.25rem;
+  }
+
 }
 
 

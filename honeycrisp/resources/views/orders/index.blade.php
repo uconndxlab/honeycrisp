@@ -27,7 +27,7 @@
         <div class="col-md-10">
             <div class="active-filters py-2">
                 <!-- dismissable badges of active filters, like "Facility: ABC", "Search: 'search term'", "Date Range: 2021-01-01 to 2021-12-31" -->
-
+                <span><small>Active Filters:</small></span>
                 <span class="badge bg-secondary">
                     Facility: DXG
                     <a href="{{ route('orders.index', ['facility' => null, 'search' => request('search'), 'start_date' => request('start_date'), 'end_date' => request('end_date')]) }}" class="text-white ms-2">&times;</a>
@@ -80,8 +80,7 @@
                 </div>
             </form>
 
-            <small class="d-block py-2">There are <span class="badge bg-dark">{{ $orders->count() }}</span> orders on this page, out of
-                <span class="badge bg-dark">{{ $orders->total() }}</span> total matching your search.</small>
+           
 
 
 
@@ -129,6 +128,9 @@
                     @endforeach
                 </tbody>
             </table>
+
+            <small class="d-block py-2">There are <span class="badge bg-dark">{{ $orders->count() }}</span> orders on this page, out of
+                <span class="badge bg-dark">{{ $orders->total() }}</span> total matching your search.</small>
 
             @if ($orders->count() == 0)
                 <p>No orders found matching your criteria.</p>

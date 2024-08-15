@@ -24,9 +24,12 @@ class OrderController extends Controller
 
         // if request[status] is not null, filter orders by status
         if (request('status')) {
-            $orders = Order::where('status', $selected_status)->paginate(10);
+            $orders = Order::where('status', $selected_status)->orderBy('date')->paginate(10);
         } else {
-            $orders = Order::all()->where('status', '!=','complete')->sortByDesc('date')->paginate(10);
+            $orders = Order::where('status', '!=', 'complete')
+               ->orderBy('date')
+               ->paginate(10);
+
         }
 
 
