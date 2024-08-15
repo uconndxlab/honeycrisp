@@ -22,9 +22,16 @@ class Facility extends Model
         return $this->hasMany(Product::class);
     }
 
-    public function users()
+    public function director()
     {
-        return $this->belongsToMany(User::class);
+        return $this->staff()->where('role', 'director')->first();
+    }
+
+    public function staff()
+    {
+        return $this->belongsToMany(User::class)
+            ->withPivot('role')
+            ->withTimestamps();
     }
 
     public function ledgers()

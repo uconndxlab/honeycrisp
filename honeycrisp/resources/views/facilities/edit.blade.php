@@ -36,6 +36,9 @@
                     <a href="#facility-categories"
                     class="nav-link"> Product Categories</a>
                 </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="#staff">Facility Staff</a>
+                </li>
             </ul>
         </div>
         <div class="col-md-6">
@@ -138,6 +141,11 @@
 
                 </ul>
                 @endif
+            </div>
+
+            <div class="#staff">
+                <h3>Facility Staff</h3>
+                
             </div>
         </div>
     </div>
