@@ -25,6 +25,28 @@
         </div>
 
         <div class="col-md-10">
+            <div class="active-filters py-2">
+                <!-- dismissable badges of active filters, like "Facility: ABC", "Search: 'search term'", "Date Range: 2021-01-01 to 2021-12-31" -->
+
+                <span class="badge bg-secondary">
+                    Facility: DXG
+                    <a href="{{ route('orders.index', ['facility' => null, 'search' => request('search'), 'start_date' => request('start_date'), 'end_date' => request('end_date')]) }}" class="text-white ms-2">&times;</a>
+                </span>
+                
+                <span class="badge bg-secondary">
+                    Search: 'search term'
+                    <a href="{{ route('orders.index', ['facility' => request('facility'), 'search' => null, 'start_date' => request('start_date'), 'end_date' => request('end_date')]) }}" class="text-white ms-2">&times;</a>
+                </span>
+                
+                <span class="badge bg-secondary">
+                    Date Range: 2021-01-01 to 2021-12-31
+                    <a href="{{ route('orders.index', ['facility' => request('facility'), 'search' => request('search'), 'start_date' => null, 'end_date' => null]) }}" class="text-white ms-2">&times;</a>
+                </span>
+                
+
+
+            </div>
+
             <!-- filter UI, like a search bar "Search by netid, order title, or order id", as well as date range filter -->
             <form action="{{ route('orders.index') }}" method="GET">
                 <div class="row mb-3">
@@ -58,6 +80,11 @@
                 </div>
             </form>
 
+            <small class="d-block py-2">There are <span class="badge bg-dark">{{ $orders->count() }}</span> orders on this page, out of
+                <span class="badge bg-dark">{{ $orders->total() }}</span> total matching your search.</small>
+
+
+
             <table class="table">
                 <thead>
                     <tr>
@@ -67,8 +94,9 @@
                         <th>Facility</th>
                         <th>User</th>
                         <th>Title</th>
-                        <th>Order Date</th>
-                        <th>Order Status</th>
+                        <th>Date</th>
+                        <th>Status</th>
+                        <th>Total</th>
                         <th>Actions</th>
                     </tr>
                 </thead>
@@ -86,6 +114,7 @@
                             <td>
                                 <span class="badge badge-{{ $order->status_color }}">{{ $order->status }}</span>
                             </td>
+                            <td>${{ number_format($order->total, 2) }}</td>
                             <td>
                                 <a href="{{ route('orders.show', $order->id) }}" class="btn btn-primary">View</a>
                                 <a href="{{ route('orders.edit', $order->id) }}" class="btn btn-secondary">Edit</a>

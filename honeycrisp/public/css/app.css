@@ -433,4 +433,11 @@ legend {
   color: white;
 }
 
+@media print {
+  .no-print {
+    display: none;
+  }
+}
+
+
 /** improved styles for bootstrap form controls */

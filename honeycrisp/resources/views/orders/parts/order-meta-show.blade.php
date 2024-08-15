@@ -1,6 +1,6 @@
 <div class="container">
     <!-- Header Section -->
-    <div class="row my-3">
+    <div class="row my-3 no-print">
         <div class="col-md-12">
 
             <div class="order-lede mb-3">

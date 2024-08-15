@@ -15,7 +15,7 @@
 </head>
 
 <body>
-    <header>
+    <header class="no-print">
         <!-- secondary top navigation above the main navigation -->
         <nav class="navbar navbar-expand-lg navbar-light bg-secondary">
             <div class="container">

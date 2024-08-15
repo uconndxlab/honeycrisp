@@ -7,7 +7,7 @@
 
 @include('orders.parts.order-meta-show')
 
-    <div class="container">
+    <div class="container order-show">
         <div class="row">
 
             <div class="col-md-12">
