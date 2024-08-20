@@ -14,9 +14,6 @@ class Product extends Model
         'name',
         'description',
         'unit',
-        'unit_price_internal',
-        'unit_price_external_nonprofit',
-        'unit_price_external_forprofit',
         'requires_approval',
         'is_active',
         'is_deleted',
@@ -34,5 +31,25 @@ class Product extends Model
     public function category()
     {
         return $this->belongsTo(Category::class);
+    }
+
+    public function priceGroups()
+    {
+        return $this->hasMany(PriceGroup::class);
+    }
+
+    public function getActivePrice($type)
+    {
+        return $this->priceGroups()
+            ->where('type', $type)
+            ->where(function ($query) {
+                $query->where('start_date', '<=', now())
+                    ->orWhereNull('start_date');
+            })
+            ->where(function ($query) {
+                $query->where('end_date', '>=', now())
+                    ->orWhereNull('end_date');
+            })
+            ->first();
     }
 }

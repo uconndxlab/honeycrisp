@@ -68,24 +68,12 @@
 
                 <!-- image -->
 
+                <!-- alert about setting pricing: you can set pricing after creating the product and editing its price groups -->
+                <div class="alert alert-info">
+                    <p>You can set pricing after creating the product and editing its price groups.</p>
+                </div>
 
-                <fieldset>
-                    <legend>Pricing</legend>
-                    <div class="form-group my-2">
-                        <label for="price">Internal Price</label>
-                        <input type="number" class="form-control" id="price" name="unit_price_internal">
-                    </div>
 
-                    <div class="form-group my-2">
-                        <label for="price">External Price (Non-Profit)</label>
-                        <input type="number" class="form-control" id="price" name="unit_price_external_nonprofit">
-                    </div>
-
-                    <div class="form-group my-2">
-                        <label for="price">External Price (For Profit)</label>
-                        <input type="number" class="form-control" id="price" name="unit_price_external_forprofit">
-                    </div>
-                </fieldset>
 
                 <button type="submit" class="btn btn-primary">Save</button>
                 <a href="{{ route('facilities.show', $facility->abbreviation) }}" class="btn btn-secondary">Cancel</a>

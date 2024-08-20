@@ -20,9 +20,33 @@
                         <p><strong>Category:</strong> {{ $product->category->name ?? 'N/A' }}</p>
                         <div class="m-3 p-3 border border-primary">
                             <h3>Pricing</h3>
-                            <p><strong>Internal Unit Cost:</strong> ${{ number_format($product->unit_price_internal, 2) }}</p>
-                            <p><strong>External (Non-Profit) Unit Cost:</strong> ${{ number_format($product->unit_price_external_nonprofit, 2) }}</p>
-                            <p><strong>External (For-Profit) Unit Cost:</strong> ${{ number_format($product->unit_price_external_forprofit, 2) }}</p>
+                            @if ($product->priceGroups->isEmpty())
+                            <p>No price groups found for this product.</p>
+                            <a href="{{ route('price-groups.create', $product->id) }}" class="btn btn-primary">Add Price Group</a>
+                        @else
+                            <table class="table">
+                                <thead>
+                                    <tr>
+                                        <th>Name</th>
+                                        <th>Start Date</th>
+                                        <th>End Date</th>
+                                        <th>Price</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    @foreach ($product->priceGroups as $priceGroup)
+                                        <tr>
+                                            <td>{{ $priceGroup->name }}</td>
+                                            <td>{{ $priceGroup->start_date }}</td>
+                                            <td>{{ $priceGroup->end_date }}</td>
+                                            <td>{{ $priceGroup->price ?? 'N/A' }}</td>
+                                        </tr>
+                                    @endforeach
+                                </tbody>
+                            </table>
+
+                            <a href="{{ route('price-groups.create', $product->id) }}" class="btn btn-primary">Add Price Group</a>
+                        @endif
 
                     </div>
                     <div class="card-footer">

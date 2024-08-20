@@ -10,6 +10,7 @@ use App\Http\Controllers\PaymentAccountController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\LedgerController;
 use App\Http\Controllers\CategoryController;
+use App\Http\Controllers\PriceGroupController;
 
 Route::get('/', function () {
     // facilities.index controller
@@ -52,3 +53,5 @@ Route::get('/register', [LoginController::class, 'register'])->name('register');
 Route::post('/register', [LoginController::class, 'submitRegister'])->name('register.submit');
 
 
+Route::get('price-groups/create/{product}', [PriceGroupController::class, 'create'])->name('price-groups.create');
+Route::post('price-groups', [PriceGroupController::class, 'store'])->name('price-groups.store');
