@@ -31,6 +31,7 @@
                                         <th>Start Date</th>
                                         <th>End Date</th>
                                         <th>Price</th>
+                                        <th>Actions</th>
                                     </tr>
                                 </thead>
                                 <tbody>
@@ -40,6 +41,15 @@
                                             <td>{{ $priceGroup->start_date }}</td>
                                             <td>{{ $priceGroup->end_date }}</td>
                                             <td>{{ $priceGroup->price ?? 'N/A' }}</td>
+                                            <td>
+                                                <a href="{{ route('price-groups.edit', $priceGroup->id) }}" class="btn btn-primary">Edit</a>
+                                                <form action="{{ route('price-groups.destroy', $priceGroup->id) }}" method="POST" style="display: inline;">
+                                                    @csrf
+                                                    @method('DELETE')
+                                                    <button type="submit" class="btn btn-danger">Delete</button>
+                                                </form>
+                                            </td>
+
                                         </tr>
                                     @endforeach
                                 </tbody>

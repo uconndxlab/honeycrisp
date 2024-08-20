@@ -55,3 +55,7 @@ Route::post('/register', [LoginController::class, 'submitRegister'])->name('regi
 
 Route::get('price-groups/create/{product}', [PriceGroupController::class, 'create'])->name('price-groups.create');
 Route::post('price-groups', [PriceGroupController::class, 'store'])->name('price-groups.store');
+
+Route::get('price-groups/{priceGroup}/edit', [PriceGroupController::class, 'edit'])->name('price-groups.edit');
+Route::delete('price-groups/{priceGroup}', [PriceGroupController::class, 'destroy'])->name('price-groups.destroy');
+Route::put('price-groups/{priceGroup}', [PriceGroupController::class, 'update'])->name('price-groups.update');
