@@ -37,19 +37,4 @@ class Product extends Model
     {
         return $this->hasMany(PriceGroup::class);
     }
-
-    public function getActivePrice($type)
-    {
-        return $this->priceGroups()
-            ->where('type', $type)
-            ->where(function ($query) {
-                $query->where('start_date', '<=', now())
-                    ->orWhereNull('start_date');
-            })
-            ->where(function ($query) {
-                $query->where('end_date', '>=', now())
-                    ->orWhereNull('end_date');
-            })
-            ->first();
-    }
 }

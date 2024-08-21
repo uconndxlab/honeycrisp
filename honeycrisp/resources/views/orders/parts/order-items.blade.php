@@ -126,19 +126,12 @@
                                                 class="form-control">{{ $product->description }}</textarea>
                                         </td>
                                         <td>
-                                            @if ($order->price_group == 'internal')
-                                            ${{ number_format($product->unit_price_internal, 2) }}
-                                            <input type="hidden" name="price"
-                                                value="{{ $product->unit_price_internal }}">
-                                            @elseif ($order->price_group == 'external_nonprofit')
-                                            ${{ number_format($product->unit_price_external_nonprofit, 2) }}
-                                            <input type="hidden" name="price"
-                                                value="{{ $product->unit_price_external_nonprofit }}">
-                                            @elseif ($order->price_group == 'external_forprofit')
-                                            ${{ number_format($product->unit_price_external_forprofit, 2) }}
-                                            <input type="hidden" name="price"
-                                                value="{{ $product->unit_price_external_forprofit }}">
-                                            @endif
+                                            <select id="price_group" name="price" class="form-select">
+                                                @foreach ($product->priceGroups as $priceGroup)
+                                                 <option value="{{ $priceGroup->price}}">
+                                                     {{ $priceGroup->name }} (${{$priceGroup->price}})                                                     </option>
+                                                 @endforeach
+                                             </select>
                                         </td>
                                         <td>
                                             <input type="number" name="quantity" class="form-control" value="1"
@@ -192,19 +185,12 @@
 
                                         </td>
                                         <td>
-                                            @if ($order->price_group == 'internal')
-                                            ${{ number_format($product->unit_price_internal, 2) }}
-                                            <input type="hidden" name="price"
-                                                value="{{ $product->unit_price_internal }}">
-                                            @elseif ($order->price_group == 'external_nonprofit')
-                                            ${{ number_format($product->unit_price_external_nonprofit, 2) }}
-                                            <input type="hidden" name="price"
-                                                value="{{ $product->unit_price_external_nonprofit }}">
-                                            @elseif ($order->price_group == 'external_forprofit')
-                                            ${{ number_format($product->unit_price_external_forprofit, 2) }}
-                                            <input type="hidden" name="price"
-                                                value="{{ $product->unit_price_external_forprofit }}">
-                                            @endif
+                                            <select id="price_group" name="price" class="form-select">
+                                               @foreach ($product->priceGroups as $priceGroup)
+                                                <option value="{{ $priceGroup->price }}" {{ $priceGroup == $order->price_group ? 'selected' : '' }}>
+                                                    {{ $priceGroup->name}} (${{$priceGroup->price}})</option>
+                                                @endforeach
+                                            </select>
                                         </td>
                                         <td>
                                             <input type="number" name="quantity" class="form-control" value="1"
