@@ -5,7 +5,7 @@
 
     <div class="container">
         <div class="row my-4">
-            <div class="col-md-5">
+            <div class="col-md-8">
                 <div class="card">
                     <div class="card-header">
                         <h2>{{ $product->name }}</h2>
