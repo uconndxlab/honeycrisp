@@ -122,6 +122,7 @@ id') }}" required>
                                 <th>Account Name</th>
                                 <th>Account Type</th>
                                 <th>Account Number</th>
+                                <th>Account Role</th>
                                 <th>Expiration Date</th>
                                 <th>Actions</th>
                             </tr>
@@ -132,6 +133,7 @@ id') }}" required>
                                     <td>{{ $account->account_name }}</td>
                                     <td>{{ $account->account_type }}</td>
                                     <td>{{ $account->account_number }}</td>
+                                    <td>{{ $account->pivot->role }}</td>
                                     <td>{{ $account->expiration_date }}</td>
                                     <td>
                                         <a href="{{ route('payment-accounts.edit', $account->id) }}" class="btn btn-primary">Edit</a>

@@ -69,8 +69,10 @@
                                     </button>
                                     <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton">
                                         @foreach ($facilities as $facility)
-                                            <li><a class="dropdown-item"
-                                                    href="{{ route('orders.create') }}/{{ $facility->abbreviation }}?netid={{ $user->netid }}">{{ $facility->name }}</a></li>
+                                            <li>
+                                                <a class="dropdown-item"
+                                                    href="{{ route('orders.create') }}/{{ $facility->abbreviation }}?netid={{ $user->netid }}">{{ $facility->name }}</a>
+                                            </li>
                                            
                                         @endforeach
                                     </ul>
@@ -80,6 +82,7 @@
                                     @method('DELETE')
                                     <button type="submit" class="btn btn-danger">Delete</button>
                                 </form>
+                                <a href="{{ route('users.edit', $user->id) }}" class="btn btn-secondary">Edit</a>
                             </td>
                         </tr>
                     @endforeach

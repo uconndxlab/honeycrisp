@@ -104,6 +104,27 @@ class PaymentAccountController extends Controller
             'owner.required' => 'The owner field is required.',
         ]);
 
+        if($request->expiration_date) {
+            $paymentAccount->expiration_date = $request->expiration_date;
+        }
+
+        if($request->fiscal_officer) {
+            if ($paymentAccount->fiscal_officer) {
+                $paymentAccount->users()->detach($paymentAccount->fiscal_officer);
+            }
+
+            $paymentAccount->users()->attach($request->fiscal_officer, ['role' => 'fiscal_officer']);
+        }
+
+        if($request->account_manager) {
+            if ($paymentAccount->account_manager) {
+                $paymentAccount->users()->detach($paymentAccount->account_manager);
+            }
+
+            $paymentAccount->users()->attach($request->account_manager, ['role' => 'account_manager']);
+        }
+
+
         $paymentAccount->update($request->all());
         // update the user to the account as the owner
     

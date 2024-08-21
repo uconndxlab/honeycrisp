@@ -22,4 +22,11 @@ class PriceGroup extends Model
     {
         return $this->belongsTo(Product::class);
     }
+
+    // isActive, based on start_date and end_date
+    public function getIsActiveAttribute()
+    {
+        $now = now();
+        return $this->start_date <= $now && $now <= $this->end_date;
+    }
 }

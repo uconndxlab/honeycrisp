@@ -57,19 +57,29 @@
 
                 <div class="mb-3">
                     <label for="expiration_date" class="form-label">Expiration Date</label>
-                    <input type="date" class="form-control" id="expiration_date" name="expiration_date" value="{{ $paymentAccount->expiration_date }}">
+                    <input required type="date" class="form-control" id="expiration_date" name="expiration_date" value="{{ $paymentAccount->expiration_date }}">
                 </div>
 
                 <!-- account fiscal_officer is a foreign key -->
                 <div class="mb-3">
-                    <label for="fiscal_officer" class="form-label">Fiscal Officer</label>
-                    <strong>Feature not yet implemented</strong>
+                    <label for="fiscal_officer" class="form-label" >Fiscal Officer</label>
+                    <select class="form-select" id="fiscal_officer" name="fiscal_officer">
+                        <option value="">Select a fiscal officer</option>
+                        @foreach ($users as $user)
+                            <option value="{{ $user->id }}" {{ $user->id == optional($paymentAccount->fiscal_officer)->id ? 'selected' : '' }}>{{ $user->name }}</option>
+                        @endforeach
+                    </select>
                 </div>
 
                 <!-- fiscal_manager is a foreign key -->
                 <div class="mb-3">
                     <label for="fiscal_manager" class="form-label">Fiscal Manager</label>
-                    <strong>Feature not yet implemented</strong>
+                    <select class="form-select" id="fiscal_manager" name="fiscal_manager">
+                        <option value="">Select a fiscal manager</option>
+                        @foreach ($users as $user)
+                            <option value="{{ $user->id }}" {{ $user->id == optional($paymentAccount->fiscal_manager)->id ? 'selected' : '' }}>{{ $user->name }}</option>
+                        @endforeach
+                    </select>
                 </div>
 
                 <!-- authorized users multi select -->

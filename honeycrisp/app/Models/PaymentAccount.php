@@ -30,17 +30,16 @@ class PaymentAccount extends Model
         return $this->users()->wherePivot('role', 'owner')->first();
     }
 
-    public function account_manager()
+    public function getAccountManagerAttribute()
     {
-        // account manager is pivot on user
         return $this->users()->wherePivot('role', 'account_manager')->first();
     }
 
-    public function fiscal_officer()
+    public function getFiscalOfficerAttribute()
     {
-        // fiscal officer is pivot on user
         return $this->users()->wherePivot('role', 'fiscal_officer')->first();
     }
+    
 
     public function authorized_users()
     {
