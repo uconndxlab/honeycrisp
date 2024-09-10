@@ -17,63 +17,64 @@ class AccountSeeder extends Seeder
      */
     public function run(): void
     {
-        // First we should start going through KFS Accounts from 
-        // $kfsPath = base_path('database/kfs_acct_list.csv');
-        // $kfsAccounts = array_map('str_getcsv', file($kfsPath));
-        // foreach($kfsAccounts as $data) {
+
+        $kfsPath = base_path('database/kfs_acct_list.csv');
+        $kfsAccounts = array_map('str_getcsv', file($kfsPath));
+        array_shift($kfsAccounts);
+        foreach($kfsAccounts as $data) {
             
-        //     $fiscal_officer_netid = $data[2];
-        //     $fiscal_officer_name = $data[3];
+            $fiscal_officer_netid = $data[2];
+            $fiscal_officer_name = $data[3];
 
-        //     $account_supervisor_netid = $data[4];
-        //     $account_supervisor_name = $data[5];
+            $account_supervisor_netid = $data[4];
+            $account_supervisor_name = $data[5];
 
-        //     $account_name = $data[1];
-        //     $account_number = $data[0];
+            $account_name = $data[1];
+            $account_number = $data[0];
 
-        //     $expiration_date = $data[21];
+            $expiration_date = $data[21];
 
-        //     DB::transaction(function () use ($fiscal_officer_netid, $fiscal_officer_name, $account_supervisor_netid, $account_supervisor_name, $account_name, $account_number, $expiration_date) {
-        //         $fiscal_officer = User::firstOrCreate(
-        //             ['netid' => $fiscal_officer_netid], // Data to search by
-        //             [
-        //                 'name' => $fiscal_officer_name,
-        //                 'email' => $fiscal_officer_netid . '@uconn.edu',
-        //                 'password' => Hash::make('password')
-        //             ] // Data to create with
-        //         );
+            DB::transaction(function () use ($fiscal_officer_netid, $fiscal_officer_name, $account_supervisor_netid, $account_supervisor_name, $account_name, $account_number, $expiration_date) {
+                $fiscal_officer = User::firstOrCreate(
+                    ['netid' => $fiscal_officer_netid], // Data to search by
+                    [
+                        'name' => $fiscal_officer_name,
+                        'email' => $fiscal_officer_netid . '@uconn.edu',
+                        'password' => Hash::make('password')
+                    ] // Data to create with
+                );
 
-        //         $account_supervisor = User::firstOrCreate(
-        //             ['netid' => $account_supervisor_netid], // Data to search by
-        //             [
-        //                 'name' => $account_supervisor_name,
-        //                 'email' => $account_supervisor_netid . '@uconn.edu',
-        //                 'password' => Hash::make('password')
-        //             ] // Data to create with
-        //         );
+                $account_supervisor = User::firstOrCreate(
+                    ['netid' => $account_supervisor_netid], // Data to search by
+                    [
+                        'name' => $account_supervisor_name,
+                        'email' => $account_supervisor_netid . '@uconn.edu',
+                        'password' => Hash::make('password')
+                    ] // Data to create with
+                );
 
-        //         $paymentAccount = PaymentAccount::firstOrCreate(
-        //             [
-        //                 'account_number' => $account_number,
-        //                 'account_type' => 'kfs'
-        //             ],
-        //             [
-        //                 'account_name' => $account_name,
-        //                 'expiration_date' => $expiration_date
-        //             ]
-        //         );
+                $paymentAccount = PaymentAccount::firstOrCreate(
+                    [
+                        'account_number' => $account_number,
+                        'account_type' => 'kfs'
+                    ],
+                    [
+                        'account_name' => $account_name,
+                        'expiration_date' => $expiration_date
+                    ]
+                );
 
-        //         $paymentAccount->users()->wherePivotNotIn('role', ['authorized_user'])->sync([
-        //             $account_supervisor->id => ['role' => 'owner'],
-        //             $fiscal_officer->id => ['role' => 'fiscal_officer']
-        //         ]);
+                $paymentAccount->users()->wherePivotNotIn('role', ['authorized_user'])->sync([
+                    $account_supervisor->id => ['role' => 'owner'],
+                    $fiscal_officer->id => ['role' => 'fiscal_officer']
+                ]);
 
                 
-        //     });
-        //     Log::info('Imported KFS Account: ' . $account_name);
-        // }
+            });
+            Log::info('Imported KFS Account: ' . $account_name);
+        }
 
-        // unset($kfsAccounts);
+        unset($kfsAccounts);
 
         $bannerCsv = base_path('database/banner_acct_list.csv');
         $bannerUserCsv = base_path('database/ext_uch_people.csv');
