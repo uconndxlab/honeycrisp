@@ -103,22 +103,28 @@
                         </form>
                         <!-- loop through all products -->
                         @if ($order->facility->products->count() > 0)
-                        <form action="{{ route('orders.add-item') }}" hx-on::after-request="this.reset()"
-                            hx-post="{{ route('orders.add-item') }}" hx-swap="outerHTML" hx-target="#order_items"
-                            hx-select="#order_items" hx-reset="true" method="POST">
-                            @csrf
-                            <table id="products_table" class="table table-hover">
-                                <thead>
-                                    <tr>
-                                        <th>Product</th>
-                                        <th>Description</th>
-                                        <th>Price</th>
-                                        <th>Quantity</th>
-                                        <th>Actions</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    @foreach ($order->facility->products as $product)
+
+                        <table id="products_table" class="table table-hover">
+                            <thead>
+                                <tr>
+                                    <th>Product</th>
+                                    <th>Description</th>
+                                    <th>Price</th>
+                                    <th>Quantity</th>
+                                    <th>Actions</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @foreach ($order->facility->products->groupBy('category') as $category => $products)
+                                <tr>
+                                    <td colspan="5" class="text-start"><strong>
+                                        <!-- category is a json object, so we need to decode it -->
+                                        {{ json_decode($category)->name }}
+                                    </strong></td>
+                                </tr>
+                                @foreach ($products as $product)
+                                <form action="{{ route('orders.add-item') }}" method="POST">
+                                    @csrf
                                     <tr>
                                         <td>{{ $product->name }}</td>
                                         <td>
@@ -128,67 +134,9 @@
                                         <td>
                                             <select id="price_group" name="price" class="form-select">
                                                 @foreach ($product->priceGroups as $priceGroup)
-                                                 <option value="{{ $priceGroup->price}}">
-                                                     {{ $priceGroup->name }} (${{$priceGroup->price}})                                                     </option>
-                                                 @endforeach
-                                             </select>
-                                        </td>
-                                        <td>
-                                            <input type="number" name="quantity" class="form-control" value="1"
-                                                required>
-                                        </td>
-                                        <td>
-                                            <input type="hidden" name="order_id" value="{{ $order->id }}">
-                                            <input type="hidden" name="product_id" value="{{ $product->id }}">
-                                            <button type="submit" class="btn btn-primary">Add to
-                                                Order</button>
-                                        </td>
-                                    </tr>
-                                    @endforeach
-                                </tbody>
-                            </table>
-                        </form>
-                        @endif
-                    </div>
-  
-                <div id="results_wrap">
-                    <div id="recently_used">
-                        <h6>Recently Used:</h6>
-
-                        @if (count($order->facility->recently_used_products) == 0)
-                        <div class="alert alert-info">No recently used products for this facility.</div>
-                        @else
-                        <form action="{{ route('orders.add-item') }}" hx-on::after-request="this.reset()"
-                            hx-post="{{ route('orders.add-item') }}" hx-swap="outerHTML" hx-target="#order_items"
-                            hx-select="#order_items" hx-reset="true" method="POST">
-                            @csrf
-                            <table id="products_table" class="table table-hover">
-                                <thead>
-                                    <tr>
-                                        <th>Product</th>
-                                        <th>Description</th>
-                                        <th>Price</th>
-                                        <th>Quantity</th>
-                                        <th>Actions</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    <!-- for each recentlyUsedProducts (on Facility) -->
-                                    @foreach ($order->facility->recently_used_products as $product)
-                                    <tr>
-
-                                        <td>{{ $product->name }}</td>
-                                        <td>
-
-                                            <textarea type="text" name="description"
-                                                class="form-control">{{ $product->description }}</textarea>
-
-                                        </td>
-                                        <td>
-                                            <select id="price_group" name="price" class="form-select">
-                                               @foreach ($product->priceGroups as $priceGroup)
-                                                <option value="{{ $priceGroup->price }}" {{ $priceGroup == $order->price_group ? 'selected' : '' }}>
-                                                    {{ $priceGroup->name}} (${{$priceGroup->price}})</option>
+                                                <option value="{{ $priceGroup->price }}">
+                                                    {{ $priceGroup->name }} (${{ $priceGroup->price }})
+                                                </option>
                                                 @endforeach
                                             </select>
                                         </td>
@@ -199,91 +147,90 @@
                                         <td>
                                             <input type="hidden" name="order_id" value="{{ $order->id }}">
                                             <input type="hidden" name="product_id" value="{{ $product->id }}">
-                                            <button type="submit" class="btn btn-primary">Add to
-                                                Order</button>
+                                            <button type="submit" class="btn btn-primary">Add to Order</button>
                                         </td>
-
                                     </tr>
-                                    @endforeach
-                                </tbody>
-                            </table>
-                        </form>
+                                </form>
+                                @endforeach
+                            </tbody>
+                            @endforeach
+                            <!-- Add this line to close the foreach loop -->
+                        </table>
                         @endif
                     </div>
+
+                    @if ($order->facility->products->count() == 0)
+                    <div class='col-md-12'>
+                        <div class="alert alert-info">No products available.</div>
+                    </div>
+                    @endif
                 </div>
 
-
-                @if ($order->facility->products->count() == 0)
-                <div class='col-md-12'>
-                    <div class="alert alert-info">No products available.</div>
-                </div>
-                @endif
-            </div>
-
-            <!-- Add Custom Item Tab -->
-            <div class="tab-pane fade pt-3" id="addCustomItem" role="tabpanel" aria-labelledby="addCustomItem-tab">
-                <div class="custom-item">
-                    <table class="table table-hover">
-                        <thead>
-                            <tr>
-                                <th>Name</th>
-                                <th>Description</th>
-                                <th>Price</th>
-                                <th>Quantity</th>
-                                <th>Actions</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <!-- row for a custom product -->
-                            <tr id="custom_product_row">
-                                <form action="{{ route('orders.add-item') }}" hx-on::after-request="this.reset()"
-                                    hx-post="{{ route('orders.add-item') }}" hx-swap="outerHTML"
-                                    hx-target="#order_items" hx-select="#order_items" hx-reset="true" method="POST">
-                                    @csrf
-                                    <td>
-                                        <input type="text" name="name" class="form-control" placeholder="Custom Product"
-                                            required>
-                                    </td>
-                                    <td>
-                                        <textarea type="text" name="description" class="form-control"
-                                            placeholder="Custom Product Description" required>
+                <!-- Add Custom Item Tab -->
+                <div class="tab-pane fade pt-3" id="addCustomItem" role="tabpanel" aria-labelledby="addCustomItem-tab">
+                    <div class="custom-item">
+                        <table class="table table-hover">
+                            <thead>
+                                <tr>
+                                    <th>Name</th>
+                                    <th>Description</th>
+                                    <th>Price</th>
+                                    <th>Quantity</th>
+                                    <th>Actions</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <!-- row for a custom product -->
+                                <tr id="custom_product_row">
+                                    <form action="{{ route('orders.add-item') }}" hx-on::after-request="this.reset()"
+                                        hx-post="{{ route('orders.add-item') }}" hx-swap="outerHTML"
+                                        hx-target="#order_items" hx-select="#order_items" hx-reset="true" method="POST">
+                                        @csrf
+                                        <td>
+                                            <input type="text" name="name" class="form-control"
+                                                placeholder="Custom Product" required>
+                                        </td>
+                                        <td>
+                                            <textarea type="text" name="description" class="form-control"
+                                                placeholder="Custom Product Description" required>
                                         </textarea>
-                                    </td>
-                                    <td>
-                                        <input type="number" name="price" class="form-control"
-                                            placeholder="Custom Product Price" required>
-                                    </td>
-                                    <td>
-                                        <input type="number" name="quantity" class="form-control" value="1" required>
-                                    </td>
-                                    <td>
-                                        <input type="hidden" name="order_id" value="{{ $order->id }}">
-                                        <input type="hidden" name="product_id" value="0">
-                                        <button type="submit" class="btn btn-primary">Add to Order</button>
-                                    </td>
-                                </form>
-                            </tr>
-                        </tbody>
-                    </table>
+                                        </td>
+                                        <td>
+                                            <input type="number" name="price" class="form-control"
+                                                placeholder="Custom Product Price" required>
+                                        </td>
+                                        <td>
+                                            <input type="number" name="quantity" class="form-control" value="1"
+                                                required>
+                                        </td>
+                                        <td>
+                                            <input type="hidden" name="order_id" value="{{ $order->id }}">
+                                            <input type="hidden" name="product_id" value="0">
+                                            <button type="submit" class="btn btn-primary">Add to Order</button>
+                                        </td>
+                                    </form>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
                 </div>
-            </div>
-            <div class="tab-pane fade pt-3" id="importCsv" role="tabpanel" aria-labelledby="importCsv-tab">
-                <div class="import-csv">
-                    <form action="{{ route('orders.import-csv') }}" method="POST" enctype="multipart/form-data"
-                        hx-post="{{ route('orders.import-csv') }}" hx-swap="outerHTML" hx-target="#order_items tbody"
-                        hx-select="#order_items tbody">
-                        @csrf
-                        <div class="mb-3">
-                            <label for="csv_file" class="form-label">Select CSV File</label>
-                            <input class="form-control" type="file" name="csv_file" id="csv_file" required>
-                        </div>
-                        <div class="mb-3">
-                            <input type="hidden" name="order_id" value="{{ $order->id }}">
-                            <button type="submit" class="btn btn-primary">Import CSV</button>
-                        </div>
-                    </form>
+                <div class="tab-pane fade pt-3" id="importCsv" role="tabpanel" aria-labelledby="importCsv-tab">
+                    <div class="import-csv">
+                        <form action="{{ route('orders.import-csv') }}" method="POST" enctype="multipart/form-data"
+                            hx-post="{{ route('orders.import-csv') }}" hx-swap="outerHTML"
+                            hx-target="#order_items tbody" hx-select="#order_items tbody">
+                            @csrf
+                            <div class="mb-3">
+                                <label for="csv_file" class="form-label">Select CSV File</label>
+                                <input class="form-control" type="file" name="csv_file" id="csv_file" required>
+                            </div>
+                            <div class="mb-3">
+                                <input type="hidden" name="order_id" value="{{ $order->id }}">
+                                <button type="submit" class="btn btn-primary">Import CSV</button>
+                            </div>
+                        </form>
+                    </div>
                 </div>
             </div>
         </div>
     </div>
-</div>

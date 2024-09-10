@@ -35,6 +35,6 @@ class Product extends Model
 
     public function priceGroups()
     {
-        return $this->hasMany(PriceGroup::class);
+        return $this->hasMany(PriceGroup::class)->orderBy('name');
     }
 }
