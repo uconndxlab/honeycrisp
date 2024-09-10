@@ -129,7 +129,7 @@
                             <td>
                                 <span class="badge badge-{{ $order->status_color }}">{{ $order->status }}</span>
                             </td>
-                            <td>${{ number_format($order->total, 2) }}</td>
+                            <td>$@dollars($order->total)</td>
                             <td>
                                 <a href="{{ route('orders.show', $order->id) }}" class="btn btn-primary">View</a>
                                 <a href="{{ route('orders.edit', $order->id) }}" class="btn btn-secondary">Edit</a>

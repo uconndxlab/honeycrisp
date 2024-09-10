@@ -28,8 +28,9 @@
                                     <small class="text-muted">{{ $item->description }}</small>
                                 </td>
                                 <td>{{ $item->quantity }}</td>
-                                <td>${{ number_format($item->price, 2) }}</td>
-                                <td>${{ number_format($item->quantity * $item->price, 2) }}</td>
+                                <td>$@dollars($item->price)
+                                </td>
+                                <td>$@dollars($item->quantity * $item->price)</td>
                                 <td>
                                     <form action="{{ route('orders.remove-item') }}" method="POST">
                                         @csrf
@@ -43,7 +44,8 @@
                             <tr>
                                 <td colspan="3" class="text-start"><strong>Order Total:</strong></td>
                                 <td class="">
-                                    ${{ number_format($order->total, 2) }}</td>
+                                    $@dollars($order->total)
+                                </td>
                                 <td></td>
                             </tr>
                         </tbody>
@@ -135,13 +137,14 @@
                                             <select id="price_group" name="price" class="form-select">
                                                 @foreach ($product->priceGroups as $priceGroup)
                                                 <option value="{{ $priceGroup->price }}">
-                                                    {{ $priceGroup->name }} (${{ $priceGroup->price }})
+                                                    {{ $priceGroup->name }} ($@dollars($priceGroup->price))
                                                 </option>
                                                 @endforeach
                                             </select>
                                         </td>
                                         <td>
-                                            <input type="number" name="quantity" class="form-control" value="1"
+                                            <input type="number" step="0.5"
+                                            name="quantity" class="form-control" value="1"
                                                 required>
                                         </td>
                                         <td>
