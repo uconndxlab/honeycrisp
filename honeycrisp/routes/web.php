@@ -1,4 +1,4 @@
-<?php
+ <?php
 
 use Illuminate\Support\Facades\Route;
 
@@ -11,12 +11,13 @@ use App\Http\Controllers\UserController;
 use App\Http\Controllers\LedgerController;
 use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\PriceGroupController;
+use Illuminate\Foundation\Http\Middleware\VerifyCsrfToken;
 
 Route::get('/', function () {
     // facilities.index controller
     return redirect()->route('facilities.index');
 
-});
+})->name('home');
 
 
 Route::resource('facilities', FacilityController::class);
@@ -45,6 +46,13 @@ Route::get('categories/create/{facilityAbbreviation}', [CategoryController::clas
 Route::get('/login', [LoginController::class, 'login'])->name('login');
 Route::post('/login', [LoginController::class, 'submitLogin'])->name('login.submit');
 Route::get('/logout', [LoginController::class, 'logout'])->name('logout');
+
+Route::get('/saml/login', [LoginController::class, 'samlLogin'])->name('saml.login');
+Route::post('/saml', [LoginController::class, 'samlAcs'])->name('saml.acs')->withoutMiddleware([VerifyCsrfToken::class]);
+Route::get('/saml/logout', [LoginController::class, 'samlLogout'])->name('saml.logout');
+Route::get('/saml/processLogout', [LoginController::class, 'processSamlLogout'])->name('saml.processLogout');
+
+
 
 Route::resource('users', UserController::class);
 

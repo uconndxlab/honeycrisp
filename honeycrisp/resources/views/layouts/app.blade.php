@@ -19,22 +19,31 @@
         <!-- secondary top navigation above the main navigation -->
         <nav class="navbar navbar-expand-lg navbar-light bg-secondary">
             <div class="container">
-                <span class="navbar-text text-white text-mono login-hud">Logged in as: jrs06005
-                    <span class="badge bg-success">Admin</span>
-                </span>
+                @if ( Auth::check() )
+                    <span class="navbar-text text-white text-mono login-hud">Logged in as: {{ Auth::user()->netid ?? Auth::user()->name }}
+                        <span class="badge bg-success">{{ Str::headline(Auth::user()->role ?? 'User')}}</span>
+                    </span>
+                @else
+                    <span class="navbar-text text-white text-mono login-hud">Not currently authenticated</span>
+                @endif
+                
                 <div class="collapse navbar-collapse">
                     <ul class="navbar-nav" style="margin-left: auto; display: flex; justify-content: end; width: 100%;">
-
+                        @if ( Auth::check() ) 
+                            <li class="nav-item">
+                                <a class="nav-link text-white" href="#">My Profile</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link text-white" href="#">Settings</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link text-white" href="{{ route('logout') }}">Logout</a>
+                            </li>
+                        @else
                         <li class="nav-item">
-                            <a class="nav-link text-white" href="#">My Profile</a>
+                            <a href="{{ route('login') }}" class="nav-link text-white">Login</a>
                         </li>
-                        <li class="nav-item">
-                            <a class="nav-link text-white" href="#">Settings</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link text-white" href="#">Logout</a>
-                        </li>
-
+                        @endif
                     </ul>
                 </div>
             </div>
