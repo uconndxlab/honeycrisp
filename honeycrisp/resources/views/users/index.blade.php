@@ -77,12 +77,12 @@
                                         @endforeach
                                     </ul>
                                 </div>
+                                <a href="{{ route('users.edit', $user->id) }}" class="btn btn-secondary">Edit</a>
                                 <form action="{{ route('users.destroy', $user->id) }}" method="POST" class="d-inline">
                                     @csrf
                                     @method('DELETE')
                                     <button type="submit" class="btn btn-danger">Delete</button>
                                 </form>
-                                <a href="{{ route('users.edit', $user->id) }}" class="btn btn-secondary">Edit</a>
                             </td>
                         </tr>
                     @endforeach

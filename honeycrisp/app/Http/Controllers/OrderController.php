@@ -21,20 +21,49 @@ class OrderController extends Controller
 
         $status_options = Order::statusOptions();
         $selected_status = request('status') ?? null;
+        $start_date = request('start_date') ?? null;
+        $end_date = request('end_date') ?? null;
+        $facility_id = request('facility_id') ?? null;
+        $price_group = request('price_group') ?? null;
+        $data = [];
 
-        // if request[status] is not null, filter orders by status
-        if (request('status')) {
-            $orders = Order::where('status', $selected_status)->orderBy('date')->paginate(10);
-        } else {
-            $orders = Order::where('status', '!=', 'complete')
-               ->orderBy('date')
-               ->paginate(10);
+        // Build the query
+        $query = Order::query();
 
+        // Filter by status
+        if ($selected_status) {
+            $query->where('status', $selected_status);
         }
 
+        // Filter by start date
+        if ($start_date) {
+            $query->whereDate('date', '>=', $start_date);
+        }
+
+        // Filter by end date
+        if ($end_date) {
+            $query->whereDate('date', '<=', $end_date);
+        }
+
+        // Filter by facility id
+        if ($facility_id) {
+            $query->where('facility_id', $facility_id);
+            $data['facility'] = Facility::find($facility_id);
+        }
+
+        // Filter by price group
+        if ($price_group) {
+            $query->where('price_group', $price_group);
+        }
+
+        // Get the filtered orders
+        $orders = $query->where('status', '!=', 'complete')
+            ->orderBy('date')
+            ->paginate(30);
 
 
-        return view('orders.index', compact('orders', 'status_options', 'selected_status'));
+
+        return view('orders.index', compact('orders', 'status_options', 'selected_status', 'data'));
     }
 
     /**
@@ -151,7 +180,7 @@ class OrderController extends Controller
             
         }
 
-      $account_warning = null;
+        $account_warning = null;
 
        if ($days_until_expiration <= 0) {
             $account_warning = 'This account has expired.';
@@ -245,6 +274,7 @@ class OrderController extends Controller
 
     public function addItem(Request $request)
     {
+        
         $request->validate([
             'order_id' => 'required',
             'quantity' => 'required',

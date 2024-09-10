@@ -23,8 +23,10 @@ return new class extends Migration
             $table->string('description');
             $table->string('name');
             
-            $table->integer('quantity');
-            $table->decimal('price', 10, 2);
+            $table->decimal('quantity', 8, 1);
+
+            // price is stored in cents
+            $table->integer('price');
 
             // Define foreign key constraint
             $table->foreign('order_id')->references('id')->on('orders')->onDelete('cascade');

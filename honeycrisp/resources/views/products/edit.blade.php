@@ -65,31 +65,13 @@
                 </div>
 
                 <!-- image -->
-                <div class="form-group">
+                <div class="form-group mb-3">
                     <label for="image">Image</label>
                     <input type="file" class="form-control " id="image" name="image_url">
                 </div>
 
 
-                <!-- unit and price -->
 
-                <fieldset>
-                    <legend>Pricing</legend>
-                    <div class="form-group my-2">
-                        <label for="price">Internal Price</label>
-                        <input type="number" class="form-control" id="price" name="unit_price_internal" value="{{ $product->unit_price_internal }}">
-                    </div>
-
-                    <div class="form-group my-2">
-                        <label for="price">External Price (Non-Profit)</label>
-                        <input type="number" class="form-control" id="price" name="unit_price_external_nonprofit" value="{{ $product->unit_price_external_nonprofit }}">
-                    </div>
-
-                    <div class="form-group my-2">
-                        <label for="price">External Price (For Profit)</label>
-                        <input type="number" class="form-control" id="price" name="unit_price_external_forprofit" value="{{ $product->unit_price_external_forprofit }}">
-                    </div>
-                </fieldset>
                 
                 <button type="submit" class="btn btn-primary">Update Product</button>
                 <a href="{{ route('facilities.show', $product->facility->abbreviation) }}"
