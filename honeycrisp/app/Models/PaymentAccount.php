@@ -39,6 +39,11 @@ class PaymentAccount extends Model
     {
         return $this->users()->wherePivot('role', 'fiscal_officer')->first();
     }
+
+    public function getAccountOwnerAttribute()
+    {
+        return $this->users()->wherePivot('role', 'owner')->first();
+    }
     
 
     public function authorized_users()

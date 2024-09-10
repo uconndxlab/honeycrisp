@@ -27,12 +27,8 @@
 
                 <!-- user_id is a foreign key -->
                 <div class="mb-3">
-                    <label for="account_owner" class="form-label">User ID</label>
-                    <select class="form-select" id="account_owner" name="account_owner">
-                        @foreach ($users as $user)
-                            <option value="{{ $user->id }}" {{ $user->id == $paymentAccount->account_owner ? 'selected' : '' }}>{{ $user->name }}</option>
-                        @endforeach
-                    </select>
+                    <label for="account_owner" class="form-label">Account Owner</label>
+                    <input name="account_owner" class="form-control" type="text" disabled value="{{ $paymentAccount->account_owner->name }} ({{ $paymentAccount->account_owner->netid ?? 'No NetID'}})">
                 </div>
 
                 <div class="mb-3">
@@ -63,23 +59,13 @@
                 <!-- account fiscal_officer is a foreign key -->
                 <div class="mb-3">
                     <label for="fiscal_officer" class="form-label" >Fiscal Officer</label>
-                    <select class="form-select" id="fiscal_officer" name="fiscal_officer">
-                        <option value="">Select a fiscal officer</option>
-                        @foreach ($users as $user)
-                            <option value="{{ $user->id }}" {{ $user->id == optional($paymentAccount->fiscal_officer)->id ? 'selected' : '' }}>{{ $user->name }}</option>
-                        @endforeach
-                    </select>
+                    <input class="form-control" type="text" disabled value="{{ $paymentAccount->fiscal_officer->name }} ({{ $paymentAccount->fiscal_officer->netid ?? 'No NetID'}})">
                 </div>
 
                 <!-- fiscal_manager is a foreign key -->
                 <div class="mb-3">
                     <label for="fiscal_manager" class="form-label">Fiscal Manager</label>
-                    <select class="form-select" id="fiscal_manager" name="fiscal_manager">
-                        <option value="">Select a fiscal manager</option>
-                        @foreach ($users as $user)
-                            <option value="{{ $user->id }}" {{ $user->id == optional($paymentAccount->fiscal_manager)->id ? 'selected' : '' }}>{{ $user->name }}</option>
-                        @endforeach
-                    </select>
+                    <input class="form-control" type="text" disabled value="{{ $paymentAccount->fiscal_manager->name ?? '-- Not Yet Assigned --' }} ({{ $paymentAccount->fiscal_manager->netid ?? 'No NetID'}})">
                 </div>
 
                 <!-- authorized users multi select -->

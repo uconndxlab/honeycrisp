@@ -14,7 +14,7 @@ class PaymentAccountController extends Controller
     public function index()
     {
         return view('payment-accounts.index', [
-            'paymentAccounts' => PaymentAccount::all(),
+            'paymentAccounts' => PaymentAccount::paginate(50),
         ]);
     }
 

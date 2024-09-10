@@ -10,6 +10,9 @@
 
             </div>
         </div>
+
+        {{ $paymentAccounts->links() }}
+
         <div class="row">
             <div class="col">
                 <table class="table">
@@ -30,7 +33,7 @@
                                 <td>{{ $paymentAccount->account_name }}</td>
                                 <td>{{ strtoupper($paymentAccount->account_type) }}</td>
                                 <td>{{ $paymentAccount->account_number }}</td>
-                                <td>{{ $paymentAccount->owner()->name }}</td>
+                                <td>{{ $paymentAccount->owner()->name ?? 'WTF' }}</td>
 
                                 <td>{{ $paymentAccount->expiration_date }}</td>
                                 <td>
@@ -51,6 +54,8 @@
                 </table>
             </div>
         </div>
+
+        {{ $paymentAccounts->links() }}
 
     </div>
 
