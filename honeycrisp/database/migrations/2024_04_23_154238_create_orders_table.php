@@ -31,9 +31,9 @@ return new class extends Migration
             $table->text('price_group')->enum('internal', 'external_nonprofit', 'external_forprofit');
             $table->text('company_name')->nullable();
 
-            $table->foreign('user_id')->references('id')->on('users');
-            $table->foreign('facility_id')->references('id')->on('facilities');
-            $table->foreign('payment_account_id')->references('id')->on('payment_accounts');
+            $table->foreignId('user_id')->constrained('users');
+            $table->foreignId('facility_id')->constrained('facilities');
+            $table->foreignId('payment_account_id')->constrained('payment_accounts');
 
         });
     }
