@@ -29,15 +29,21 @@ class NightlyKfs implements ShouldQueue
         Log::info('Running Nightly KFS Job');
 
         // First let's find all orders that are in invoice, that have not yet been sent to KFS
-        $orders = Order::with(['items', 'facility'])->where('status', 'invoice')->get();
+        $orders = Order::with(['items', 'facility'])
+            ->where('status', 'invoice')
+            ->where('price_group', 'internal')
+            ->get();
 
         // Let's start creating line items.
         $kfs_line_items = collect();
 
-        foreach ($orders as $order) {
-            
+        $counter = 0;
+
+        foreach ($orders as $order) {  
             foreach ( $order->items as $item ) {
-                Log::info($item->kfsDebitLine());
+                $kfs_line_items->push($item->kfsDebitLine($counter));
+                $kfs_line_items->push($item->kfsCreditLine($counter));
+                $counter++;
             }
         }
     }
