@@ -65,6 +65,7 @@ class UserController extends Controller
             'external_rates' => $request->external_rates,
             'external_organization' => $request->external_organization ?? null,
             'external_customer_id' => $request->external_customer_id ?? null,
+            'price_group' => $request->price_group ?? null,
             'password' => bcrypt($request->password),
         ]);
 

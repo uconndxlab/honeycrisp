@@ -26,28 +26,6 @@
     </div>
 
     <div class="row">
-        <!-- customer details -->
-        <div class="col-md-6">
-            <div class="card mb-4">
-                <div class="card-header">
-                    <h2>Customer Details</h2>
-                </div>
-                <div class="card-body">
-
-                    <p><strong>Customer Name:</strong> {{ $order->user->name }}</p>
-                    <p><strong>Customer Email:</strong> <a href="mailto:{{ $order->user->email }}">{{
-                            $order->user->email }}</a>
-                    </p>
-                    <p><strong>Payment Account:</strong> {{ $payment_account->account_name }}
-                        ({{ $payment_account->formatted() }})</p>
-
-                    <p><strong>Price Group:</strong> {{ $order->price_group}}</p>
-
-
-                </div>
-            </div>
-        </div>
-
         <div class="col-md-6">
             <!-- Order Details Section -->
             <div class="card mb-4">
@@ -83,5 +61,27 @@
                 </div>
             </div>
         </div>
+        <!-- customer details -->
+        <div class="col-md-6">
+            <div class="card mb-4">
+                <div class="card-header">
+                    <h2>Customer Details</h2>
+                </div>
+                <div class="card-body">
+
+                    <p><strong>Customer Name:</strong> {{ $order->user->name }}</p>
+                    <p><strong>Customer Email:</strong> <a href="mailto:{{ $order->user->email }}">{{
+                            $order->user->email }}</a>
+                    </p>
+                    <p><strong>Payment Account:</strong> {{ $payment_account->account_name }}
+                        ({{ $payment_account->formatted() }})</p>
+
+                    <p><strong>Price Group:</strong> {{ $order->price_group}}</p>
+
+
+                </div>
+            </div>
+        </div>
+
     </div>
 </div>

@@ -39,14 +39,14 @@
                                             <small class="text-muted">({{ $item->description }})</small>
                                         </td>
                                         <td>{{ $item->quantity }}</td>
-                                        <td>${{ number_format($item->price, 2) }}</td>
-                                        <td>${{ number_format($item->quantity * $item->price, 2) }}</td>
+                                        <td>@dollars($item->price)</td>
+                                        <td>$@dollars($item->quantity * $item->price)</td>
                                     </tr>
                                 @endforeach
 
                                 <tr>
                                     <td colspan="3" class="text-start"><strong>Order Total:</strong></td>
-                                    <td><strong>${{ number_format($order->total, 2) }}</strong></td>
+                                    <td><strong>$@dollars($order->total)</strong></td>
                                 </tr>
                             </tbody>
                         </table>
