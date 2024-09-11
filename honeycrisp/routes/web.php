@@ -36,6 +36,10 @@ Route::get('orders/create/{facilityAbbreviation}', [OrderController::class, 'cre
 Route::resource('ledgers', LedgerController::class);
 
 Route::resource('payment-accounts', PaymentAccountController::class);
+Route::get('payment-accounts/{paymentAccount}/authorizedUsers', [PaymentAccountController::class, 'authorizedUsers'])->name('payment-accounts.authorizedUsers');
+Route::post('payment-accounts/{paymentAccount}/add-authorized-user', [PaymentAccountController::class, 'addAuthorizedUser'])->name('payment-accounts.authorizedUsers.store');
+//payment-accounts.authorized-users.destroy
+Route::delete('payment-accounts/{paymentAccount}/authorized-users/{user}', [PaymentAccountController::class, 'removeAuthorizedUser'])->name('payment-accounts.authorizedUsers.destroy');
 
 Route::resource('categories', CategoryController::class);
 Route::get('categories/create/{facilityAbbreviation}', [CategoryController::class, 'create']);

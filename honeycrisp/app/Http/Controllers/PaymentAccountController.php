@@ -148,11 +148,50 @@ class PaymentAccountController extends Controller
         return redirect()->route('payment-accounts.show', $paymentAccount);
     }
 
+    public function authorizedUsers(PaymentAccount $paymentAccount)
+    {
+        return view('payment-accounts.authorized-users', [
+            'paymentAccount' => $paymentAccount,
+            'users' => User::all(),
+        ]);
+    }
+
+    public function addAuthorizedUser(Request $request, PaymentAccount $paymentAccount)
+    {
+        $request->validate([
+            'netid' => 'required|exists:users,netid',
+        ], [
+            'netid.required' => 'The user field is required.',
+            'netid.exists' => 'The selected user does not exist.',
+        ]);
+
+        $user = User::where('netid', $request->netid)->first();
+        $paymentAccount = PaymentAccount::find($paymentAccount->id);
+
+        $paymentAccount->authorized_users()->attach($user->id, ['role' => 'authorized_user']);
+
+        return redirect()->route('payment-accounts.authorizedUsers', $paymentAccount)->with('success', 'User added successfully.');
+        
+    }
+
+    public function removeAuthorizedUser(PaymentAccount $paymentAccount, User $user)
+    {
+        $paymentAccount->authorized_users()->detach($user->id);
+
+        return redirect()->route('payment-accounts.authorizedUsers', $paymentAccount)->with('success', 'User removed successfully.');
+    }
+
     /**
      * Remove the specified resource from storage.
      */
     public function destroy(PaymentAccount $paymentAccount)
     {
+        // remove all users from the account
+        $paymentAccount->users()->detach();
+        // remove all authorized users from the account
+        $paymentAccount->authorized_users()->detach();
+        
+
         $paymentAccount->delete();
         return redirect()->route('payment-accounts.index');
     }

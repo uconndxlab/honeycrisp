@@ -24,18 +24,20 @@ class PaymentAccountFactory extends Factory
             'account_number' => $this->faker->creditCardNumber,
             'account_type' => $this->faker->randomElement(['kfs','uch']),
             'expiration_date' => $this->faker->creditCardExpirationDate,
-            'account_status' => 'active'
+            'account_status' => 'active',
+            
         ];
     }
 
     public function configure()
     {
         return $this->afterCreating(function (PaymentAccount $paymentAccount) {
-            $users = User::factory()->count(3)->create();
 
-            $paymentAccount->users()->attach($users[0]->id, ['role' => 'owner']);
-            $paymentAccount->users()->attach($users[1]->id, ['role' => 'fiscal_officer']);
-            $paymentAccount->users()->attach($users[2]->id, ['role' => 'account_supervisor']);
+            // attach user #1 as the owner of the payment account
+            $paymentAccount->users()->attach(1, ['role' => 'owner']);
+
+            // attach user #2 as fiscal officer of the payment account
+            $paymentAccount->users()->attach(2, ['role' => 'fiscal_officer']);
         });
     }
 }
