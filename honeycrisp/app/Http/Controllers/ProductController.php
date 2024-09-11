@@ -44,6 +44,7 @@ class ProductController extends Controller
         $product->tags = $request->tags;
         $product->facility_id = $request->facility_id;
         $product->category_id = $request->category_id ?? null;
+        $product->recharge_account = $request->recharge_account;
 
         $product->save();
 
@@ -84,6 +85,7 @@ class ProductController extends Controller
         $product->tags = $request->tags;
         $product->facility_id = $request->facility_id;
         $product->category_id = $request->category_id ?? null;
+        $product->recharge_account = $request->recharge_account;
 
         $product->save();
 
@@ -96,6 +98,9 @@ class ProductController extends Controller
      */
     public function destroy(Product $product)
     {
-        //
+        $product->is_deleted = true;
+        $product->save();
+
+        return redirect()->route('facilities.edit', $product->facility_id)->with('success', 'Product deleted successfully.');
     }
 }

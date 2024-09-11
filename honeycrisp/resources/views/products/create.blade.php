@@ -66,6 +66,12 @@
                     </select>
                 </div>
 
+                <!-- recharge_account will default to the facility's recharge account, but you can override it -->
+                <div class="form-group my-2">
+                    <label for="recharge_account">Recharge Account</label>
+                    <input type="text" class="form-control" id="recharge_account" name="recharge_account" value="{{ $facility->recharge_account }}">
+                </div>
+
                 <!-- image -->
 
                 <!-- alert about setting pricing: you can set pricing after creating the product and editing its price groups -->

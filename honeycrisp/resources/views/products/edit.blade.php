@@ -70,6 +70,13 @@
                     <input type="file" class="form-control " id="image" name="image_url">
                 </div>
 
+                <!-- recharge_account will default to the facility's recharge account, but you can override it -->
+                <div class="form-group my-2">
+                    <label for="recharge_account">Recharge Account</label>
+                    <input type="text" class="form-control" id="recharge_account" name="recharge_account"
+                        value="{{ $product->recharge_account }}">
+                </div>
+
 
 
                 

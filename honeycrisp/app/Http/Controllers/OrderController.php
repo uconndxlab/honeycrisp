@@ -290,6 +290,13 @@ class OrderController extends Controller
             $order_item->name = $order_product->name;
         }
         $order_item->price = $request->price;
+
+
+        // if is_custom is true, the price will be in dollars, so convert it to cents
+        if ($request->is_custom) {
+            $order_item->price = $order_item->price * 100;
+        }
+
         $order_item->order_id = $request->order_id;
         $order_item->quantity = $request->quantity;
 

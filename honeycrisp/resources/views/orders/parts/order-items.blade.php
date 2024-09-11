@@ -195,11 +195,10 @@
                                         </td>
                                         <td>
                                             <textarea type="text" name="description" class="form-control"
-                                                placeholder="Custom Product Description" required>
-                                        </textarea>
+                                                placeholder="Custom Product Description" required></textarea>
                                         </td>
                                         <td>
-                                            <input type="number" name="price" class="form-control"
+                                            <input type="number" name="price" class="form-control" step="0.5"
                                                 placeholder="Custom Product Price" required>
                                         </td>
                                         <td>
@@ -209,6 +208,7 @@
                                         <td>
                                             <input type="hidden" name="order_id" value="{{ $order->id }}">
                                             <input type="hidden" name="product_id" value="0">
+                                            <input type="hidden" name="is_custom" value="1">
                                             <button type="submit" class="btn btn-primary">Add to Order</button>
                                         </td>
                                     </form>
