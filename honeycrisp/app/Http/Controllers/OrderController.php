@@ -104,13 +104,13 @@ class OrderController extends Controller
             'date' => 'required',
             'user_id' => 'required',
             'facility_id' => 'exists:facilities,id',
-            'payment_account' => 'required',
+            'payment_account_id' => 'required',
             'price_group' => 'required',
         ]);
 
         $user_id = $request->user_id;
         $facility_id = $request->facility_id;
-        $payment_account = PaymentAccount::find($request->payment_account)->id;
+        $payment_account = PaymentAccount::find($request->payment_account_id)->id;
 
         $order = new Order();
         $order->user_id = $user_id;
@@ -120,7 +120,7 @@ class OrderController extends Controller
         $order->date = $request->date;
     
         $order->facility_id = $facility_id;
-        $order->payment_account = $payment_account;
+        $order->payment_account_id = $payment_account;
         $order->status = 'quote';
         $order->price_group = $request->price_group;
 
@@ -144,7 +144,7 @@ class OrderController extends Controller
     public function show(Order $order)
     {
         $order_items = OrderItem::all()->where('order_id', $order->id);
-        $payment_account = PaymentAccount::find($order->payment_account);
+        $payment_account = PaymentAccount::find($order->payment_account_id);
         
         $order->total = 0;
         foreach ($order_items as $order_item) {
@@ -165,7 +165,7 @@ class OrderController extends Controller
         $selected_user = $order->user_id;
         $status_options = Order::statusOptions();
 
-        $current_account = PaymentAccount::find($order->payment_account);
+        $current_account = PaymentAccount::find($order->payment_account_id);
         // check to see if the expiration date of the account is coming up
         $expiration_date = $current_account->expiration_date;
         $today = date('Y-m-d');
@@ -234,14 +234,14 @@ class OrderController extends Controller
             'date' => 'required',
             'user_id' => 'required',
             'facility_id' => 'exists:facilities,id',
-            'payment_account' => 'required',
+            'payment_account_id' => 'required',
             'status' => 'required',
             'price_group' => 'required',
         ]);
 
         $user_id = $request->user_id;
         $facility_id = $request->facility_id;
-        $payment_account = PaymentAccount::find($request->payment_account)->id;
+        $payment_account = PaymentAccount::find($request->payment_account_id)->id;
 
         $order->user_id = $user_id;
 
@@ -249,7 +249,7 @@ class OrderController extends Controller
         $order->description = $request->description;
         $order->date = $request->date;
         $order->facility_id = $facility_id;
-        $order->payment_account = $payment_account;
+        $order->payment_account_id = $payment_account;
         $order->status = $request->status;
 
         $order->price_group = $request->price_group;

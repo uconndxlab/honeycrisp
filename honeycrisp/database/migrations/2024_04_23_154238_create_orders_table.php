@@ -23,11 +23,6 @@ return new class extends Migration
             $table->text('description')->nullable();
             $table->date('date');
 
-
-            $table->unsignedBigInteger('user_id');
-            $table->unsignedBigInteger('facility_id');
-            $table->unsignedBigInteger('payment_account')->nullable();
-
             $table->text('status')->enum('quote', 'pending', 'approved', 'in_progress', 'canceled', 'reconciled', 'invoice', 'sent_to_kfs', 'archived');
             
             $table->json('tags')->nullable();
@@ -38,7 +33,7 @@ return new class extends Migration
 
             $table->foreign('user_id')->references('id')->on('users');
             $table->foreign('facility_id')->references('id')->on('facilities');
-            $table->foreign('payment_account')->references('id')->on('payment_accounts');
+            $table->foreign('payment_account_id')->references('id')->on('payment_accounts');
 
         });
     }

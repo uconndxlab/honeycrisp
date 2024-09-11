@@ -17,7 +17,9 @@ class AccountSeeder extends Seeder
      */
     public function run(): void
     {
-
+        /**
+         * TODO: Make this much faster.
+         */
         $kfsPath = base_path('database/kfs_acct_list.csv');
         $kfsAccounts = array_map('str_getcsv', file($kfsPath));
         array_shift($kfsAccounts);

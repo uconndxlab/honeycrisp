@@ -20,4 +20,10 @@ class OrderItem extends Model
     {
         return $this->belongsTo(Product::class);
     }
+
+    public function kfsDebitLine() {
+        return "2025" // Fiscal Year
+            . "UC" // Chart Code, always UC for now
+            . $this->order->payment_account->account_number; // Account Number
+    }
 }

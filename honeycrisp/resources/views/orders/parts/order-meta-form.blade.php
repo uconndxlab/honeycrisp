@@ -126,12 +126,12 @@
 
                                 <div id="user_accounts" class="form-group my-2">
                                     @if ($accounts != null && count($accounts) > 0)
-                                        <label for="payment_account">Payment Account:</label>
-                                        <select name="payment_account" id="payment_account" class="form-select">
+                                        <label for="payment_account_id">Payment Account:</label>
+                                        <select name="payment_account_id" id="payment_account_id" class="form-select">
                                             <option value="">Select a Payment Account</option>
                                             @foreach ($accounts as $payment_account)
                                                 <option value="{{ $payment_account->id }}"
-                                                    {{ old('payment_account', isset($order) && $order->payment_account == $payment_account->id) ? 'selected' : '' }}>
+                                                    {{ old('payment_account_id', isset($order) && $order->payment_account_id == $payment_account->id) ? 'selected' : '' }}>
                                                     {{ $payment_account->account_name }}
                                                     ({{ strtoupper($payment_account->account_type) }}-{{ $payment_account->account_number }})
                                                 </option>
