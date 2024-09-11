@@ -80,6 +80,10 @@
                     </p>
 
                     <p><strong>Submitted Date:</strong> {{ $order->created_at->format('m/d/Y') }}</p>
+
+                    @if ( $order->kfs_export_id )
+                    <p><strong>KFS Export:</strong> <a href="{{ route('exports.show', $order->kfs_export_id)}}">{{ $order->kfs_export_id }}</a></p>
+                    @endif
                 </div>
             </div>
         </div>

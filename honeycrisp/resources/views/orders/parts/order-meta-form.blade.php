@@ -5,7 +5,7 @@
             <h1>{{ isset($order) ? 'Edit Order #' . $order->id : 'Create Order' }}
                 <!-- status badge -->
                 @if (isset($order))
-                    <span class="badge badge-{{ $order->status_color }}">{{ $order->status }}</span>
+                    <span class="badge badge-{{ $order->status_color }}">{{ Str::headline($order->status) }}</span>
                 @endif
                 <!-- if order is quote, a button to send to customer -->
                 @if (isset($order) && $order->status == 'quote')
@@ -76,7 +76,7 @@
                                         <select name="status" id="status" class="form-select">
                                             <option value="">Select a Status</option>
                                             @foreach ($status_options as $slug => $name)
-                                                @if ($slug == 'sent_to_kfs')
+                                                @if ($slug == 'sent_to_kfs' && $order->status != 'sent_to_kfs')
                                                     @continue
                                                 @endif
                                                 <option value="{{ $slug }}"

@@ -33,7 +33,7 @@ class AppServiceProvider extends ServiceProvider
 
         // blade directive to convert cents to dollars and cents
         Blade::directive('dollars', function ($expression) {
-            return "<?php echo number_format($expression / 100, 2); ?>";
+            return "<?php echo number_format($expression / 100, 2);?>";
         });
 
         // use bootstrap5 pagination

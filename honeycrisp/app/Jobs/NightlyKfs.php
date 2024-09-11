@@ -9,6 +9,7 @@ use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Queue\SerializesModels;
 
 use App\Models\Order;
+use App\Models\Export;
 use Illuminate\Support\Facades\Log;
 
 
@@ -46,5 +47,30 @@ class NightlyKfs implements ShouldQueue
                 $counter++;
             }
         }
+
+        // Save line items to a text file
+        $fileName = 'kfs-' . now()->format('Y-m-d-H-i-s') . '.data';
+        $filePath = storage_path('app/exports/' . $fileName);
+
+        if ( !file_exists($filePath) && $kfs_line_items->isNotEmpty() ) {
+            file_put_contents($filePath, $kfs_line_items->implode("\n"));
+
+            Log::info('KFS file created and saved to ' . $filePath);
+
+            // Save the file path to the Export model
+            $export = Export::create([
+                'path' => $filePath,
+                'type' => 'kfs'
+            ]);
+
+            Order::whereIn('id', $orders->pluck('id'))->update([
+                'kfs_export_id' => $export->id,
+                'status' => 'sent_to_kfs'
+            ]);
+        } else {
+            Log::info('No KFS file created.');
+        }
+
+        Log::info('Nightly KFS Job completed.');
     }
 }

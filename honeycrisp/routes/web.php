@@ -1,4 +1,4 @@
- <?php
+<?php
 
 use Illuminate\Support\Facades\Route;
 
@@ -11,6 +11,7 @@ use App\Http\Controllers\UserController;
 use App\Http\Controllers\LedgerController;
 use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\PriceGroupController;
+use App\Http\Controllers\ExportController;
 use Illuminate\Foundation\Http\Middleware\VerifyCsrfToken;
 
 Route::get('/', function () {
@@ -71,3 +72,10 @@ Route::post('price-groups', [PriceGroupController::class, 'store'])->name('price
 Route::get('price-groups/{priceGroup}/edit', [PriceGroupController::class, 'edit'])->name('price-groups.edit');
 Route::delete('price-groups/{priceGroup}', [PriceGroupController::class, 'destroy'])->name('price-groups.destroy');
 Route::put('price-groups/{priceGroup}', [PriceGroupController::class, 'update'])->name('price-groups.update');
+
+/**
+ * System exports
+ */
+Route::get('exports', [ExportController::class, 'index'])->name('exports.index');
+Route::get('exports/download/{export}', [ExportController::class, 'download'])->name('exports.download');
+Route::get('exports/{id}', [ExportController::class, 'show'])->name('exports.show');
