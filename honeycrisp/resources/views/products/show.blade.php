@@ -40,7 +40,7 @@
                                             <td>{{ $priceGroup->name }}</td>
                                             <td>{{ $priceGroup->start_date }}</td>
                                             <td>{{ $priceGroup->end_date }}</td>
-                                            <td>{{ $priceGroup->price ?? 'N/A' }}</td>
+                                            <td>@dollars($priceGroup->price)</td>
                                             <td>
                                                 <a href="{{ route('price-groups.edit', $priceGroup->id) }}" class="btn btn-primary">Edit</a>
                                                 <form action="{{ route('price-groups.destroy', $priceGroup->id) }}" method="POST" style="display: inline;">

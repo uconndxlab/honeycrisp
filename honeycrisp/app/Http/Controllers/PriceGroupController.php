@@ -35,7 +35,7 @@ class PriceGroupController extends Controller
         $newPriceGroup = new PriceGroup();
         $newPriceGroup->product_id = $request->product_id;
         $newPriceGroup->name = $request->name;
-        $newPriceGroup->price = $request->price;
+        $newPriceGroup->price = $request->price * 100;
         $newPriceGroup->start_date = $request->start_date;
         $newPriceGroup->end_date = $request->end_date;
         $newPriceGroup->save();
@@ -68,7 +68,10 @@ class PriceGroupController extends Controller
     {
         $priceGroup = PriceGroup::find($id);
         $priceGroup->name = $request->name;
-        $priceGroup->price = $request->price;
+        
+        // price is in dollars, so convert to cents
+        $priceGroup->price = $request->price * 100;
+
         $priceGroup->start_date = $request->start_date;
         $priceGroup->end_date = $request->end_date;
         $priceGroup->save();

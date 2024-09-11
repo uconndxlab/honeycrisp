@@ -112,7 +112,7 @@
                                         <input type="hidden" name="user_id" id="user_id"
                                             value="{{ isset($order) ? $order->user_id : $selected_user->id }}">
                                         <input type="text" name="user_name" id="user_name"
-                                            value="{{ isset($order) ? $order->user->name : $selected_user->name }}"
+                                            value="{{ isset($order) ? $order->user->name : $selected_user->name }} ({{ isset($order) ? $order->user->netid : $selected_user->netid }})"
                                             class="form-control" disabled>
                                     </div>
                                     <!-- select a new user -->
