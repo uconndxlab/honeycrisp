@@ -48,7 +48,7 @@ class DatabaseSeeder extends Seeder
             'account_name' => 'UConn Foundation',
             'account_number' => '1234567890',
             'account_type' => 'uch',
-            'expiration_date' => '2024-04-24',
+            'expiration_date' => '2028-04-24',
             'account_status' => 'active',
 
         ]);
@@ -57,7 +57,7 @@ class DatabaseSeeder extends Seeder
             'account_name' => 'Kuali Financial System',
             'account_number' => '0987654321',
             'account_type' => 'kfs',
-            'expiration_date' => '2024-04-24',
+            'expiration_date' => '2028-04-24',
             'account_status' => 'active',
         ]);
 
@@ -70,10 +70,10 @@ class DatabaseSeeder extends Seeder
         ]);
 
         // create 10 random payment accounts
-        PaymentAccount::factory()->count(30)->create();
+        //PaymentAccount::factory()->count(30)->create();
 
         // create 100 random users
-        User::factory()->count(4800)->create();
+        //User::factory()->count(4800)->create();
             
 
 

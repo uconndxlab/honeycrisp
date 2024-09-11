@@ -6,11 +6,17 @@
 <div class="container">
     <div class="row">
         <div class="col">
-            <h1>Edit Payment Account</h1>
+            <h1>Edit Payment Account: {{ $paymentAccount->account_name }} ({{$paymentAccount->account_type}} - {{$paymentAccount->account_number}})  </h1>
         </div>
     </div>
     <div class="row">
-        <div class="col">
+        <div class="col-md-2 subnav">
+            <ul class="nav flex-column">
+                <li class="nav-item"><a class="nav-link" href="#">Account Info</a></li>
+                <li class="nav-item"><a class="nav-link" href="{{route('payment-accounts.authorizedUsers', $paymentAccount->id)}}">Authorized Users</a></li>
+            </ul>
+        </div>
+        <div class="col-md-10">
             <!-- errors -->
             @if ($errors->any())
                 <div class="alert alert-danger">
@@ -67,13 +73,6 @@
                     <label for="fiscal_manager" class="form-label">Fiscal Manager</label>
                     <input class="form-control" type="text" disabled value="{{ $paymentAccount->fiscal_manager->name ?? '-- Not Yet Assigned --' }} ({{ $paymentAccount->fiscal_manager->netid ?? 'No NetID'}})">
                 </div>
-
-                <!-- authorized users multi select -->
-                <div class="mb-3">
-                    <label for="authorized_users" class="form-label">Authorized Users</label>
-                    <strong>Feature not yet implemented</strong>
-                </div>
-
                 <button type="submit" class="btn btn-primary">Update Payment Account</button>
             </form>
         </div>
