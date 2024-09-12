@@ -24,6 +24,7 @@ class DatabaseSeeder extends Seeder
             'email' => 'joel@uconn.edu',
             'role' => 'admin',
             'status' => 'active',
+            'price_group' => 'internal'
         ]);
 
         User::factory()->create([
