@@ -45,6 +45,7 @@ class ProductController extends Controller
         $product->facility_id = $request->facility_id;
         $product->category_id = $request->category_id ?? null;
         $product->recharge_account = $request->recharge_account;
+        $product->can_reserve = $request->can_reserve ?? false;
 
         $product->save();
 
@@ -86,6 +87,7 @@ class ProductController extends Controller
         $product->facility_id = $request->facility_id;
         $product->category_id = $request->category_id ?? null;
         $product->recharge_account = $request->recharge_account;
+        $product->can_reserve = $request->can_reserve ?? false;
 
         $product->save();
 

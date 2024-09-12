@@ -56,6 +56,15 @@
                     </select>
                 </div>
 
+                <!-- is a reservation -->
+                <div class="form-group my-2">
+                    <label for="can_reserve">Enable Reservations</label>
+                    <select class="form-select" id="can_reserve" name="can_reserve">
+                        <option value="0">No</option>
+                        <option value="1">Yes</option>
+                    </select>
+                </div>
+
                 <!-- requires approval -->
                 <div class="form-group my-2">
                     <label for="requires_approval">Requires Approval</label>

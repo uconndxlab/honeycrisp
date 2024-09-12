@@ -12,6 +12,8 @@ use App\Http\Controllers\LedgerController;
 use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\PriceGroupController;
 use App\Http\Controllers\ExportController;
+use App\Http\Controllers\ScheduleRuleController;
+use App\Http\Controllers\ReservationController;
 use Illuminate\Foundation\Http\Middleware\VerifyCsrfToken;
 
 Route::get('/', function () {
@@ -79,3 +81,9 @@ Route::put('price-groups/{priceGroup}', [PriceGroupController::class, 'update'])
 Route::get('exports', [ExportController::class, 'index'])->name('exports.index');
 Route::get('exports/download/{export}', [ExportController::class, 'download'])->name('exports.download');
 Route::get('exports/{id}', [ExportController::class, 'show'])->name('exports.show');
+
+/**
+ * Schedule Rules & Reservations
+ */
+Route::get('schedule-rules/create', [ScheduleRuleController::class, 'createForm'])->name('schedule-rules.create');
+Route::post('schedule-rules/create', [ScheduleRuleController::class, 'store'])->name('schedule-rules.store');

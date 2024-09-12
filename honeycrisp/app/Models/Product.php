@@ -38,4 +38,14 @@ class Product extends Model
     {
         return $this->hasMany(PriceGroup::class)->orderBy('name');
     }
+
+    public function reservations()
+    {
+        return $this->hasMany(Reservation::class);
+    }
+
+    public function scheduleRules()
+    {
+        return $this->hasMany(ScheduleRule::class);
+    }
 }
