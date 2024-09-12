@@ -86,6 +86,24 @@
                                         </select>
                                     </div>
                                 @endif
+
+
+                                <!-- if it's not internal, add fields for mailing address and purchase order -->
+
+                                @if (isset($order) && $order->price_group != 'internal')
+                                    <div class="form-group my-2">
+                                        <label for="mailing_address">Mailing Address:</label>
+                                        <textarea name="mailing_address" id="mailing_address"
+                                            class="form-control">{{ old('mailing_address', isset($order) ? $order->mailing_address : '') }}</textarea>
+                                    </div>
+
+                                    <div class="form-group my-2">
+                                        <label for="purchase_order_number">Purchase Order:</label>
+                                        <input type="text" name="purchase_order_number" id="purchase_order_number" class="form-control"
+                                            value="{{ old('purchase_order', isset($order) ? $order->purchase_order_number : '') }}">
+                                    </div>
+                                @endif
+
                             </div>
                         </div>
                     </div>

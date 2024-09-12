@@ -71,7 +71,7 @@
                                         @foreach ($facilities as $facility)
                                             <li>
                                                 <a class="dropdown-item"
-                                                    href="{{ route('orders.create') }}/{{ $facility->abbreviation }}?netid={{ $user->netid }}">{{ $facility->name }}</a>
+                                                    href="{{ route('orders.create') }}/{{ $facility->abbreviation }}?user_id={{ $user->id }}">{{ $facility->name }}</a>
                                             </li>
                                            
                                         @endforeach

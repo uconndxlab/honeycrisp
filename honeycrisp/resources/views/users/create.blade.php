@@ -42,7 +42,7 @@
                             <div class="form-group mb-3">
                                 <label for="netid">NetID</label>
                                 <input type="text" name="netid" id="netid" class="form-control" value="{{ isset($user) ? $user->netid : old('net
-id') }}" required>
+id') }}">
                             </div>
 
                             <div class="form-group mb-3">

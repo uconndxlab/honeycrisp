@@ -31,9 +31,16 @@ return new class extends Migration
             $table->text('price_group')->enum('internal', 'external_nonprofit', 'external_forprofit');
             $table->text('company_name')->nullable();
 
+            $table->text('mailing_address')->nullable();
+            $table->text('purchase_order_number')->nullable();
+
             $table->foreignId('user_id')->constrained('users');
             $table->foreignId('facility_id')->constrained('facilities');
-            $table->foreignId('payment_account_id')->constrained('payment_accounts');
+            
+            // payment_account_id is optional and can be null, foreign key to payment_accounts table
+            $table->foreignId('payment_account_id')->nullable()->constrained('payment_accounts');
+
+
 
         });
     }

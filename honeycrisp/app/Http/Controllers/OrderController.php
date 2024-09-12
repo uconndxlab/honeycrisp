@@ -56,12 +56,20 @@ class OrderController extends Controller
             $query->where('price_group', $price_group);
         }
 
+        //** proccess search query for netid order title, order id **/
+        if (request('search')) {
+            $search = request('search');
+            $query->where('title', 'like', '%' . $search . '%')
+                ->orWhere('id', 'like', '%' . $search . '%')
+                ->orWhereHas('user', function ($q) use ($search) {
+                    $q->where('netid', 'like', '%' . $search . '%');
+                });
+        }
+
         // Get the filtered orders
         $orders = $query->where('status', '!=', 'complete')
             ->orderBy('date')
             ->paginate(30);
-
-
 
         return view('orders.index', compact('orders', 'status_options', 'selected_status', 'data'));
     }
@@ -83,7 +91,17 @@ class OrderController extends Controller
             $accounts = [];
 
             $accounts =  $user->paymentAccounts()->get();
-        } else {
+        } 
+
+        elseif (request('user_id')) {
+            $user = User::find(request('user_id'));
+            $selected_user = $user;
+            $accounts = [];
+
+            $accounts =  $user->paymentAccounts()->get();
+        }
+        
+        else {
             $accounts = null;
         }
 
@@ -104,13 +122,17 @@ class OrderController extends Controller
             'date' => 'required',
             'user_id' => 'required',
             'facility_id' => 'exists:facilities,id',
-            'payment_account_id' => 'required',
+
+            // payment_account_id is only reqired if price_group is 'internal'
+            'payment_account_id' => $request->price_group == 'internal' ? 'required' : '',
+            
             'price_group' => 'required',
         ]);
 
         $user_id = $request->user_id;
         $facility_id = $request->facility_id;
-        $payment_account = PaymentAccount::find($request->payment_account_id)->id;
+
+
 
         $order = new Order();
         $order->user_id = $user_id;
@@ -120,7 +142,13 @@ class OrderController extends Controller
         $order->date = $request->date;
     
         $order->facility_id = $facility_id;
-        $order->payment_account_id = $payment_account;
+        if($request->price_group == 'internal'){
+            $payment_account = PaymentAccount::find($request->payment_account_id)->id;
+            $order->payment_account_id = $payment_account;
+        }
+
+        $order->mailing_address = $request->mailing_address;
+        $order->purchase_order_number = $request->purchase_order_number;
         $order->status = 'quote';
         $order->price_group = $request->price_group;
 
@@ -165,12 +193,12 @@ class OrderController extends Controller
         $selected_user = $order->user_id;
         $status_options = Order::statusOptions();
 
-        $current_account = PaymentAccount::find($order->payment_account_id);
-        // check to see if the expiration date of the account is coming up
-        $expiration_date = $current_account->expiration_date;
-        $today = date('Y-m-d');
-        $days_until_expiration = (strtotime($expiration_date) - strtotime($today)) / (60 * 60 * 24);
-
+        if($order->price_group == 'internal'){
+            $accounts = PaymentAccount::all()->where('user_id', $order->user_id);
+        } else {
+            $accounts = null;
+        }
+      
         if (request('categoryRequested')) {
             $categoryRequested = Category::find(request('categoryRequested'))->get();
             
@@ -180,29 +208,45 @@ class OrderController extends Controller
             
         }
 
-        $account_warning = null;
+        //handling for internal-only orders
 
-       if ($days_until_expiration <= 0) {
-            $account_warning = 'This account has expired.';
-            $warning_type = 'danger';
-        } 
-        
-        
-
-       else if ($days_until_expiration < 30) {
-            $account_warning = 'This account will expire in ' . $days_until_expiration . ' days.';
-            $warning_type = 'warning';
-        } 
-        
-        else {
+        if ($order->price_group == 'internal') {
+            $current_account = PaymentAccount::find($order->payment_account_id);
+            // check to see if the expiration date of the account is coming up
+            $expiration_date = $current_account->expiration_date;
+            $today = date('Y-m-d');
+            $days_until_expiration = (strtotime($expiration_date) - strtotime($today)) / (60 * 60 * 24);
+    
+    
             $account_warning = null;
-        }
-
-        if($account_warning){
-            $account_warning_array = array('warning' => $account_warning, 'type' => $warning_type);
+    
+           if ($days_until_expiration <= 0) {
+                $account_warning = 'This account has expired.';
+                $warning_type = 'danger';
+            } 
+            
+            
+    
+           else if ($days_until_expiration < 30) {
+                $account_warning = 'This account will expire in ' . $days_until_expiration . ' days.';
+                $warning_type = 'warning';
+            } 
+            
+            else {
+                $account_warning = null;
+            }
+    
+            if($account_warning){
+                $account_warning_array = array('warning' => $account_warning, 'type' => $warning_type);
+            } else {
+                $account_warning_array = null;
+            }
         } else {
+            $accounts = null;
             $account_warning_array = null;
         }
+
+        
 
         if (request('user_id') or $order->user_id) {
             if (request('user_id')) {
@@ -234,14 +278,17 @@ class OrderController extends Controller
             'date' => 'required',
             'user_id' => 'required',
             'facility_id' => 'exists:facilities,id',
-            'payment_account_id' => 'required',
+
+            // payment_account_id is only reqired if price_group is 'internal'
+            'payment_account_id' => $request->price_group == 'internal' ? 'required' : '',
+
             'status' => 'required',
             'price_group' => 'required',
         ]);
 
         $user_id = $request->user_id;
         $facility_id = $request->facility_id;
-        $payment_account = PaymentAccount::find($request->payment_account_id)->id;
+
 
         $order->user_id = $user_id;
 
@@ -249,8 +296,17 @@ class OrderController extends Controller
         $order->description = $request->description;
         $order->date = $request->date;
         $order->facility_id = $facility_id;
-        $order->payment_account_id = $payment_account;
+
+        if($request->price_group == 'internal'){
+            $payment_account = PaymentAccount::find($request->payment_account_id)->id;
+            $order->payment_account_id = $payment_account;
+        }
+
+        
         $order->status = $request->status;
+
+        $order->mailing_address = $request->mailing_address;
+        $order->purchase_order_number = $request->purchase_order_number;
 
         $order->price_group = $request->price_group;
 
