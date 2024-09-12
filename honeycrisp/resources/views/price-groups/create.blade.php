@@ -28,16 +28,21 @@
 
         <div class="form-group">
             <label for="start_date">Start Date</label>
-            <input type="date" class="form-control" id="start_date" name="start_date" required>
+            <input type="date" class="form-control" id="start_date" name="start_date" value="@fiscalYearStart" required>
         </div>
 
-        <div class="form-group">
+        <div class="form-group mb-3">
             <label for="end_date">End Date</label>
-            <input type="date" class="form-control" id="end_date" name="end_date">
+            <input type="date" class="form-control" id="end_date" name="end_date" value="@fiscalYearEnd" required>
         </div>
 
         <button type="submit" class="btn btn-primary">Save</button>
     </form>
+
+
 </div>
+
+
+
 
 @endsection

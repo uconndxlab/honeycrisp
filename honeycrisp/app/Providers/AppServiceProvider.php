@@ -36,6 +36,43 @@ class AppServiceProvider extends ServiceProvider
             return "<?php echo number_format($expression / 100, 2);?>";
         });
 
+        Blade::directive('currentFiscalYear', function () {
+            $currentMonth = date('m');
+            $currentYear = date('Y');
+
+            if ($currentMonth < 7) {
+                return "<?php echo ($currentYear - 1);?>";
+            }
+
+            return "<?php echo $currentYear;?>";
+        });
+
+        // blade directive to get the start date of the current fiscal year
+        Blade::directive('fiscalYearStart', function () {
+            $currentMonth = date('m');
+            $currentYear = date('Y');
+
+            if ($currentMonth < 7) {
+                return "<?php echo ($currentYear - 1) . '-07-01';?>";
+            }
+
+            return "<?php echo $currentYear . '-07-01';?>";
+        });
+
+        // blade directive to get the end date of the current fiscal year
+        Blade::directive('fiscalYearEnd', function () {
+            $currentMonth = date('m');
+            $currentYear = date('Y');
+
+            if ($currentMonth < 7) {
+                return "<?php echo $currentYear . '-06-30';?>";
+            }
+
+            return "<?php echo ($currentYear + 1) . '-06-30';?>";
+        });
+
+        //
+
         // use bootstrap5 pagination
         \Illuminate\Pagination\Paginator::useBootstrap();
         

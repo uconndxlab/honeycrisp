@@ -82,6 +82,12 @@
 
                     <p><strong>Price Group:</strong> {{ $order->price_group}}</p>
 
+                    <!-- if price group is not internal, display the external organization and account number -->
+                    @if ($order->price_group != 'internal')
+                    <p><strong>External Organization:</strong> {{ $order->user->external_organization }}</p>
+                    <p><strong>External Account Number:</strong> {{ $order->user->external_customer_id }}</p>
+                    @endif
+
 
                 </div>
             </div>
