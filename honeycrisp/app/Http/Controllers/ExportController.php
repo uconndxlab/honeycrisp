@@ -8,7 +8,7 @@ use App\Models\Export;
 class ExportController extends Controller
 {
     public function index(Request $request) {
-        $exports = Export::paginate(100);
+        $exports = Export::orderBy('created_at', 'desc')->paginate(100);
 
         return view('exports.index', compact('exports'));
     }
