@@ -65,7 +65,7 @@
                 <!-- account fiscal_officer is a foreign key -->
                 <div class="mb-3">
                     <label for="fiscal_officer" class="form-label" >Fiscal Officer</label>
-                    <input class="form-control" type="text" disabled value="{{ $paymentAccount->fiscal_officer->name }} ({{ $paymentAccount->fiscal_officer->netid ?? 'No NetID'}})">
+                    <input class="form-control" type="text" disabled value="{{ $paymentAccount->fiscal_officer->name ?? '-- Not Yet Assigned --' }} ({{ $paymentAccount->fiscal_officer->netid ?? 'No NetID'}})">
                 </div>
 
                 <!-- fiscal_manager is a foreign key -->

@@ -21,9 +21,21 @@ class LoginController extends Controller
     {
         $credentials = $request->only('email', 'password');
 
+        $potential_user = User::where('email', $credentials['email'])->first();
+        if ( $potential_user && ($potential_user->password === null || $potential_user->netid) ) {
+            return back()->withErrors([
+                'email' => 'You must login with your NetID.',
+            ])->onlyInput('email');
+        }
+
+        if ( $request->password === null ) {
+            return back()->withErrors([
+                'password' => 'You must supply a password, or log in with NetID.',
+            ])->onlyInput('email');
+        }
+
         if (Auth::attempt($credentials, $request->remember)) {
             $request->session()->regenerate();
-
             return redirect()->intended('/');
         }
 
@@ -102,6 +114,7 @@ class LoginController extends Controller
         $saml_user->name = $saml_user_attributes['FirstName'][0] . ' ' . $saml_user_attributes['LastName'][0];
         $saml_user->email = $saml_user_attributes['Email'][0];
         $saml_user->affiliation = $saml_user_attributes['eduPersonPrimaryAffiliation'][0] ?? null;
+        $saml_user->price_group = 'internal';
         $saml_user->save();
 
         // Set an expiration variable to the session based on what SAML told us.

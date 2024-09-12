@@ -83,7 +83,7 @@ class FacilityController extends Controller
             $msg = $facility->name . ' was not updated (no changes)';
         }
 
-        return redirect()->route('facilities.index')->with($state, $msg);
+        return redirect()->route('facilities.edit', $facility)->with($state, $msg);
     }
 
     /**

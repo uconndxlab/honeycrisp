@@ -42,7 +42,7 @@ class AccountSeeder extends Seeder
                     [
                         'name' => $fiscal_officer_name,
                         'email' => $fiscal_officer_netid . '@uconn.edu',
-                        'password' => Hash::make('password')
+                        'price_group' => 'internal'
                     ] // Data to create with
                 );
 
@@ -51,7 +51,7 @@ class AccountSeeder extends Seeder
                     [
                         'name' => $account_supervisor_name,
                         'email' => $account_supervisor_netid . '@uconn.edu',
-                        'password' => Hash::make('password')
+                        'price_group' => 'internal'
                     ] // Data to create with
                 );
 
@@ -107,7 +107,7 @@ class AccountSeeder extends Seeder
                     [
                         'name' => $pi_banner_name,
                         'email' => $pi_netid . '@uconn.edu',
-                        'password' => Hash::make('password')
+                        'price_group' => 'internal'
                     ]
                 );
     
@@ -116,7 +116,7 @@ class AccountSeeder extends Seeder
                     [
                         'name' => $da_banner_name,
                         'email' => $da_netid . '@uconn.edu',
-                        'password' => Hash::make('password')
+                        'price_group' => 'internal'
                     ]
                 );
     

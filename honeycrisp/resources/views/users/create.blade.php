@@ -65,13 +65,13 @@ id') }}" required>
 
                             <div class="form-group mb-3">
                                 <label for="external_rates">Price Group</label>
-                                <select name="price_group" id="external_rates" class="form-select">
+                                <select name="price_group" id="external_rates" class="form-select" @disabled($user->netid ?? false)>
                                     <option value="">Select External Rates</option>
                                     <!-- internal -->
                                     <!-- external_for_profit -->
                                     <!-- external_non_profit -->
 
-                                    <option value="no" {{ isset($user) && $user->price_group == 'no' ? 'selected' : '' }}>Internal</option>
+                                    <option value="internal" {{ isset($user) && $user->price_group == 'internal' ? 'selected' : '' }}>Internal</option>
                                     <option value="external_forprofit" {{ isset($user) && $user->price_group == 'external_forprofit' ? 'selected' : '' }}>External For Profit</option>
                                     <option value="external_nonprofit" {{ isset($user) && $user->price_group == 'external_nonprofit' ? 'selected' : '' }}>External Non Profit</option>
 
@@ -164,7 +164,7 @@ id') }}" required>
         <script>
             // if external rates is no, hide external organization and external customer id
             document.getElementById('external_rates').addEventListener('change', function() {
-                if (this.value === 'no') {
+                if (this.value === 'internal') {
                     document.getElementById('external_organization').parentElement.style.display = 'none';
                     document.getElementById('external_customer_id').parentElement.style.display = 'none';
                 } else {
@@ -174,7 +174,7 @@ id') }}" required>
             });
 
             // on load too 
-            if ((document.getElementById('external_rates').value === 'no') || (document.getElementById('external_rates').value === '')){
+            if ((document.getElementById('external_rates').value === 'internal') || (document.getElementById('external_rates').value === '')){
                 document.getElementById('external_organization').parentElement.style.display = 'none';
                 document.getElementById('external_customer_id').parentElement.style.display = 'none';
             }
