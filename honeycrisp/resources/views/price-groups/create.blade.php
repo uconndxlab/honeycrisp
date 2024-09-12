@@ -28,7 +28,7 @@
 
         <div class="form-group">
             <label for="start_date">Start Date</label>
-            <input type="date" class="form-control" id="start_date" name="start_date" required>
+            <input type="date" class="form-control" id="start_date" name="start_date" required value="{{ now()->format('Y-m-d') }}">
         </div>
 
         <div class="form-group">

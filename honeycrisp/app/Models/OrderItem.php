@@ -56,7 +56,7 @@ class OrderItem extends Model
         $line .= ' ';
 
         // Next let's put the value and date
-        $money = Number::format(($this->price * $this->quantity) / 100, precision: 2);
+        $money = number_format(($this->price * $this->quantity) / 100, 2, '.', '');
         $vals = str_pad( $money, 20, 0, STR_PAD_LEFT);
         $vals .= 'D'; // Debit
         $vals .= $this->order->created_at->format('Y-m-d');
@@ -98,7 +98,7 @@ class OrderItem extends Model
         $line .= ' ';
 
         // Next let's put the value and date
-        $money = Number::format(($this->price * $this->quantity) / 100, precision: 2);
+        $money = number_format(($this->price * $this->quantity) / 100, 2, '.', '');
         $vals = str_pad( $money, 20, 0, STR_PAD_LEFT);
         $vals .= 'C'; // Credit
         $vals .= $this->order->created_at->format('Y-m-d');

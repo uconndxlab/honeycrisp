@@ -67,7 +67,7 @@
                                 <div class="form-group my-2">
                                     <label for="date">Date:</label>
                                     <input type="date" name="date" id="date" class="form-control"
-                                        value="{{ old('date', isset($order) ? $order->date : '') }}">
+                                        value="{{ old('date', isset($order) ? $order->date : now()->format('Y-m-d')) }}">
                                 </div>
 
                                 @if (isset($order))
@@ -143,7 +143,7 @@
                                         </div>
                                     @elseif (count($accounts) == 0 && $accounts != null)
                                         <div class="alert alert-warning" role="alert">
-                                            No Payment Accounts found for this user.
+                                            No Payment Accounts found for this user. <a href="{{ route('payment-accounts.create', ['netid' => request()->netid])}}">Add One</a>
                                         </div>
                                     @endif
 
