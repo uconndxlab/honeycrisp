@@ -359,6 +359,35 @@ main {
   color: var(--dark-color)!important;
 }
 
+/** improve .subnav styles */
+.subnav {
+  background-color: var(--light-color);
+  padding: 0.5rem;
+  border-radius: 0.25rem;
+}
+
+.subnav a {
+  color: var(--dark-color);
+  padding: 0.5rem;
+  border-radius: 0.25rem;
+}
+
+.subnav a:hover {
+  background-color: var(--dark-color);
+  color: white;
+}
+
+.subnav a.active {
+  background-color: var(--dark-color);
+  color: white!important;
+}
+
+.badge-secondary {
+  background-color: var(--secondary-color);
+  color: white;
+}
+
+
 .badge-secondary {
   background-color: var(--secondary-color);
   color: white;

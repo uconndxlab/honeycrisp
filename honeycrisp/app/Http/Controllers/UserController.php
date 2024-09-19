@@ -151,6 +151,10 @@ class UserController extends Controller
     public function destroy(string $id)
     {
         $user = \App\Models\User::find($id);
+        $user->paymentAccounts()->delete();
+        // detatch all the roles and accounts before deleting the user
+        
+  
         $user->delete();
         return redirect()->route('users.index')->with('success', 'User deleted successfully.');
     }
