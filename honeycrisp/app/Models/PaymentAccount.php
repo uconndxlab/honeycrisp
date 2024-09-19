@@ -44,6 +44,11 @@ class PaymentAccount extends Model
     {
         return $this->users()->wherePivot('role', 'owner')->first();
     }
+
+    public function getIsExpiredAttribute()
+    {
+        return $this->expiration_date < now();
+    }
     
 
     public function authorized_users()

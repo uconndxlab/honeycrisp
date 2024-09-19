@@ -6,6 +6,8 @@ use App\Models\PaymentAccount;
 use App\Models\User;
 use Illuminate\Http\Request;
 
+
+
 class PaymentAccountController extends Controller
 {
     /**
@@ -13,9 +15,10 @@ class PaymentAccountController extends Controller
      */
     public function index()
     {
-        return view('payment-accounts.index', [
-            'paymentAccounts' => PaymentAccount::paginate(50),
-        ]);
+        // Get all payment accounts that are not expired, with their users, paginate
+        $paymentAccounts = PaymentAccount::with('users')->where('expiration_date', '>', now())->paginate(50);
+
+        return view('payment-accounts.index', compact('paymentAccounts'));
     }
 
     /**
@@ -24,10 +27,10 @@ class PaymentAccountController extends Controller
     public function create(Request $request)
     {
         $users =  User::all();
-    
+
         // $request->netid is the netid of the user that was selected
         $selectedUser = User::where('netid', $request->netid)->first();
-        
+
         return view('payment-accounts.create')->with(compact('users', 'selectedUser'));
     }
 
@@ -50,17 +53,17 @@ class PaymentAccountController extends Controller
             'expiration_date.required' => 'The expiration date field is required.',
         ]);
 
-        $data ['account_name'] = $request->account_name;
-        $data ['account_number'] = $request->account_number;
-        $data ['account_type'] = $request->account_type;
-        $data ['expiration_date'] = $request->expiration_date;
+        $data['account_name'] = $request->account_name;
+        $data['account_number'] = $request->account_number;
+        $data['account_type'] = $request->account_type;
+        $data['expiration_date'] = $request->expiration_date;
 
 
         $paymentAccount = PaymentAccount::create($data);
 
         // update the user to the account as the owner
         $paymentAccount->users()->attach($request->account_owner, ['role' => 'owner']);
-      
+
 
         return redirect()->route('payment-accounts.index');
     }
@@ -104,11 +107,11 @@ class PaymentAccountController extends Controller
             'owner.required' => 'The owner field is required.',
         ]);
 
-        if($request->expiration_date) {
+        if ($request->expiration_date) {
             $paymentAccount->expiration_date = $request->expiration_date;
         }
 
-        if($request->fiscal_officer) {
+        if ($request->fiscal_officer) {
             if ($paymentAccount->fiscal_officer) {
                 $paymentAccount->users()->detach($paymentAccount->fiscal_officer);
             }
@@ -116,7 +119,7 @@ class PaymentAccountController extends Controller
             $paymentAccount->users()->attach($request->fiscal_officer, ['role' => 'fiscal_officer']);
         }
 
-        if($request->account_manager) {
+        if ($request->account_manager) {
             if ($paymentAccount->account_manager) {
                 $paymentAccount->users()->detach($paymentAccount->account_manager);
             }
@@ -127,11 +130,11 @@ class PaymentAccountController extends Controller
 
         $paymentAccount->update($request->all());
         // update the user to the account as the owner
-    
+
 
         return redirect()->route('payment-accounts.index');
     }
-            
+
 
     public function addUser(Request $request, PaymentAccount $paymentAccount)
     {
@@ -171,7 +174,6 @@ class PaymentAccountController extends Controller
         $paymentAccount->authorized_users()->attach($user->id, ['role' => 'authorized_user']);
 
         return redirect()->route('payment-accounts.authorizedUsers', $paymentAccount)->with('success', 'User added successfully.');
-        
     }
 
     public function removeAuthorizedUser(PaymentAccount $paymentAccount, User $user)
@@ -190,7 +192,7 @@ class PaymentAccountController extends Controller
         $paymentAccount->users()->detach();
         // remove all authorized users from the account
         $paymentAccount->authorized_users()->detach();
-        
+
 
         $paymentAccount->delete();
         return redirect()->route('payment-accounts.index');

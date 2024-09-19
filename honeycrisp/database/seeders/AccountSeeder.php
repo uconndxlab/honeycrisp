@@ -34,7 +34,21 @@ class AccountSeeder extends Seeder
             $account_name = $data[1];
             $account_number = $data[0];
 
-            $expiration_date = $data[21];
+            $original_expiration_date = $data[21];
+
+
+            $expiration_date = date('Y-m-d', strtotime($original_expiration_date));
+
+            if (empty($original_expiration_date)) {
+                $expiration_date = '2099-12-31'; // if the expiration date is empty, set it to a far future date
+            } 
+
+            if ($expiration_date < date('Y-m-d')) {
+                continue;
+            }
+
+            // if the account is expired, skip it
+
 
             DB::transaction(function () use ($fiscal_officer_netid, $fiscal_officer_name, $account_supervisor_netid, $account_supervisor_name, $account_name, $account_number, $expiration_date) {
                 $fiscal_officer = User::firstOrCreate(

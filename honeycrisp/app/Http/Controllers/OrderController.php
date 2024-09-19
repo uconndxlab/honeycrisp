@@ -82,7 +82,7 @@ class OrderController extends Controller
 
         // if request[netid] is not null, get the user with that netid so they can be selected by default
 
-        $users = User::all()->where('status', 'active');
+        //$users = User::all()->where('status', 'active');
         $selected_user = null;
 
         if (request('netid')) {
@@ -90,7 +90,7 @@ class OrderController extends Controller
             $selected_user = $user;
             $accounts = [];
 
-            $accounts =  $user->paymentAccounts()->get();
+            $accounts = $user->paymentAccounts()->where('expiration_date', '<', now())->get();
         } 
 
         elseif (request('user_id')) {
@@ -98,7 +98,11 @@ class OrderController extends Controller
             $selected_user = $user;
             $accounts = [];
 
-            $accounts =  $user->paymentAccounts()->get();
+      
+            
+            // get the payment accounts for the user that are not expired
+            $accounts = $user->paymentAccounts()->where('expiration_date', '>', now())->get();
+
         }
         
         else {
@@ -108,7 +112,7 @@ class OrderController extends Controller
 
         $facility = Facility::all()->where('status', 'active')->where('abbreviation', $facilityAbbreviation)->first();
 
-        return view('orders.create', compact('facility', 'users', 'selected_user', 'accounts'));
+        return view('orders.create', compact('facility', 'selected_user', 'accounts'));
     }
 
     /**

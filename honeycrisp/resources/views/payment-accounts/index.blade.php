@@ -12,6 +12,12 @@
         </div>
 
         {{ $paymentAccounts->links() }}
+        <!-- total accounts -->
+        <div class="row">
+            <div class="col">
+                <p>Total Accounts: {{ $paymentAccounts->total() }}</p>
+            </div>
+        </div>
 
         <div class="row">
             <div class="col">
