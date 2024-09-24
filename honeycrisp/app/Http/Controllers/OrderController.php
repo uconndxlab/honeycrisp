@@ -10,6 +10,8 @@ use App\Models\PaymentAccount;
 use App\Models\User;
 use App\Models\OrderItem;
 use App\Models\Product;
+use App\Models\OrderLog;
+
 
 class OrderController extends Controller
 {
@@ -296,6 +298,40 @@ class OrderController extends Controller
 
         $order->user_id = $user_id;
 
+        $fields_changed = [];
+
+        if ($order->title != $request->title) {
+            $fields_changed[] = 'title';
+        }
+
+        if ($order->description != $request->description) {
+            $fields_changed[] = 'description';
+        }
+
+        if ($order->date != $request->date) {
+            $fields_changed[] = 'date';
+        }
+
+
+        if ($order->payment_account_id != $request->payment_account_id) {
+            $fields_changed[] = 'payment account';
+        }
+
+        if ($order->status != $request->status) {
+            $fields_changed[] = 'status';
+        }
+
+        if ($order->price_group != $request->price_group) {
+            $fields_changed[] = 'price group';
+        }
+
+        // user_id
+        if ($order->user_id != $user_id) {
+            $fields_changed[] = 'user';
+        }
+
+    
+
         $order->title = $request->title;
         $order->description = $request->description;
         $order->date = $request->date;
@@ -306,8 +342,17 @@ class OrderController extends Controller
             $order->payment_account_id = $payment_account;
         }
 
+        $message = 'Order updated. Fields changed: ' . implode(', ', $fields_changed);
+
         
         $order->status = $request->status;
+
+        OrderLog::create([
+            'order_id' => $order->id,
+            'message' => $message,
+            'user_id' => auth()->user()->id ?? null,
+            'changed_at' => now(),
+        ]);
 
         $order->mailing_address = $request->mailing_address;
         $order->purchase_order_number = $request->purchase_order_number;

@@ -85,4 +85,9 @@ class Order extends Model
             'archived' => 'Archived'
         ];
     }
+
+    public function logs()
+    {
+        return $this->hasMany(OrderLog::class);
+    }
 }

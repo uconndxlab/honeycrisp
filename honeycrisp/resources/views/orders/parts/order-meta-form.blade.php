@@ -196,6 +196,38 @@
             </div>
         </div>
 
+
+        <!-- order log -->
+        @if (isset($order))
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="accordion my-2" id="orderLogAccordion">
+                        <div class="accordion-item">
+                            <h2 class="accordion-header" id="orderLogHeading">
+                                <button class="accordion-button" type="button" data-bs-toggle="collapse"
+                                    data-bs-target="#orderLogCollapse" aria-expanded="true" aria-controls="orderLogCollapse">
+                                    Order Log
+                                </button>
+                            </h2>
+                            <div id="orderLogCollapse" class="accordion-collapse collapse show"
+                                aria-labelledby="orderLogHeading" data-bs-parent="#orderLogAccordion">
+                                <div class="accordion-body">
+                                    <ul class="list-group list-group-flush">
+                                        @foreach ($order->logs as $log)
+                                            <li class="list-group list-group-item">
+                                                <strong>{{ $log->created_at->format('m/d/Y h:i A') }}</strong> - {{ $log->message }}
+                                            </li>
+                                        @endforeach
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        @endif
+        
+
         <!-- Action Buttons -->
         <div class="row">
             <div class="col-md-6">
