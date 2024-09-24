@@ -170,7 +170,7 @@
                             <a href="{{ route('orders.show', $order->id) }}" class="btn btn-primary">View</a>
                             <a href="{{ route('orders.edit', $order->id) }}" class="btn btn-secondary">Edit</a>
                             <form action="{{ route('orders.destroy', $order->id) }}" method="POST"
-                                style="display: none;">
+                                style="display: inline-block;">
                                 @csrf
                                 @method('DELETE')
                                 <button type="submit" class="btn btn-danger">Delete</button>
