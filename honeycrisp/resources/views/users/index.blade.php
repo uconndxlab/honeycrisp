@@ -36,7 +36,13 @@
 
             <div class="row">
                 <div class="col-12 d-flex justify-content-end">
+
                     {{ $users->links() }}
+
+                </div>
+                <!-- showing users x-y of z -->
+                <div class="col-12">
+                    <p>Showing {{ $users->firstItem() }} to {{ $users->lastItem() }} of {{ $users->total() }} users</p>
                 </div>
             </div>
 

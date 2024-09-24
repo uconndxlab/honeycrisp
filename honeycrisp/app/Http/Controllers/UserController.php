@@ -18,7 +18,7 @@ class UserController extends Controller
                 ->orWhere('netid', 'like', '%' . $request->search . '%')
                 ->paginate(30);
         } else {
-            $users = \App\Models\User::paginate(30);
+            $users = \App\Models\User::orderBy('name')->paginate(30);
         }
 
         return view('users.index', compact('users'));
@@ -87,10 +87,17 @@ class UserController extends Controller
      */
     public function edit(string $id)
     {
-        // load the create view but with the user data
-        $user = \App\Models\User::find($id);
+        // Retrieve the user with their payment accounts
+        $user = \App\Models\User::with('paymentAccounts')->find($id);
+    
+        // Ensure the user exists before returning the view
+        if (!$user) {
+            return redirect()->route('users.index')->with('error', 'User not found');
+        }
+    
         return view('users.create', compact('user'));
     }
+    
 
     /**
      * Update the specified resource in storage.

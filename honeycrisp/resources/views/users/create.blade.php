@@ -128,7 +128,7 @@ id') }}">
                             </tr>
                         </thead>
                         <tbody>
-                            @foreach ($user->paymentAccounts as $account)
+                            @foreach ($user->paymentAccounts->sortBy('account_name') as $account)
                                 <tr>
                                     <td>{{ $account->account_name }}</td>
                                     <td>{{ $account->account_type }}</td>

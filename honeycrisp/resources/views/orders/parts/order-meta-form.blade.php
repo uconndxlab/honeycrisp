@@ -147,7 +147,7 @@
                                         <label for="payment_account_id">Payment Account:</label>
                                         <select name="payment_account_id" id="payment_account_id" class="form-select">
                                             <option value="">Select a Payment Account</option>
-                                            @foreach ($accounts as $payment_account)
+                                            @foreach ($accounts->sortBy('account_name') as $payment_account)
                                                 <option value="{{ $payment_account->id }}"
                                                     {{ old('payment_account_id', isset($order) && $order->payment_account_id == $payment_account->id) ? 'selected' : '' }}>
                                                     {{ $payment_account->account_name }}
