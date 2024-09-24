@@ -166,7 +166,12 @@ class OrderController extends Controller
         // get the id of the order that was just created
         $order = Order::latest()->first();
         
-
+        OrderLog::create([
+            'order_id' => $order->id,
+            'message' => 'Order created.',
+            'user_id' => auth()->user()->id ?? null,
+            'changed_at' => now(),
+        ]);
         
     
         return redirect()->route('orders.edit', $order)->with('success', 'Order created successfully!');

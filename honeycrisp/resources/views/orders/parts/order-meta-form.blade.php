@@ -215,7 +215,7 @@
                                     <ul class="list-group list-group-flush">
                                         @foreach ($order->logs as $log)
                                             <li class="list-group list-group-item">
-                                                <strong>{{ $log->created_at->format('m/d/Y h:i A') }}</strong> - {{ $log->message }}
+                                                <strong>{{ $log->created_at->format('m/d/Y h:i A') }}</strong> - {{ $log->message }}. <strong>{{  optional($log->user)->netid }}</strong>
                                             </li>
                                         @endforeach
                                     </ul>
@@ -226,7 +226,7 @@
                 </div>
             </div>
         @endif
-        
+
 
         <!-- Action Buttons -->
         <div class="row">
