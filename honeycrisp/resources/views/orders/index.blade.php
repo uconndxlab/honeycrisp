@@ -26,7 +26,7 @@
 
         <div class="col-md-10">
             <div class="active-filters py-2">
-
+                
                 @if (request('facility_id'))
                 <span class="badge bg-secondary">
                     Facility: {{ $data['facility']->abbreviation }}
@@ -66,7 +66,7 @@
                 </div>
 
                 <div class="card-body">
-
+                   
                     <!-- filter UI, like a search bar "Search by netid, order title, or order id", as well as date range filter -->
                     <form action="{{ route('orders.index') }}" method="GET">
                         <div class="row my-3 align-items-center">
@@ -134,7 +134,10 @@
                     </form>
                 </div>
             </div>
-
+                    <!-- export button -->
+                    <div class="d-flex justify-content-end my-3">
+                        <a href="{{ route('orders.export', request()->all()) }}" class="btn btn-success">Export</a>
+                    </div>
             <table class="table mt-5">
                 <thead>
                     <tr>
@@ -194,6 +197,15 @@
         </div>
     </div>
 </div>
+
+<script>
+    document.getElementById('select-all').addEventListener('click', function() {
+        var checkboxes = document.getElementsByName('order_id[]');
+        for (var checkbox of checkboxes) {
+            checkbox.checked = this.checked;
+        }
+    });
+</script>
 
 
 

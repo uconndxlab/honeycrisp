@@ -278,6 +278,60 @@ class OrderController extends Controller
         return view('orders.edit', compact('order', 'facility', 'users', 'selected_user', 'accounts', 'account_warning_array', 'status_options', 'categoryRequested'));
     }
 
+    public function export(Request $request)
+    {
+        // Retrieve orders based on current query parameters
+        $orders = Order::query();
+    
+        if ($request->has('status')) {
+            $orders->where('status', $request->status);
+        }
+        
+        if ($request->has('facility_id')) {
+            $orders->where('facility_id', $request->facility_id);
+        }
+        
+        if ($request->has('search')) {
+            $orders->where(function ($query) use ($request) {
+                $query->where('netid', 'like', '%' . $request->search . '%')
+                      ->orWhere('title', 'like', '%' . $request->search . '%')
+                      ->orWhere('id', $request->search);
+            });
+        }
+    
+        if ($request->has('start_date') && $request->has('end_date')) {
+            $orders->whereBetween('date', [$request->start_date, $request->end_date]);
+        }
+    
+        $orders = $orders->get();
+    
+        // Prepare CSV export
+        $csvFileName = 'orders_' . now()->format('Ymd') . '.csv';
+        $handle = fopen('php://output', 'w');
+        
+        // Set headers for the CSV file
+        header('Content-Type: text/csv');
+        header('Content-Disposition: attachment; filename="' . $csvFileName . '"');
+        
+        // Add the CSV header row
+        fputcsv($handle, ['ID', 'Facility', 'User', 'Title', 'Date', 'Status', 'Total']);
+    
+        foreach ($orders as $order) {
+            fputcsv($handle, [
+                $order->id,
+                $order->facility->abbreviation,
+                $order->user->name,
+                $order->title,
+                $order->date,
+                $order->status,
+                $order->total,
+            ]);
+        }
+    
+        fclose($handle);
+        exit();
+    }
+
     /**
      * Update the specified resource in storage.
      */
