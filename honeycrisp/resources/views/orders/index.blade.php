@@ -196,8 +196,6 @@
                             <th>User</th>
                             <th>Title</th>
                             <th>Date</th>
-                            <th>Account Type</th>
-                            <th>Status</th>
                             <th>Total</th>
                             <th>Actions</th>
                         </tr>
@@ -208,15 +206,20 @@
 
                                 <td>
                                     {{ $order->facility->abbreviation }} - {{ $order->id }}
-                                </td>
-                                <td>{{ $order->user->name }}</td>
+                                    
 
-                                <td>{{ $order->title }}</td>
-                                <td>{{ $order->date }}</td>
-                                <td>{{ $order->paymentAccount->account_type }}</td>
-                                <td>
-                                    <span class="badge badge-{{ $order->status_color }}">{{ $order->status }}</span>
                                 </td>
+                                <td>{{ $order->user->name }}
+                                    ({{ $order->paymentAccount->account_type }})
+                                </td>
+
+                                <td>
+
+                                    {{ $order->title }} <span class="badge badge-{{ $order->status_color }}">{{ $order->status }}</span>
+
+                                </td>
+                                <td>{{ $order->date }}</td>
+
 
                                 <td>$@dollars($order->total)</td>
                                 <td>
