@@ -18,7 +18,7 @@ use Illuminate\Foundation\Http\Middleware\VerifyCsrfToken;
 
 Route::get('/', function () {
     // facilities.index controller
-    return redirect()->route('facilities.index');
+    return redirect()->route('orders.index');
 
 })->name('home');
 
