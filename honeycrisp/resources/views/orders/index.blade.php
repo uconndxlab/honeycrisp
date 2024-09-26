@@ -105,7 +105,7 @@
                     <div class="card-body">
 
                         <!-- filter UI, like a search bar "Search by netid, order title, or order id", as well as date range filter -->
-                        <form action="{{ route('orders.index') }}" method="GET">
+                        <form action="{{ route('orders.index') }}" method="GET" hx-boost="true" hx-trigger="change" hx-target="#orderResults" hx-swap="outerHTML" hx-select="#orderResults">
                             <div class="row my-3 align-items-center">
                                 <div class="col">
                                     <label for="search">Facility:</label>
