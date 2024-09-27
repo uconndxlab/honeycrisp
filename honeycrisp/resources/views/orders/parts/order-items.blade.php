@@ -104,7 +104,7 @@
                             </div>
                         </form>
                         <!-- loop through all products -->
-                        @if ($order->facility->products->count() > 0)
+                        @if ($order->facility->products->where('is_deleted', 0)->count() > 0)
 
                         <table id="products_table" class="table table-hover">
                             <thead>
@@ -117,7 +117,7 @@
                                 </tr>
                             </thead>
                             <tbody>
-                                @foreach ($order->facility->products->groupBy('category') as $category => $products)
+                                @foreach ($order->facility->products->where('is_deleted', 0)->groupBy('category') as $category => $products)
                                 <tr>
                                     <td colspan="5" class="text-start"><strong>
                                         <!-- category is a json object, so we need to decode it -->
@@ -198,7 +198,7 @@
                                                 placeholder="Custom Product Description" required></textarea>
                                         </td>
                                         <td>
-                                            <input type="number" name="price" class="form-control" step="0.5"
+                                            <input type="number" name="price" class="form-control" step="0.01"
                                                 placeholder="Custom Product Price" required>
                                         </td>
                                         <td>

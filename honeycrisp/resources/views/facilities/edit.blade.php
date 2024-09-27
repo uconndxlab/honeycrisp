@@ -109,11 +109,13 @@
 
                 <ul class="list-group my-4">
                     @foreach ($facility->products as $product)
+                    @if($product->is_deleted == 0)
                     <li class="list-group-item">
                         <a href="{{ route('products.show', $product->id) }}">
                             {{ $product->name }} 
                         </a>
                     </li>
+                    @endif
                     @endforeach
 
                 </ul>

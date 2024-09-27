@@ -478,6 +478,13 @@ class OrderController extends Controller
 
         $order_item->description = $request->description;
 
+        OrderLog::create([
+            'order_id' => $request->order_id,
+            'message' => 'Item added to order: ' . $order_item->name,
+            'user_id' => auth()->user()->id ?? null,
+            'changed_at' => now(),
+        ]);
+
         $order_item->save();
 
         $order = Order::find($request->order_id);
@@ -497,6 +504,13 @@ class OrderController extends Controller
         $order_item->delete();
 
         $order->updateTotal();
+
+        OrderLog::create([
+            'order_id' => $request->order_id,
+            'message' => 'Item removed from order: ' . $order_item->name,
+            'user_id' => auth()->user()->id ?? null,
+            'changed_at' => now(),
+        ]);
 
         return redirect()->route('orders.edit', $request->order_id)->with('success', 'Item removed from order successfully!');
     }
