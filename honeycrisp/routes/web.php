@@ -58,14 +58,10 @@ Route::get('/login', [LoginController::class, 'login'])->name('login');
 Route::post('/login', [LoginController::class, 'submitLogin'])->name('login.submit');
 Route::get('/logout', [LoginController::class, 'logout'])->name('logout');
 
-Route::get('/saml/login', [LoginController::class, 'samlLogin'])->name('saml.login');
-Route::post('/saml', [LoginController::class, 'samlAcs'])->name('saml.acs')->withoutMiddleware([VerifyCsrfToken::class]);
-Route::get('/saml/logout', [LoginController::class, 'samlLogout'])->name('saml.logout');
-Route::get('/saml/processLogout', [LoginController::class, 'processSamlLogout'])->name('saml.processLogout');
-
-
-
-Route::resource('users', UserController::class);
+Route::get('/login/cas', [LoginController::class, 'casLogin'])->name('cas.login');
+Route::middleware(['auth'])->group(function () {
+    Route::resource('users', UserController::class);
+});
 
 // register routes
 Route::get('/register', [LoginController::class, 'register'])->name('register');

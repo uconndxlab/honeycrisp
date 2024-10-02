@@ -94,8 +94,10 @@ class UserController extends Controller
         if (!$user) {
             return redirect()->route('users.index')->with('error', 'User not found');
         }
+
+        $ldapOutput = \App\Ldap\User::where('uid', 'bak11004')->get();
     
-        return view('users.create', compact('user'));
+        return view('users.create', compact('user', 'ldapOutput'));
     }
     
 

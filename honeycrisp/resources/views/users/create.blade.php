@@ -159,6 +159,9 @@ id') }}">
 
                 </div>
             </div>
+
+
+            @dump($ldapOutput)
         @endif
 
         <script>

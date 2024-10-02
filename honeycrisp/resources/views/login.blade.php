@@ -53,7 +53,7 @@
                     </div>
                     <div class="card-body">
                         <p class="mb-4">UConn users can login using their UConn NetID and password.</p>
-                        <a href="{{ route('saml.login') }}" class="btn btn-primary">Login with UConn</a>
+                        <a href="{{ route('cas.login') }}" class="btn btn-primary">Login with UConn</a>
                     </div>
                 </div>
             </div>
