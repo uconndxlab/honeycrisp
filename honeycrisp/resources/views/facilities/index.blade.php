@@ -37,12 +37,14 @@
                     <address>{{ $facility->address }}</address>
                     </p>
                     <a href="{{ route('facilities.show', $facility->id) }}" class="btn btn-primary">View</a>
+                    @if (Auth::user() && Auth::user()->is_admin())
                     <a href="{{ route('facilities.edit', $facility->id) }}" class="btn btn-secondary">Manage</a>
                     <form action="{{ route('facilities.destroy', $facility->id) }}" method="POST" class="d-inline">
                         @csrf
                         @method('DELETE')
                         <button type="submit" class="btn btn-danger">Delete</button>
                     </form>
+                    @endif
                 </div>
             </div>
         </div>

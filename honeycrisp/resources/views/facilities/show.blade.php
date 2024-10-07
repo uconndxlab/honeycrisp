@@ -14,8 +14,17 @@
                     <div class="card-body">
                         <p><strong>Status:</strong> {{ $facility->status }}</p>
                         <p><strong>Description:</strong> {{ $facility->description }}</p>
+                    </div>
 
-                        <a href="{{ route('facilities.edit', $facility->id) }}" class="btn btn-primary">Edit Facility</a>
+                    <div class="card-footer">
+                        @if (Auth::user() && Auth::user()->is_admin())
+                        <a href="{{ route('facilities.edit', $facility->id) }}" class="btn btn-secondary">Manage</a>
+                        <form action="{{ route('facilities.destroy', $facility->id) }}" method="POST" class="d-inline">
+                            @csrf
+                            @method('DELETE')
+                            <button type="submit" class="btn btn-danger">Delete</button>
+                        </form>
+                        @endif
                     </div>
                 </div>
             </div>

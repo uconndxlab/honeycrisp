@@ -67,4 +67,10 @@ class User extends Authenticatable
     {
         return PaymentAccount::all()->where('account_owner', $this->id);
     }
+
+    /** is_admin */
+    public function is_admin()
+    {
+        return $this->role === 'admin';
+    }
 }
