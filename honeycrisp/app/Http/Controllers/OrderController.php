@@ -415,6 +415,11 @@ class OrderController extends Controller
 
         $message = 'Order updated. Fields changed: ' . implode(', ', $fields_changed);
 
+        // if the field changed is status, add a message to the log
+        if (in_array('status', $fields_changed)) {
+            $message .= '. Status changed to ' . $request->status;
+        }
+
         
         $order->status = $request->status;
 
@@ -546,6 +551,14 @@ class OrderController extends Controller
 
     public function sendToCustomer(Order $order)
     {
+
+        OrderLog::create([
+            'order_id' => $order->id,
+            'message' => 'Order sent to customer.',
+            'user_id' => auth()->user()->id ?? null,
+            'changed_at' => now(),
+        ]);
+
         $order->status = 'pending';
         $order->save();
 

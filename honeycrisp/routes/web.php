@@ -61,7 +61,7 @@ Route::middleware(['auth'])->group(function () {
     Route::put('products/{product}', [ProductController::class, 'update'])->name('products.update');
     Route::delete('products/{product}', [ProductController::class, 'destroy'])->name('products.destroy');
     Route::get('products/{product}/edit', [ProductController::class, 'edit'])->name('products.edit');
-    Route::get('products/create/{facilityAbbreviation}', [ProductController::class, 'create']);
+    Route::get('products/create/{facilityAbbreviation}', [ProductController::class, 'create'])->name('products.create');
 
 
     Route::get('categories/create/{facilityAbbreviation}', [CategoryController::class, 'create']);

@@ -2,18 +2,24 @@
     <!-- Header Section -->
     <div class="row my-3">
         <div class="col-md-12">
+            <div class="d-flex justify-content-between">
             <h1>{{ isset($order) ? 'Edit Order #' . $order->id : 'Create Order' }}
                 <!-- status badge -->
                 @if (isset($order))
                     <span class="badge badge-{{ $order->status_color }}">{{ Str::headline($order->status) }}</span>
                 @endif
-                <!-- if order is quote, a button to send to customer -->
-                @if (isset($order) && $order->status == 'quote')
-                    <a href="{{ route('orders.sendToCustomer', ['order' => $order]) }}" class="btn btn-outline-primary">
-                        <i class="bi bi-envelope"></i> Send to Customer</a>
-                @endif
             </h1>
+
+            <!-- if order is quote, a button to send to customer -->
+            <div>
+            @if (isset($order))
+                <a href="{{ route('orders.sendToCustomer', ['order' => $order]) }}" class="btn btn-outline-primary ">
+                    <i class="bi bi-envelope"></i> Send to Customer</a>
+            @endif
+            </div>
+            </div>
             <h2>{{ $facility->name }} ({{ $facility->abbreviation }})</h2>
+
         </div>
     </div>
 
@@ -93,13 +99,13 @@
                                 @if (isset($order) && $order->price_group != 'internal')
                                     <div class="form-group my-2">
                                         <label for="mailing_address">Mailing Address:</label>
-                                        <textarea name="mailing_address" id="mailing_address"
-                                            class="form-control">{{ old('mailing_address', isset($order) ? $order->mailing_address : '') }}</textarea>
+                                        <textarea name="mailing_address" id="mailing_address" class="form-control">{{ old('mailing_address', isset($order) ? $order->mailing_address : '') }}</textarea>
                                     </div>
 
                                     <div class="form-group my-2">
                                         <label for="purchase_order_number">Purchase Order:</label>
-                                        <input type="text" name="purchase_order_number" id="purchase_order_number" class="form-control"
+                                        <input type="text" name="purchase_order_number" id="purchase_order_number"
+                                            class="form-control"
                                             value="{{ old('purchase_order', isset($order) ? $order->purchase_order_number : '') }}">
                                     </div>
                                 @endif
@@ -124,7 +130,7 @@
                         <div id="customerInformationCollapse" class="accordion-collapse collapse show"
                             aria-labelledby="customerInformationHeading" data-bs-parent="#customerInformationAccordion">
                             <div class="accordion-body">
-                                @if ((isset($order) && $order->user_id != null) or (isset($selected_user)))
+                                @if (isset($order) && $order->user_id != null or isset($selected_user))
                                     <div class="form-group my-2">
                                         <label for="user_id">User:</label>
                                         <input type="hidden" name="user_id" id="user_id"
@@ -138,14 +144,15 @@
                                     <div class="alert alert-warning" role="alert">
                                         Select a user first to see payment accounts and start an order.
                                         <a href="{{ route('users.index') }}">Select A User</a>
-                                    
+
                                     </div>
                                 @endif
 
                                 <div id="user_accounts" class="form-group my-2">
                                     @if ($accounts != null && count($accounts) > 0)
                                         <label for="payment_account_id">Payment Account:</label>
-                                        <select name="payment_account_id" id="payment_account_id" class="form-select">
+                                        <select name="payment_account_id" id="payment_account_id"
+                                            class="form-select">
                                             <option value="">Select a Payment Account</option>
                                             @foreach ($accounts->sortBy('account_name') as $payment_account)
                                                 <option value="{{ $payment_account->id }}"
@@ -161,7 +168,9 @@
                                         </div>
                                     @elseif (count($accounts) == 0 && $accounts != null)
                                         <div class="alert alert-warning" role="alert">
-                                            No Payment Accounts found for this user. <a href="{{ route('payment-accounts.create', ['netid' => request()->netid])}}">Add One</a>
+                                            No Payment Accounts found for this user. <a
+                                                href="{{ route('payment-accounts.create', ['netid' => request()->netid]) }}">Add
+                                                One</a>
                                         </div>
                                     @endif
 
@@ -188,57 +197,60 @@
                                             {{ old('price_group', isset($order) && $order->price_group == 'external_for_profit') ? 'selected' : '' }}>
                                             External For-Profit</option>
                                     </select>
+                                </div>
                             </div>
-                        </div>
 
+                        </div>
                     </div>
                 </div>
             </div>
-        </div>
 
 
-        <!-- order log -->
-        @if (isset($order))
-            <div class="row">
-                <div class="col-md-12">
-                    <div class="accordion my-2" id="orderLogAccordion">
-                        <div class="accordion-item">
-                            <h2 class="accordion-header" id="orderLogHeading">
-                                <button class="accordion-button" type="button" data-bs-toggle="collapse"
-                                    data-bs-target="#orderLogCollapse" aria-expanded="true" aria-controls="orderLogCollapse">
-                                    Order Log
-                                </button>
-                            </h2>
-                            <div id="orderLogCollapse" class="accordion-collapse collapse show"
-                                aria-labelledby="orderLogHeading" data-bs-parent="#orderLogAccordion">
-                                <div class="accordion-body">
-                                    <ul class="list-group list-group-flush">
-                                        @foreach ($order->logs as $log)
-                                            <li class="list-group list-group-item">
-                                                <strong>{{ $log->created_at->format('m/d/Y h:i A') }}</strong> - {{ $log->message }}. <strong>{{  optional($log->user)->netid }}</strong>
-                                            </li>
-                                        @endforeach
-                                    </ul>
+            <!-- order log -->
+            @if (isset($order))
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="accordion my-2" id="orderLogAccordion">
+                            <div class="accordion-item">
+                                <h2 class="accordion-header" id="orderLogHeading">
+                                    <button class="accordion-button" type="button" data-bs-toggle="collapse"
+                                        data-bs-target="#orderLogCollapse" aria-expanded="true"
+                                        aria-controls="orderLogCollapse">
+                                        Order Log
+                                    </button>
+                                </h2>
+                                <div id="orderLogCollapse" class="accordion-collapse collapse show"
+                                    aria-labelledby="orderLogHeading" data-bs-parent="#orderLogAccordion">
+                                    <div class="accordion-body">
+                                        <ul class="list-group list-group-flush">
+                                            @foreach ($order->logs as $log)
+                                                <li class="list-group list-group-item">
+                                                    <strong>{{ optional($log->user)->netid }} </strong>
+                                                    <strong>{{ $log->created_at->format('m/d/Y h:i A') }}</strong> -
+                                                    {{ $log->message }}
+                                                </li>
+                                            @endforeach
+                                        </ul>
+                                    </div>
                                 </div>
                             </div>
                         </div>
                     </div>
                 </div>
-            </div>
-        @endif
+            @endif
 
 
-        <!-- Action Buttons -->
-        <div class="row">
-            <div class="col-md-6">
-                <button type="submit" id="save-draft" class="btn btn-primary">
-                    @if (isset($order))
-                        Save Order Details
-                    @else
-                        Save Draft and Add items <i class="bi bi-arrow-right"></i>
-                    @endif
-                </button>
+            <!-- Action Buttons -->
+            <div class="row">
+                <div class="col-md-6">
+                    <button type="submit" id="save-draft" class="btn btn-primary">
+                        @if (isset($order))
+                            Save Order Details
+                        @else
+                            Save Draft and Add items <i class="bi bi-arrow-right"></i>
+                        @endif
+                    </button>
+                </div>
             </div>
-        </div>
     </form>
 </div>

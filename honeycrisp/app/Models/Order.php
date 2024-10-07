@@ -88,6 +88,6 @@ class Order extends Model
 
     public function logs()
     {
-        return $this->hasMany(OrderLog::class);
+        return $this->hasMany(OrderLog::class)->orderBy('changed_at', 'desc');
     }
 }
