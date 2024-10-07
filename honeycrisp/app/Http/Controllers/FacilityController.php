@@ -37,6 +37,7 @@ class FacilityController extends Controller
         $facility->email= $request->email;
         $facility->recharge_account = $request->recharge_account;
         $facility->address = $request->address;
+        $facility->account_type = $request->account_type;
 
         $facility->save();
 
@@ -72,6 +73,7 @@ class FacilityController extends Controller
         $facility->email= $request->email;
         $facility->recharge_account = $request->recharge_account;
         $facility->address = $request->address;
+        $facility->account_type = $request->account_type;
 
         $facility->save();
 

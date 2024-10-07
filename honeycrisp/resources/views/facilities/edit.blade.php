@@ -89,6 +89,16 @@
 
                     </div>
 
+                    <!-- Account Type -->
+                    <div class="form-group mb-2">
+                        <label for="account_type">Account Type</label>
+                        <select name="account_type" id="account_type" class="form-select" required>
+                            <option value="kfs" @if(old('account_type', $facility->account_type) == 'kfs') selected @endif>KFS</option>
+                            <option value="uch" @if(old('account_type', $facility->account_type) == 'uch') selected @endif>Banner/UCH</option>
+                            <option value="other" @if(old('account_type', $facility->account_type) == 'other') selected @endif>Other</option>
+                        </select>
+                    </div>
+
 
 
                     <!-- Submit Button -->

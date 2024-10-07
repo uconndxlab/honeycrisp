@@ -35,7 +35,17 @@
                     <div class="mb-3">
                         <label for="recharge_account" class="form-label">Recharge Destination Account:</label>
                         <input type="text" class="form-control" id="recharge_account" name="recharge_account" required>
-
+                    </div>
+                    <!-- account type -->
+                    <div class="mb-3">
+                        <label for="account_type" class="form-label">Account Type:</label>
+                        <!-- pick from accountTypes variable -->
+                        <label for="account_type" class="form-label">Type</label>
+                        <select class="form-select" id="type" name="account_type">
+                            <option value="kfs" @if(old('account_type') == 'kfs') selected @endif>KFS</option>
+                            <option value="uch" @if(old('account_type') == 'uch') selected @endif>Banner/UCH</option>
+                            <option value="other" @if(old('account_type') == 'other') selected @endif>Other</option>
+                        </select>
                     </div>
                     <div class="mb-3">
                         <label for="description" class="form-label">Description</label>

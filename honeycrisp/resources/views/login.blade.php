@@ -8,7 +8,7 @@
             <div class="col-lg-6">
                 <div class="card">
                     <div class="card-header">
-                        <h1 class="mb-4">Login</h1>
+                        <h4>Internal Login</h4>
                     </div>
                     <div class="card-body">
                         @if ( $errors->any() )
@@ -49,7 +49,7 @@
             <div class="col-lg-6">
                 <div class="card">
                     <div class="card-header">
-                        <h1>UConn Login</h1>
+                        <h4>UConn Login</h4>
                     </div>
                     <div class="card-body">
                         <p class="mb-4">UConn users can login using their UConn NetID and password.</p>
