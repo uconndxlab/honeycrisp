@@ -43,12 +43,14 @@
                                             <td>{{ $priceGroup->end_date }}</td>
                                             <td>@dollars($priceGroup->price)</td>
                                             <td>
+                                                @can('update-facility', $product->facility)
                                                 <a href="{{ route('price-groups.edit', $priceGroup->id) }}" class="btn btn-primary">Edit</a>
                                                 <form action="{{ route('price-groups.destroy', $priceGroup->id) }}" method="POST" style="display: inline;">
                                                     @csrf
                                                     @method('DELETE')
                                                     <button type="submit" class="btn btn-danger">Delete</button>
                                                 </form>
+                                                @endcan
                                             </td>
 
                                         </tr>
@@ -56,17 +58,21 @@
                                 </tbody>
                             </table>
 
+                            @can('update-facility', $product->facility)
                             <a href="{{ route('price-groups.create', $product->id) }}" class="btn btn-primary">Add Price Group</a>
+                            @endcan
                         @endif
 
                     </div>
                     <div class="card-footer">
+                        @can('update-facility', $product)
                         <a href="{{ route('products.edit', $product->id) }}" class="btn btn-primary">Edit</a>
                         <form action="{{ route('products.destroy', $product->id) }}" method="POST" style="display: inline;">
                             @csrf
                             @method('DELETE')
                             <button type="submit" class="btn btn-danger">Delete</button>
                         </form>
+                        @endcan
                     </div>
                 </div>
             </div>

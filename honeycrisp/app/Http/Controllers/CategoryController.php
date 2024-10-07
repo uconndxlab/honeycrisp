@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Category;
 use App\Models\Facility;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Gate;
 
 class CategoryController extends Controller
 {
@@ -74,7 +75,7 @@ class CategoryController extends Controller
 
         $category->save();
 
-        return redirect()->route('categories.index')->with('success', 'Category updated successfully');
+        return redirect()->route('facilities.edit', $category->facility_id)->with('success', 'Category updated successfully');
     }
 
     /**
@@ -82,6 +83,12 @@ class CategoryController extends Controller
      */
     public function destroy(Category $category)
     {
-        //
+        if(Gate::denies('update-category', $category)) {
+            return redirect()->route('categories.index')->with('error', 'You do not have permission to delete this category');
+        }
+
+        $category->delete();
+
+        return redirect()->route('categories.index')->with('success', 'Category deleted successfully');
     }
 }

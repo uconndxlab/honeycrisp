@@ -52,6 +52,17 @@ class AppServiceProvider extends ServiceProvider
             return $user->role === 'admin';
         });
 
+        Gate::define('update-category', function ($user, $category) {
+            return $user->role === 'admin';
+        });
+
+        Gate::define('update-facility', function ($user, $facility) {
+            return $user->role === 'admin';
+        });
+
+
+
+        
 
 
         // blade directive to get the start date of the current fiscal year

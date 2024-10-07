@@ -31,6 +31,8 @@ Route::resource('ledgers', LedgerController::class);
 
 Route::resource('categories', CategoryController::class);
 
+Route::get('/products/{product}/', [ProductController::class, 'show'])->name('products.show');
+
 /**
  * User Routes
  */
@@ -53,9 +55,20 @@ Route::middleware(['auth'])->group(function () {
     Route::post('payment-accounts/{paymentAccount}/add-authorized-user', [PaymentAccountController::class, 'addAuthorizedUser'])->name('payment-accounts.authorizedUsers.store');
     //payment-accounts.authorized-users.destroy
     Route::delete('payment-accounts/{paymentAccount}/authorized-users/{user}', [PaymentAccountController::class, 'removeAuthorizedUser'])->name('payment-accounts.authorizedUsers.destroy');
-    Route::resource('products', ProductController::class);
+
+    Route::get('products', [ProductController::class, 'index'])->name('products.index');
+    Route::post('products', [ProductController::class, 'store'])->name('products.store');
+    Route::put('products/{product}', [ProductController::class, 'update'])->name('products.update');
+    Route::delete('products/{product}', [ProductController::class, 'destroy'])->name('products.destroy');
+    Route::get('products/{product}/edit', [ProductController::class, 'edit'])->name('products.edit');
     Route::get('products/create/{facilityAbbreviation}', [ProductController::class, 'create']);
+
+
     Route::get('categories/create/{facilityAbbreviation}', [CategoryController::class, 'create']);
+    Route::get('categories/{category}/edit', [CategoryController::class, 'edit'])->name('categories.edit');
+    Route::delete('categories/{category}', [CategoryController::class, 'destroy'])->name('categories.destroy');
+    Route::put('categories/{category}', [CategoryController::class, 'update'])->name('categories.update');
+    
 
     Route::get('price-groups/create/{product}', [PriceGroupController::class, 'create'])->name('price-groups.create');
     Route::post('price-groups', [PriceGroupController::class, 'store'])->name('price-groups.store');

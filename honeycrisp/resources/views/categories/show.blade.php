@@ -12,6 +12,17 @@
     <p>Updated At: {{ $category->updated_at }}</p>
 
     <!-- Add more details as needed -->
+
+    @can('update-category', $category)
+
+    <a href="{{ route('categories.edit', $category->id) }}" class="btn btn-primary">Edit Category</a>
+    <form action="{{ route('categories.destroy', $category->id) }}" method="POST" style="display: inline-block;">
+        @csrf
+        @method('DELETE')
+        <button type="submit" class="btn btn-danger">Delete Category</button>
+    </form>
+
+    @endcan
 </div>
 
 @endsection

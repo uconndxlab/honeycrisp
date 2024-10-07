@@ -6,7 +6,7 @@
 <div class="container py-2">
     <div class="row my-3">
         <div class="col-md-12">
-            <h1>Edit Facility</h1>
+            <h1>Manage Facility: {{ $facility->name }}</h1>
         </div>
         <!-- Display any form errors here -->
         @if($errors->any())
@@ -43,7 +43,7 @@
         </div>
         <div class="col-md-6">
             <div id="facility-meta" class="facility-information">
-                <h3 class="mb-3">{{ $facility->name }} Info</h3>
+                <h3 class="mb-3">Facility Information</h3>
 
                 <!-- Form for editing the facility -->
                 <form action="{{ route('facilities.update', $facility->id) }}" method="POST">
