@@ -24,7 +24,7 @@
                         <span class="badge bg-success">{{ Str::headline(Auth::user()->role ?? 'User')}}</span>
                     </span>
                 @else
-                    <span class="navbar-text text-white text-mono login-hud">Not currently authenticated</span>
+                    <span class="navbar-text text-white text-mono login-hud">Not currently logged in.</span>
                 @endif
                 
                 <div class="collapse navbar-collapse">
@@ -59,19 +59,26 @@
                 </button>
                 <div class="collapse navbar-collapse">
                     <ul class="navbar-nav me-auto">
+                        @can('admin')
                         <li class="nav-item">
                             <a class="nav-link" href="{{ route('orders.index') }}">Orders</a>
                         </li>
+                        @endcan
 
                         <li class="nav-item">
                             <a class="nav-link" href="{{ route('facilities.index') }}">Facilities</a>
                         </li>
+                        @can('admin')
                         <li class="nav-item">
                             <a class="nav-link" href="{{ route('payment-accounts.index') }}">Payment Accounts</a>
                         </li>
+                        @endcan
+
+                        @can('admin')
                         <li class="nav-item">
                             <a class="nav-link" href="{{ route('users.index') }}">Users</a>
                         </li>
+                        @endcan
                     </ul>
                     {{-- <div class="dropdown">
                         <button class="btn btn-primary dropdown-toggle" type="button" id="dropdownMenuButton" data-bs-toggle="dropdown" aria-expanded="false">

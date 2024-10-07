@@ -22,6 +22,9 @@ class FacilityController extends Controller
      */
     public function create()
     {
+        if (Gate::denies('admin')) {
+            return redirect()->route('facilities.index');
+        }
         return view('facilities.create');
     }
 
