@@ -90,4 +90,30 @@ class Order extends Model
     {
         return $this->hasMany(OrderLog::class)->orderBy('changed_at', 'desc');
     }
+
+    public static function statusColor($status)
+    {
+        switch ($status) {
+            case 'quote':
+                return 'secondary';
+            case 'pending':
+                return 'warning';
+            case 'accepted':
+                return 'success';
+            case 'in_progress':
+                return 'info';
+            case 'invoice':
+                return 'primary';
+            case 'sent_to_kfs':
+                return 'primary';
+            case 'reconciled':
+                return 'success';
+            case 'canceled':
+                return 'danger';
+            case 'archived':
+                return 'secondary';
+            default:
+                return 'secondary';
+        }
+    }
 }

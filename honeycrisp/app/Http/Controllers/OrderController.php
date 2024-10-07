@@ -423,12 +423,14 @@ class OrderController extends Controller
         
         $order->status = $request->status;
 
-        OrderLog::create([
-            'order_id' => $order->id,
-            'message' => $message,
-            'user_id' => auth()->user()->id ?? null,
-            'changed_at' => now(),
-        ]);
+        if(!empty($fields_changed)){
+            OrderLog::create([
+                'order_id' => $order->id,
+                'message' => $message,
+                'user_id' => auth()->user()->id ?? null,
+                'changed_at' => now(),
+            ]);
+        }
 
         $order->mailing_address = $request->mailing_address;
         $order->purchase_order_number = $request->purchase_order_number;
