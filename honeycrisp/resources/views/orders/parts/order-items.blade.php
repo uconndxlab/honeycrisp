@@ -72,7 +72,7 @@
                 </li>
 
                 <!-- import csv option -->
-                <li class="nav-item" role="presentation">
+                <li class="nav-item d-none" role="presentation">
                     <button class="nav-link" id="importCsv-tab" data-bs-toggle="tab" data-bs-target="#importCsv"
                         type="button" role="tab" aria-controls="importCsv" aria-selected="false">Import
                         CSV</button>
