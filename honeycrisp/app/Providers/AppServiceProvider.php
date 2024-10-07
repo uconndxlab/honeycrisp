@@ -8,6 +8,7 @@ use Illuminate\Support\Facades\View;
 use Illuminate\Support\Facades\Schema;
 use Money\Money;
 use Illuminate\Support\Facades\Blade;
+use Illuminate\Support\Facades\Gate;
 
 class AppServiceProvider extends ServiceProvider
 {
@@ -47,14 +48,11 @@ class AppServiceProvider extends ServiceProvider
             return "<?php echo $currentYear;?>";
         });
 
-        // blade directive to require a user to be logged in
-        Blade::directive('auth', function () {
-            return "<?php if(auth()->check()): ?>";
+        Gate::define('admin', function ($user) {
+            return $user->role === 'admin';
         });
 
-        Blade::directive(('admin'), function () {
-            return "<?php if(auth()->user()->is_admin): ?>";
-        });
+
 
         // blade directive to get the start date of the current fiscal year
         Blade::directive('fiscalYearStart', function () {

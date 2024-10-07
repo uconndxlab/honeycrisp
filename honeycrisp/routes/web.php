@@ -24,18 +24,12 @@ Route::get('/', function () {
 
 Route::resource('facilities', FacilityController::class);
 
-Route::resource('products', ProductController::class);
-Route::get('products/create/{facilityAbbreviation}', [ProductController::class, 'create']);
 
-
-
-Route::get('orders/create/{facilityAbbreviation}', [OrderController::class, 'create']);
 
 Route::resource('ledgers', LedgerController::class);
 
 
 Route::resource('categories', CategoryController::class);
-Route::get('categories/create/{facilityAbbreviation}', [CategoryController::class, 'create']);
 
 /**
  * User Routes
@@ -52,14 +46,26 @@ Route::middleware(['auth'])->group(function () {
     Route::resource('orders', OrderController::class);
     Route::post('orders/add-item', [OrderController::class, 'addItem'])->name('orders.add-item');
     Route::post('orders/remove-item', [OrderController::class, 'removeItem'])->name('orders.remove-item');
-    Route::post('ordres/import-csv', [OrderController::class, 'importCsv'])->name('orders.import-csv');
+    Route::post('orders/import-csv', [OrderController::class, 'importCsv'])->name('orders.import-csv');
     Route::get('orders/{order}/sendToCustomer', [OrderController::class, 'sendToCustomer'])->name('orders.sendToCustomer');
     Route::resource('payment-accounts', PaymentAccountController::class);
     Route::get('payment-accounts/{paymentAccount}/authorizedUsers', [PaymentAccountController::class, 'authorizedUsers'])->name('payment-accounts.authorizedUsers');
     Route::post('payment-accounts/{paymentAccount}/add-authorized-user', [PaymentAccountController::class, 'addAuthorizedUser'])->name('payment-accounts.authorizedUsers.store');
     //payment-accounts.authorized-users.destroy
     Route::delete('payment-accounts/{paymentAccount}/authorized-users/{user}', [PaymentAccountController::class, 'removeAuthorizedUser'])->name('payment-accounts.authorizedUsers.destroy');
+    Route::resource('products', ProductController::class);
+    Route::get('products/create/{facilityAbbreviation}', [ProductController::class, 'create']);
+    Route::get('categories/create/{facilityAbbreviation}', [CategoryController::class, 'create']);
+
+    Route::get('price-groups/create/{product}', [PriceGroupController::class, 'create'])->name('price-groups.create');
+    Route::post('price-groups', [PriceGroupController::class, 'store'])->name('price-groups.store');
     
+    Route::get('price-groups/{priceGroup}/edit', [PriceGroupController::class, 'edit'])->name('price-groups.edit');
+    Route::delete('price-groups/{priceGroup}', [PriceGroupController::class, 'destroy'])->name('price-groups.destroy');
+    Route::put('price-groups/{priceGroup}', [PriceGroupController::class, 'update'])->name('price-groups.update');
+
+
+    Route::get('orders/create/{facilityAbbreviation}', [OrderController::class, 'create']);
 });
 
 // register routes
@@ -67,12 +73,7 @@ Route::get('/register', [LoginController::class, 'register'])->name('register');
 Route::post('/register', [LoginController::class, 'submitRegister'])->name('register.submit');
 
 
-Route::get('price-groups/create/{product}', [PriceGroupController::class, 'create'])->name('price-groups.create');
-Route::post('price-groups', [PriceGroupController::class, 'store'])->name('price-groups.store');
 
-Route::get('price-groups/{priceGroup}/edit', [PriceGroupController::class, 'edit'])->name('price-groups.edit');
-Route::delete('price-groups/{priceGroup}', [PriceGroupController::class, 'destroy'])->name('price-groups.destroy');
-Route::put('price-groups/{priceGroup}', [PriceGroupController::class, 'update'])->name('price-groups.update');
 
 /**
  * System exports

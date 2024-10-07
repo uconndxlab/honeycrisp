@@ -17,14 +17,14 @@
                     </div>
 
                     <div class="card-footer">
-                        @if (Auth::user() && Auth::user()->is_admin())
+                        @can('admin')
                         <a href="{{ route('facilities.edit', $facility->id) }}" class="btn btn-secondary">Manage</a>
                         <form action="{{ route('facilities.destroy', $facility->id) }}" method="POST" class="d-inline">
                             @csrf
                             @method('DELETE')
                             <button type="submit" class="btn btn-danger">Delete</button>
                         </form>
-                        @endif
+                        @endcan
                     </div>
                 </div>
             </div>

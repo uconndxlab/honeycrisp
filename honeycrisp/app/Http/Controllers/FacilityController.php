@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Facility;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Gate;
 
 class FacilityController extends Controller
 {
@@ -59,6 +60,10 @@ class FacilityController extends Controller
      */
     public function edit(Facility $facility)
     {
+        // admin gate
+        if(Gate::denies('admin')){
+            return redirect()->route('facilities.index');
+        }
         return view('facilities.edit', compact('facility'));
     }
 
