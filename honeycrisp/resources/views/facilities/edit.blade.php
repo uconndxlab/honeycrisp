@@ -109,9 +109,11 @@
             </div>
             <div id="facility-products" class="products-services my-4">
                 <h3>Products & Services Available</h3>
-                <a href="{{ route('products.create') }}/{{$facility->abbreviation}} " class="btn btn-primary">Add Product</a>
-
-                @if ($facility->products->isEmpty())
+                <a class="btn btn-primary"
+                href="{{ route('products.create', ['facilityAbbreviation' => $facility->abbreviation]) }}">
+                    Create Product for {{ $facility->name }}
+                </a>
+                                @if ($facility->products->isEmpty())
                 <div class="alert alert-info my-3">
                     <p>No products available at this time.</p>
                 </div>
