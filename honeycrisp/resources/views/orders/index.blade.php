@@ -141,11 +141,11 @@
                                             {{ request('price_group') == 'internal' ? 'selected' : '' }}>
                                             Internal
                                         </option>
-                                        <option value="external_for_profit"
-                                            {{ request('price_group') == 'external_for_profit' ? 'selected' : '' }}>
+                                        <option value="external_forprofit"
+                                            {{ request('price_group') == 'external_forprofit' ? 'selected' : '' }}>
                                             External For Profit</option>
-                                        <option value="external_non_profit"
-                                            {{ request('price_group') == 'external_non_profit' ? 'selected' : '' }}>
+                                        <option value="external_nonprofit"
+                                            {{ request('price_group') == 'external_nonprofit' ? 'selected' : '' }}>
                                             External Non Profit</option>
                                     </select>
                                 </div>
@@ -210,7 +210,7 @@
 
                                 </td>
                                 <td>{{ $order->user->name }}
-                                    ({{ $order->paymentAccount->account_type }})
+                                    ({{ optional($order->paymentAccount)->account_type }})
                                 </td>
 
                                 <td>

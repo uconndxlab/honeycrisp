@@ -4,11 +4,16 @@
 @php 
     $selected_account = $accounts->firstWhere('id', $order->payment_account_id);
     $selected_user = $order->user;
-@endphp
 
+    // if the order has a price group, set 
+    $selected_price_group = $order->price_group;
+
+@endphp
 @else 
 @php
 $selected_account = $accounts->firstWhere('id', request('payment_account_id'));
+$selected_price_group = $selected_user->price_group;
+
 @endphp
 @endif
 <div class="container">
@@ -109,7 +114,7 @@ $selected_account = $accounts->firstWhere('id', request('payment_account_id'));
 
                                 <!-- if it's not internal, add fields for mailing address and purchase order -->
 
-                                @if (isset($order) && $order->price_group != 'internal')
+                                @if ($selected_price_group != 'internal')
                                     <div class="form-group my-2">
                                         <label for="mailing_address">Mailing Address:</label>
                                         <textarea name="mailing_address" id="mailing_address" class="form-control">{{ old('mailing_address', isset($order) ? $order->mailing_address : '') }}</textarea>
@@ -210,15 +215,15 @@ $selected_account = $accounts->firstWhere('id', request('payment_account_id'));
                                     <select required name="price_group" id="price_group" class="form-select">
                                         <option value="">Select a Price Group</option>
                                         <option value="internal"
-                                            {{ old('price_group', isset($order) && $order->price_group == 'internal') ? 'selected' : '' }}>
+                                            {{ old('price_group', $selected_price_group == 'internal') ? 'selected' : '' }}>
                                             Internal</option>
 
-                                        <option value="external_non_profit"
-                                            {{ old('price_group', isset($order) && $order->price_group == 'external_non_profit') ? 'selected' : '' }}>
+                                        <option value="external_nonprofit"
+                                            {{ old('price_group', $selected_price_group == 'external_nonprofit') ? 'selected' : '' }}>
                                             External Non-Profit</option>
 
-                                        <option value="external_for_profit"
-                                            {{ old('price_group', isset($order) && $order->price_group == 'external_for_profit') ? 'selected' : '' }}>
+                                        <option value="external_forprofit"
+                                            {{ old('price_group', $selected_price_group == 'external_forprofit') ? 'selected' : '' }}>
                                             External For-Profit</option>
                                     </select>
                                 </div>
@@ -262,8 +267,5 @@ $selected_account = $accounts->firstWhere('id', request('payment_account_id'));
                     </div>
                 </div>
             @endif
-
-
-
     </form>
 </div>
