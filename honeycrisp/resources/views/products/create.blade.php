@@ -81,6 +81,11 @@
                     <input type="text" class="form-control" id="recharge_account" name="recharge_account" value="{{ $facility->recharge_account }}">
                 </div>
 
+                <div class="form-group my-2">
+                    <label for="recharge_object_code">Recharge Object Code</label>
+                    <input type="text" class="form-control" id="recharge_object_code" name="recharge_object_code" value="{{ old('recharge_object_code') }}">
+                </div>
+
                 <!-- image -->
 
                 <!-- alert about setting pricing: you can set pricing after creating the product and editing its price groups -->

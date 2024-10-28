@@ -57,7 +57,12 @@ class AppServiceProvider extends ServiceProvider
         });
 
         Gate::define('update-facility', function ($user, $facility) {
-            return $user->role === 'admin';
+            // if the user is an admin or the facility belongs to the user
+            return $user->role === 'admin' || $facility->director_id === $user->id;
+        });
+
+        Gate::define('update-payment-account', function ($user, $paymentAccount) {
+            return $user->role === 'admin' || $paymentAccount->user_id === $user->id;
         });
 
 
