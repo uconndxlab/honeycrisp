@@ -3,6 +3,7 @@
 @if (isset($order))
 @php 
     $selected_account = $accounts->firstWhere('id', $order->payment_account_id);
+    $selected_user = $order->user;
 @endphp
 
 @else 
@@ -175,7 +176,9 @@ $selected_account = $accounts->firstWhere('id', request('payment_account_id'));
                                         <option value="">Select a Payment Account</option>
                                         @foreach ($accounts->sortBy('account_name') as $payment_account)
                                             <option 
-                                            @selected(old('payment_account_id', isset($order) ? $selected_account->id : null) == $payment_account->id)
+                                            
+
+                                        {{ old('payment_account_id', isset($selected_account) ? $selected_account->id : '') == $payment_account->id ? 'selected' : '' }}
                                             value="{{ $payment_account->id }}">
                                                 {{ $payment_account->account_name }}
                                                 ({{ strtoupper($payment_account->account_type) }}-{{ $payment_account->account_number }})

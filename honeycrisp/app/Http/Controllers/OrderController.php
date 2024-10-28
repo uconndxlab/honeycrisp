@@ -134,7 +134,18 @@ class OrderController extends Controller
                     $warning_type = 'danger';
 
                     $account_warning_array = array('warning' => $account_warning, 'type' => $warning_type);
-                } 
+                }
+
+                // if the account will expire in 30 or fewer days, show a warning
+            } else if ($selected_account->expiration_date < now()->addDays(30)) {
+                $days_until_expiration = (strtotime($selected_account->expiration_date) - strtotime(now())) / (60 * 60 * 24);
+                $days_until_expiration = round($days_until_expiration);
+                $account_warning = 'This account will expire in ' . $days_until_expiration . ' days.';
+                $warning_type = 'warning';
+
+                $account_warning_array = array('warning' => $account_warning, 'type' => $warning_type);
+
+                
             }
         } else {
             $selected_account = null;
