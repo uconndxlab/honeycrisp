@@ -11,6 +11,27 @@
             </div>
         </div>
 
+        <div class="row">
+            <div class="col-12">
+                <!-- search form -->
+                <form hx-get="{{ route('payment-accounts.index') }}" hx-trigger="keyup changed delay:500ms"
+                    action="{{ route('payment-accounts.index') }}" method="GET" hx-select="#payment-account-table"
+                    hx-swap="innerHTML" hx-target="#payment-account-table" autocomplete="off">
+                    <div class="input-group mb-3">
+                        <input type="text" class="form-control" name="search"
+                            placeholder="Search by account name, type, or owner" value="{{ request('search') }}"
+                            hx-trigger="keyup,changed delay:500ms" hx-get="{{ route('payment-accounts.index') }}"
+                            hx-target="#payment-account-table" hx-swap="innerHTML">
+                        <div class="input-group-append">
+                            <button class="btn btn-outline-secondary" type="submit">Search</button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+
+
+
         {{ $paymentAccounts->links() }}
         <!-- total accounts -->
         <div class="row">
@@ -21,7 +42,7 @@
 
         <div class="row">
             <div class="col">
-                <table class="table">
+                <table id="payment-account-table" class="table">
                     <thead>
                         <tr>
                             <th>Account Name</th>

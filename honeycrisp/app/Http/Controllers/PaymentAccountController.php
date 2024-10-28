@@ -15,11 +15,24 @@ class PaymentAccountController extends Controller
      */
     public function index()
     {
-        // Get all payment accounts that are not expired, with their users, paginate
-        $paymentAccounts = PaymentAccount::with('users')->where('expiration_date', '>', now())->paginate(50);
-
+        // Initial query without eager loading
+        $query = PaymentAccount::where('expiration_date', '>', now());
+    
+        // Apply search filter if provided
+        if ($search = request('search')) {
+            $query->where(function ($q) use ($search) {
+                $q->where('account_name', 'like', "%{$search}%")
+                  ->orWhere('account_number', 'like', "%{$search}%");
+            });
+        }
+        
+        // Paginate results and then eager load the users only after filtering
+        $paymentAccounts = $query->paginate(50);
+        $paymentAccounts->load('users');
+    
         return view('payment-accounts.index', compact('paymentAccounts'));
     }
+    
 
     /**
      * Show the form for creating a new resource.
