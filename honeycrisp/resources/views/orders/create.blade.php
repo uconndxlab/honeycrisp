@@ -9,7 +9,9 @@
     <!-- Action Buttons -->
     <div class="row d-none" id="action-buttons">
         <div class="col-md-6">
-            <button type="submit" id="save-draft" class="btn btn-primary btn-lg">
+            <button type="submit" id="save-draft" 
+            form="order-meta-form"
+            class="btn btn-primary btn-lg">
                 @if (isset($order))
                     Save Order Details
                 @else

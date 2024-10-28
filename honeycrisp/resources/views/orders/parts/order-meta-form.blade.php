@@ -73,18 +73,18 @@ $selected_account = $accounts->firstWhere('id', request('payment_account_id'));
                             aria-labelledby="facilityInformationHeading" data-bs-parent="#facilityInformationAccordion">
                             <div class="accordion-body">
                                 <div class="form-group my-2">
-                                    <label for="title">Title:</label>
-                                    <input value="{{ old('title', isset($order) ? $order->title : '') }}" type="text"
+                                    <label for="title">Title*:</label>
+                                    <input required value="{{ old('title', isset($order) ? $order->title : '') }}" type="text"
                                         name="title" id="title" class="form-control">
                                 </div>
 
                                 <div class="form-group my-2">
-                                    <label for="description">Description:</label>
-                                    <textarea name="description" id="description" class="form-control">{{ old('description', isset($order) ? $order->description : '') }}</textarea>
+                                    <label for="description">Description*:</label>
+                                    <textarea required name="description" id="description" class="form-control">{{ old('description', isset($order) ? $order->description : '') }}</textarea>
                                 </div>
 
                                 <div class="form-group my-2">
-                                    <label for="date">Date:</label>
+                                    <label for="date">Date*:</label>
                                     <input type="date" name="date" id="date" class="form-control"
                                         value="{{ old('date', isset($order) ? $order->date : now()->format('Y-m-d')) }}">
                                 </div>
@@ -206,8 +206,8 @@ $selected_account = $accounts->firstWhere('id', request('payment_account_id'));
                                 </div>
 
                                 <div class="form-group my-2">
-                                    <label for="price_group">Price Group:</label>
-                                    <select name="price_group" id="price_group" class="form-select">
+                                    <label for="price_group">Price Group*:</label>
+                                    <select required name="price_group" id="price_group" class="form-select">
                                         <option value="">Select a Price Group</option>
                                         <option value="internal"
                                             {{ old('price_group', isset($order) && $order->price_group == 'internal') ? 'selected' : '' }}>
