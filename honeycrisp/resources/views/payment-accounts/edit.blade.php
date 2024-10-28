@@ -53,6 +53,11 @@
                 </div>
 
                 <div class="mb-3">
+                    <label for="account_category" class="form-label">Account Category</label>
+                    <input type="text" class="form-control" id="account_category" name="account_category" value="{{ old('account_category') }}">
+                </div>
+
+                <div class="mb-3">
                     <label for="account_number" class="form-label">Account Number</label>
                     <input type="text" class="form-control" id="account_number" name="account_number" value="{{ $paymentAccount->account_number }}">
                 </div>

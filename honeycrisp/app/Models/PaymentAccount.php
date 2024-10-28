@@ -13,6 +13,7 @@ class PaymentAccount extends Model
         'account_name',
         'account_number',
         'account_type',
+        'account_category',
         'expiration_date',
     ];
 

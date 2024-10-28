@@ -25,6 +25,10 @@ class PaymentAccountController extends Controller
                   ->orWhere('account_number', 'like', "%{$search}%");
             });
         }
+
+        if ($accountType = request('account_type')) {
+            $query->where('account_type', $accountType);
+        }
         
         // Paginate results and then eager load the users only after filtering
         $paymentAccounts = $query->paginate(50);
