@@ -93,7 +93,7 @@ class OrderController extends Controller
      */
     public function create($facilityAbbreviation)
     {
-
+        
         // if request[netid] is not null, get the user with that netid so they can be selected by default
 
         //$users = User::all()->where('status', 'active');
@@ -104,18 +104,18 @@ class OrderController extends Controller
             $selected_user = $user;
             $accounts = [];
 
-            $accounts = $user->paymentAccounts()->where('expiration_date', '<', now())->get();
+
+            // get all accounts that are not expired, or expired within the last 30 days
+            $accounts = $user->paymentAccounts()->where('expiration_date', '>', now()->addDays(-30))->get();
+
         } 
 
         elseif (request('user_id')) {
             $user = User::find(request('user_id'));
             $selected_user = $user;
             $accounts = [];
-
-      
-            
             // get the payment accounts for the user that are not expired
-            $accounts = $user->paymentAccounts()->where('expiration_date', '>', now())->get();
+            $accounts = $user->paymentAccounts()->where('expiration_date', '>', now()->addDays(-90))->get();
 
         }
         
@@ -123,10 +123,28 @@ class OrderController extends Controller
             $accounts = null;
         }
 
+        if (request('payment_account_id')) {
+            $account_warning_array = [];
+            $selected_account= PaymentAccount::find(request('payment_account_id'));
+            // if the selected account expired 30 or fewer days ago, show a warning
+            if ($selected_account->expiration_date < now()) {
+                $days_until_expiration = (strtotime($selected_account->expiration_date) - strtotime(now())) / (60 * 60 * 24);
+                if ($days_until_expiration <= 30) {
+                    $account_warning = 'This account expired ' . abs($days_until_expiration) . ' days ago. You can use this account for this order, but it is recommended to use a different account.';
+                    $warning_type = 'danger';
+
+                    $account_warning_array = array('warning' => $account_warning, 'type' => $warning_type);
+                } 
+            }
+        } else {
+            $selected_account = null;
+            $account_warning_array = null;
+        }
+
 
         $facility = Facility::all()->where('status', 'active')->where('abbreviation', $facilityAbbreviation)->first();
 
-        return view('orders.create', compact('facility', 'selected_user', 'accounts'));
+        return view('orders.create', compact('facility', 'selected_user', 'accounts', 'selected_account', 'account_warning_array'));
     }
 
     /**
@@ -228,7 +246,6 @@ class OrderController extends Controller
         } else {
             // else, get all categories for the facility and set $categoryRequested to all categories
             $categoryRequested = null;
-            
         }
 
         //handling for internal-only orders
@@ -244,13 +261,13 @@ class OrderController extends Controller
             $account_warning = null;
     
            if ($days_until_expiration <= 0) {
-                $account_warning = 'This account has expired.';
+                $account_warning = 'This account expired ' . abs($days_until_expiration) . ' days ago. You can use this account for this order, but it is recommended to use a different account.';
                 $warning_type = 'danger';
             } 
             
             
     
-           else if ($days_until_expiration < 30) {
+           else if ($days_until_expiration < 60) {
                 $account_warning = 'This account will expire in ' . $days_until_expiration . ' days.';
                 $warning_type = 'warning';
             } 
@@ -282,6 +299,7 @@ class OrderController extends Controller
             $accounts = [];
 
             $accounts =  $user->paymentAccounts()->get();
+            
         } else {
             $accounts = null;
         }

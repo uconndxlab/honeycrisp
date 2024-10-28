@@ -182,7 +182,7 @@ class PaymentAccountController extends Controller
             'netid' => 'required|exists:users,netid',
         ], [
             'netid.required' => 'The user field is required.',
-            'netid.exists' => 'The selected user does not exist.',
+            'netid.exists' => 'The selected user does not exist. Tell them to log in to create an account.',
         ]);
 
         $user = User::where('netid', $request->netid)->first();

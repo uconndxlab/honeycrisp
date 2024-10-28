@@ -24,6 +24,22 @@
                 <dt>Expiration Date</dt>
                 <dd>{{ $paymentAccount->expiration_date }}</dd>
             </dl>
+            
+            <!-- Check if the expiration date is within the next 60 days -->
+            @if ($paymentAccount->expiration_date)
+                @php
+                    $expirationDate = strtotime($paymentAccount->expiration_date);
+                    $today = strtotime(now());
+                    $daysUntilExpiration = ($expirationDate - $today) / 86400; // 86400 seconds in a day
+                @endphp
+            
+                @if ($daysUntilExpiration > 0 && $daysUntilExpiration <= 60)
+                    <div class="alert alert-warning">
+                        This account will expire in {{ round($daysUntilExpiration) }} days.
+                    </div>
+                @endif
+            @endif
+            
         </div>
     </div>
     <div class="row">

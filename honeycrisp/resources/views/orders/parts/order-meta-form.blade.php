@@ -1,3 +1,15 @@
+
+
+@if (isset($order))
+@php 
+    $selected_account = $accounts->firstWhere('id', $order->payment_account_id);
+@endphp
+
+@else 
+@php
+$selected_account = $accounts->firstWhere('id', request('payment_account_id'));
+@endphp
+@endif
 <div class="container">
     <!-- Header Section -->
     <div class="row my-3">
@@ -33,7 +45,7 @@
         </div>
     @endif
 
-    <form action="{{ isset($order) ? route('orders.update', ['order' => $order]) : route('orders.store') }}"
+    <form id="order-meta-form" action="{{ isset($order) ? route('orders.update', ['order' => $order]) : route('orders.store') }}"
         method="POST" class="order-meta-form">
         @csrf
         @if (isset($order))
@@ -152,16 +164,25 @@
                                     @if ($accounts != null && count($accounts) > 0)
                                         <label for="payment_account_id">Payment Account:</label>
                                         <select name="payment_account_id" id="payment_account_id"
-                                            class="form-select">
-                                            <option value="">Select a Payment Account</option>
-                                            @foreach ($accounts->sortBy('account_name') as $payment_account)
-                                                <option value="{{ $payment_account->id }}"
-                                                    {{ old('payment_account_id', isset($order) && $order->payment_account_id == $payment_account->id) ? 'selected' : '' }}>
-                                                    {{ $payment_account->account_name }}
-                                                    ({{ strtoupper($payment_account->account_type) }}-{{ $payment_account->account_number }})
-                                                </option>
-                                            @endforeach
-                                        </select>
+                                        class="form-select"
+                                        hx-get="{{ route('orders.create') }}/{{ $facility->abbreviation }}?user_id={{ $selected_user->id }}"
+                                        hx-select="#user_accounts"
+                                        hx-target="#user_accounts"
+                                        hx-push-url="true">
+                                        
+                                        
+                                    
+                                        <option value="">Select a Payment Account</option>
+                                        @foreach ($accounts->sortBy('account_name') as $payment_account)
+                                            <option 
+                                            @selected(old('payment_account_id', isset($order) ? $selected_account->id : null) == $payment_account->id)
+                                            value="{{ $payment_account->id }}">
+                                                {{ $payment_account->account_name }}
+                                                ({{ strtoupper($payment_account->account_type) }}-{{ $payment_account->account_number }})
+                                            </option>
+                                        @endforeach
+                                    </select>
+                                    
                                     @elseif ($accounts == null)
                                         <div class="alert alert-warning" role="alert">
                                             Select a User to see Payment Accounts
@@ -240,17 +261,6 @@
             @endif
 
 
-            <!-- Action Buttons -->
-            <div class="row">
-                <div class="col-md-6">
-                    <button type="submit" id="save-draft" class="btn btn-primary">
-                        @if (isset($order))
-                            Save Order Details
-                        @else
-                            Save Draft and Add items <i class="bi bi-arrow-right"></i>
-                        @endif
-                    </button>
-                </div>
-            </div>
+
     </form>
 </div>
