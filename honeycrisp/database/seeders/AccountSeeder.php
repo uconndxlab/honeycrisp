@@ -19,6 +19,7 @@ class AccountSeeder extends Seeder
     {
         /**
          * TODO: Make this much faster.
+         * "ACCOUNT_NBR","ACCOUNT_NM","ACCT_FSC_OFC_UID","FISCAL_OFFCR_NM","ACCT_SPVSR_UNVL_ID","ACCT_SPVSR_NM","ORG_CD","ORG_NM","ACCT_TYP_CD","ACCT_TYP_NM","FUND_SID_CD","EVERIFY_IND","EQUIPMENT_OWNER_CD","GRAD_INDICATOR_CD","SUB_FUND_GRP_CD","ACCT_FRNG_BNFT_CD","LBR_BEN_RT_CAT_CD","FRNG_BNFT_ACCT_NBR","FIN_HGH_ED_FUNC_CD","ACCT_CREATE_DT","ACCT_EFFECT_DT","ACCT_EXPIRATION_DT","CONT_ACCOUNT_NBR","CONTR_CTRLACCT_NBR","ACCT_ICR_TYP_CD","FIN_SERIES_ID","ICR_ACCOUNT_NBR","CG_CFDA_NBR","ACCT_OFF_CMP_IND","ACCT_CLOSED_IND","CG_ACCT_RESP_ID"
          */
         $kfsPath = base_path('database/kfs_acct_list.csv');
         $kfsAccounts = array_map('str_getcsv', file($kfsPath));
@@ -36,6 +37,8 @@ class AccountSeeder extends Seeder
 
             $original_expiration_date = $data[21];
 
+            $account_type_cd = $data[8];
+
 
             $expiration_date = date('Y-m-d', strtotime($original_expiration_date));
 
@@ -50,7 +53,7 @@ class AccountSeeder extends Seeder
             // if the account is expired, skip it
 
 
-            DB::transaction(function () use ($fiscal_officer_netid, $fiscal_officer_name, $account_supervisor_netid, $account_supervisor_name, $account_name, $account_number, $expiration_date) {
+            DB::transaction(function () use ($fiscal_officer_netid, $fiscal_officer_name, $account_supervisor_netid, $account_supervisor_name, $account_name, $account_number, $expiration_date, $account_type_cd) {
                 $fiscal_officer = User::firstOrCreate(
                     ['netid' => $fiscal_officer_netid], // Data to search by
                     [
@@ -72,7 +75,8 @@ class AccountSeeder extends Seeder
                 $paymentAccount = PaymentAccount::firstOrCreate(
                     [
                         'account_number' => $account_number,
-                        'account_type' => 'kfs'
+                        'account_type' => 'kfs',
+                        'account_category' => $account_type_cd
                     ],
                     [
                         'account_name' => $account_name,
