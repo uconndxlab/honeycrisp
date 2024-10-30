@@ -23,88 +23,89 @@ class AccountSeeder extends Seeder
          */
         $kfsPath = base_path('database/kfs_acct_list.csv');
         $kfsAccounts = array_map('str_getcsv', file($kfsPath));
-        array_shift($kfsAccounts);
+        array_shift($kfsAccounts); // Remove header row
+        
         foreach($kfsAccounts as $data) {
-            
+        
             $fiscal_officer_netid = $data[2];
             $fiscal_officer_name = $data[3];
-
+        
             $account_supervisor_netid = $data[4];
             $account_supervisor_name = $data[5];
-
+        
             $account_name = $data[1];
             $account_number = $data[0];
-
+        
             $original_expiration_date = $data[21];
-
+        
             $account_type_cd = $data[8];
-
-
-            $expiration_date = date('Y-m-d', strtotime($original_expiration_date));
-
-            if (empty($original_expiration_date)) {
-                $expiration_date = '2099-12-31'; // if the expiration date is empty, set it to a far future date
-            } 
-
+        
+            // Convert expiration date, default to '2099-12-31' if empty
+            $expiration_date = !empty($original_expiration_date) ? date('Y-m-d', strtotime($original_expiration_date)) : '2099-12-31';
+        
+            // Skip accounts with past expiration dates
             if ($expiration_date < date('Y-m-d')) {
                 continue;
             }
-
-            // if the account is expired, skip it
-
-
+        
             DB::transaction(function () use ($fiscal_officer_netid, $fiscal_officer_name, $account_supervisor_netid, $account_supervisor_name, $account_name, $account_number, $expiration_date, $account_type_cd) {
-                $fiscal_officer = User::firstOrCreate(
+                // Update or create fiscal officer user
+                $fiscal_officer = User::updateOrCreate(
                     ['netid' => $fiscal_officer_netid], // Data to search by
                     [
                         'name' => $fiscal_officer_name,
                         'email' => $fiscal_officer_netid . '@uconn.edu',
                         'price_group' => 'internal'
-                    ] // Data to create with
+                    ] // Data to update or create with
                 );
-
-                $account_supervisor = User::firstOrCreate(
+        
+                // Update or create account supervisor user
+                $account_supervisor = User::updateOrCreate(
                     ['netid' => $account_supervisor_netid], // Data to search by
                     [
                         'name' => $account_supervisor_name,
                         'email' => $account_supervisor_netid . '@uconn.edu',
                         'price_group' => 'internal'
-                    ] // Data to create with
+                    ] // Data to update or create with
                 );
-
-                $paymentAccount = PaymentAccount::firstOrCreate(
+        
+                // Update or create payment account
+                $paymentAccount = PaymentAccount::updateOrCreate(
                     [
                         'account_number' => $account_number,
-                        'account_type' => 'kfs',
-                        'account_category' => $account_type_cd
+                        'account_type' => 'kfs'
                     ],
                     [
                         'account_name' => $account_name,
-                        'expiration_date' => $expiration_date
+                        'expiration_date' => $expiration_date,
+                        'account_category' => $account_type_cd
+
                     ]
                 );
-
+        
+                // Sync users to the payment account
                 $paymentAccount->users()->wherePivotNotIn('role', ['authorized_user'])->sync([
                     $account_supervisor->id => ['role' => 'owner'],
                     $fiscal_officer->id => ['role' => 'fiscal_officer']
                 ]);
-
-                
+        
             });
-            Log::info('Imported KFS Account: ' . $account_name);
+        
+            Log::info('Imported or updated KFS Account: ' . $account_name);
         }
-
+        
         unset($kfsAccounts);
+        
 
         $bannerCsv = base_path('database/banner_acct_list.csv');
         $bannerUserCsv = base_path('database/ext_uch_people.csv');
         $bannerAccounts = array_map('str_getcsv', file($bannerCsv));
         $bannerUsers = array_map('str_getcsv', file($bannerUserCsv));
-
+        
         // Remove header rows
         array_shift($bannerAccounts);
         array_shift($bannerUsers);
-
+        
         foreach($bannerAccounts as $data) {
             $account_name = $data[2];
             $account_number = $data[1];
@@ -113,14 +114,17 @@ class AccountSeeder extends Seeder
             $pi_banner_name = $data[6];
             $pi = array_search($pi_banner_id, array_column($bannerUsers, 9));
             $pi_netid = $bannerUsers[$pi][1];
-
+        
             $da_banner_id = $data[7];
             $da_banner_name = $data[8];
             $da = array_search($da_banner_id, array_column($bannerUsers, 9));
             $da_netid = $bannerUsers[$da][1];
-
-            DB::transaction(function() use ($pi_netid, $pi_banner_name, $da_netid, $da_banner_name, $account_name, $account_number) {
-                $pi = User::firstOrCreate(
+        
+            $banner_category = $data[10];
+        
+            DB::transaction(function() use ($pi_netid, $pi_banner_name, $da_netid, $da_banner_name, $account_name, $account_number, $banner_category) {
+                // First, handle the users
+                $pi = User::updateOrCreate(
                     ['netid' => $pi_netid],
                     [
                         'name' => $pi_banner_name,
@@ -128,8 +132,8 @@ class AccountSeeder extends Seeder
                         'price_group' => 'internal'
                     ]
                 );
-    
-                $da = User::firstOrCreate(
+        
+                $da = User::updateOrCreate(
                     ['netid' => $da_netid],
                     [
                         'name' => $da_banner_name,
@@ -137,28 +141,29 @@ class AccountSeeder extends Seeder
                         'price_group' => 'internal'
                     ]
                 );
-    
-                $paymentAccount = PaymentAccount::firstOrCreate(
+        
+                // Now, update the payment account if it exists, or create a new one
+                $paymentAccount = PaymentAccount::updateOrCreate(
                     [
                         'account_number' => $account_number,
                         'account_type' => 'uch'
                     ],
                     [
                         'account_name' => $account_name,
-                        'expiration_date' => '2099-12-31'
+                        'expiration_date' => '2099-12-31',
+                        'account_category' => $banner_category
                     ]
                 );
-
+        
+                // Sync the users' roles
                 $paymentAccount->users()->wherePivotNotIn('role', ['authorized_user'])->sync([
                     $pi->id => ['role' => 'owner'],
                     $da->id => ['role' => 'fiscal_officer']
                 ]);
-
-                
             });
-            Log::info('Imported Banner Account: ' . $account_name);
-            
-        }
+        
+            Log::info('Imported or updated Banner Account: ' . $account_name);
+        }        
 
     }
 }
