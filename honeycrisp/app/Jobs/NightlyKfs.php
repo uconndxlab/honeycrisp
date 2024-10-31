@@ -26,13 +26,23 @@ class NightlyKfs implements ShouldQueue
      * Execute the job.
      */
     public function handle(): void
+
+
     {
         Log::info('Running Nightly KFS Job');
 
-        // First let's find all orders that are in invoice, that have not yet been sent to KFS
+        // First let's find all orders that are from KFS users and have a KFS account facility
+
+    
         $orders = Order::with(['items', 'facility'])
             ->where('status', 'invoice')
-            ->where('price_group', 'internal')
+            ->whereHas('facility', function($query) {
+                $query->where('account_type', 'kfs');
+            })
+            ->whereHas('paymentAccount', function($query) {
+                $query->where('account_type', 'kfs');
+            })
+            ->where('price_group', '=', 'internal')
             ->get();
 
         // Let's start creating line items.

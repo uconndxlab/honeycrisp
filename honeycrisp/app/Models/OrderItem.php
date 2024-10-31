@@ -27,6 +27,12 @@ class OrderItem extends Model
      */
     public function kfsDebitLine( $sequenceNumber ) {
         $fiscalYear = Carbon::now()->month < 7 ? Carbon::now()->year : Carbon::now()->year + 1;
+        $objectcode = 6610;
+
+        //if the payment account account_category is 'tc' then the object code is actually 2750
+        if ($this->order->paymentAccount->account_category == 'tc') {
+            $objectcode = 2750;
+        }
 
         $line = $fiscalYear
             . "UC" // Chart Code, always UC for now
@@ -34,7 +40,7 @@ class OrderItem extends Model
 
         // If $line is not yet 18 characters long, pad it with spaces
         $line = str_pad($line, 18, ' ', STR_PAD_RIGHT);
-        $line .= "6610   "; // Object Code for Debit, with 3 spaces.
+        $line .= "$objectcode   "; // Object Code for Debit, with 3 spaces.
         $line .= "AC    "; // Balance Type, with 4 spaces.
         $line .= "CLTRCCC"; // This is some BS they need here and it wont change.
         $line .= str_pad($sequenceNumber, 13, '0', STR_PAD_LEFT); // Sequence Number for this debit/credit
@@ -70,13 +76,21 @@ class OrderItem extends Model
     public function kfsCreditLine( $sequenceNumber ) {
         $fiscalYear = Carbon::now()->month < 7 ? Carbon::now()->year : Carbon::now()->year + 1;
 
+        $object_code = 4565;
+
+        //if the payment account account_category is 'tc' then the object code is actually 4510
+        if ($this->order->paymentAccount->account_category == 'tc') {
+            $object_code = 4510;
+        }
         $line = $fiscalYear
             . "UC" // Chart Code, always UC for now
             . ($this->product->recharge_account ?? $this->order->facility->recharge_account); // Account Number of Product, or parent Facility
 
         // If $line is not yet 18 characters long, pad it with spaces
         $line = str_pad($line, 18, ' ', STR_PAD_RIGHT);
-        $line .= "4565   "; // Object Code for Debit, with 3 spaces.
+        $line .= "{$object_code}   "; // Object Code for Debit, with 3 spaces.
+
+
         $line .= "AC    "; // Balance Type, with 4 spaces.
         $line .= "CLTRCCC"; // This is some BS they need here and it wont change.
         $line .= str_pad($sequenceNumber, 13, '0', STR_PAD_LEFT); // Sequence Number for this debit/credit
