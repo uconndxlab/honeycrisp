@@ -6,17 +6,23 @@
 
     @include('orders.parts.order-items')
 
-    <!-- Action Buttons -->
-    <div class="row">
-        <div class="col-md-6">
-            <button form="order-meta-form" type="submit" id="save-draft" class="btn btn-primary">
-                @if (isset($order))
-                    Save Order Details
-                @else
-                    Save Draft and Add items <i class="bi bi-arrow-right"></i>
-                @endif
-            </button>
-        </div>
-    </div>
+
+    <script>
+        // when the form gets changed at all, remove btn-disabled class from the submit button
+        const orderMetaForm = document.getElementById('order-meta-form');
+        const submitBtn = document.getElementById('save-order');
+    
+        orderMetaForm.addEventListener('input', function() {
+            submitBtn.classList.remove('disabled');
+        });
+    
+        // when the form gets submitted, add the btn-disabled class to the submit button
+        orderMetaForm.addEventListener('submit', function() {
+            submitBtn.classList.add('disabled');
+        });
+    </script>
 
 @endsection
+
+
+

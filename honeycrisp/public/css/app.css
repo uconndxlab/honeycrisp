@@ -500,4 +500,17 @@ legend {
 }
 
 
+#order-actions {
+  position:sticky;
+  background-color:#f8f9fa;
+  top:20px;
+  padding-top:15px;
+  padding-bottom:15px;
+  border-bottom:1px solid #dee2e6;
+  z-index:9999;
+  box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.08);
+  display: flex;
+  align-items: center;
+}
+
 /** improved styles for bootstrap form controls */

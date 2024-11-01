@@ -4,7 +4,7 @@
 
 @section('content')
 
-    @include ('orders.parts.order-meta-form')
+@include ('orders.parts.order-meta-form')
 
     <!-- Action Buttons -->
     <div class="row d-none" id="action-buttons">

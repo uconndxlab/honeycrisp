@@ -18,7 +18,7 @@
 
 <div class="container">
     <!-- Header Section -->
-    <div class="row my-3">
+    <div id="order-actions" class="row my-3">
         <div class="col-md-12">
             <div class="d-flex justify-content-between">
                 <h1>{{ isset($order) ? 'Edit Order #' . $order->id : 'Create Order' }}
@@ -35,6 +35,15 @@
                             class="btn btn-outline-primary ">
                             <i class="bi bi-envelope"></i> Send to Customer</a>
                     @endif
+
+                    <button form="order-meta-form" type="submit" id="save-order" 
+                    class="btn btn-primary disabled">
+                        @if (isset($order))
+                            Save Order Details
+                        @else
+                            Save Draft and Add items <i class="bi bi-arrow-right"></i>
+                        @endif
+                    </button>
                 </div>
             </div>
             <h2>{{ $facility->name }} ({{ $facility->abbreviation }})</h2>
