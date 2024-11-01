@@ -10,7 +10,7 @@
         </div>
 
         <div class="row">
-            <div class="col-md-2 subnav">
+            {{-- <div class="col-md-2 subnav">
                 <!-- subnav of order statuses: draft, pending, approved, in progress, complete, ledgered, archived -->
                 <ul class="nav flex-column">
                     <!-- loop through status_options, which is an associative array of status['slug'] = 'Status Name' -->
@@ -22,9 +22,9 @@
                         </li>
                     @endforeach
                 </ul>
-            </div>
+            </div> --}}
 
-            <div class="col-md-10">
+            <div class="col-md-12">
                 <!-- export button -->
                 <div class="d-flex justify-content-between align-items-center mt-3 py-3">
 
@@ -120,6 +120,22 @@
                                         @endforeach
                                     </select>
                                 </div>
+
+
+                                <!-- status options -->
+                                <div class="col">
+                                    <label for="status">Status:</label>
+                                    <select class="form-select" id="status" name="status">
+                                        <option value="">All Statuses</option>
+                                        @foreach ($status_options as $slug => $name)
+                                            <option value="{{ $slug }}"
+                                                {{ $slug == request('status') ? 'selected' : '' }}>
+                                                {{ $name }}
+                                            </option>
+                                        @endforeach
+                                    </select>
+                                </div>
+                                
                                 <div class="col">
                                     <label for="start_date">Date Range:</label>
                                     <input type="date" class="form-control" id="start_date" name="start_date"
@@ -226,7 +242,8 @@
                                     <a href="{{ route('orders.show', $order->id) }}" class="btn btn-primary">View</a>
                                     <a href="{{ route('orders.edit', $order->id) }}" class="btn btn-secondary">Edit</a>
                                     <form action="{{ route('orders.destroy', $order->id) }}" method="POST"
-                                        style="display: inline-block;">
+                                        style="display: inline-block;"
+                                        onsubmit="return confirm('Are you sure you want to delete this order?');">
                                         @csrf
                                         @method('DELETE')
                                         <button type="submit" class="btn btn-danger">Delete</button>

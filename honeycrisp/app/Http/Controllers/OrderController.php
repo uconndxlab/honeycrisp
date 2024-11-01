@@ -203,12 +203,13 @@ class OrderController extends Controller
             $order->company_name = $request->external_company_name;
         }
 
-        $order->users()->sync($validated['additional_users'] ?? []);
-
         
         $order = $order->save();
         // get the id of the order that was just created
         $order = Order::latest()->first();
+
+        $order->users()->sync($request->additional_users);
+
         
         OrderLog::create([
             'order_id' => $order->id,
@@ -430,25 +431,15 @@ class OrderController extends Controller
 
         // user_id
         if ($order->user_id != $user_id) {
-            $fields_changed[] = 'user';
+            $fields_changed[] = 'customer';
         }
 
         // compare $order->users to $request->additional_users, remember $order->users is a collection of User objects
         $users = $order->users->pluck('id')->toArray();
         $additional_users = $request->additional_users ?? [];
         if ($users != $additional_users) {
-            $fields_changed[] = 'additional users';
+            $fields_changed[] = 'users';
         }
-
-
-        
-
-   
-    
-
-
-
-    
 
         $order->title = $request->title;
         $order->description = $request->description;
