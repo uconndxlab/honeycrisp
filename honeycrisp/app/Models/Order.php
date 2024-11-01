@@ -49,9 +49,17 @@ class Order extends Model
         return $this->belongsTo(Facility::class);
     }
 
-    public function user()
+    public function customer()
     {
-        return $this->belongsTo(User::class);
+
+        return $this->belongsTo(User::class, 'user_id');
+
+    }
+
+    // Additional users associated with the order
+    public function users()
+    {
+        return $this->belongsToMany(User::class, 'order_user', 'order_id', 'user_id');
     }
 
     public function paymentAccount()

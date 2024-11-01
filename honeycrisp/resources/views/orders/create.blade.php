@@ -22,18 +22,5 @@
     </div>
 
 
-<script>
-    // only show action buttons if the order-meta-form is valid
 
-    const orderMetaForm = document.getElementById('order-meta-form');
-    const actionButtons = document.getElementById('action-buttons');
-
-    orderMetaForm.addEventListener('input', function() {
-        if (orderMetaForm.checkValidity()) {
-            actionButtons.classList.remove('d-none');
-        } else {
-            actionButtons.classList.add('d-none');
-        }
-    });
-</script>
 @endsection

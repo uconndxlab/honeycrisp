@@ -10,6 +10,8 @@ use Money\Money;
 use Illuminate\Support\Facades\Blade;
 use Illuminate\Support\Facades\Gate;
 
+use Livewire\Livewire;
+
 class AppServiceProvider extends ServiceProvider
 {
     /**
@@ -25,6 +27,9 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot(): void
     {
+
+        Livewire::component('user-search', \App\Livewire\UserSearch::class);
+
         // check if the table exists first
         if (!Schema::hasTable('facilities')) {
             return;
@@ -98,6 +103,8 @@ class AppServiceProvider extends ServiceProvider
 
         // use bootstrap5 pagination
         \Illuminate\Pagination\Paginator::useBootstrap();
+
+
         
     }
 }

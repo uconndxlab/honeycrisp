@@ -96,7 +96,7 @@ class OrderController extends Controller
         
         // if request[netid] is not null, get the user with that netid so they can be selected by default
 
-        //$users = User::all()->where('status', 'active');
+        $users = User::all()->where('status', 'active');
         $selected_user = null;
 
         if (request('netid')) {
@@ -155,7 +155,7 @@ class OrderController extends Controller
 
         $facility = Facility::all()->where('status', 'active')->where('abbreviation', $facilityAbbreviation)->first();
 
-        return view('orders.create', compact('facility', 'selected_user', 'accounts', 'selected_account', 'account_warning_array'));
+        return view('orders.create', compact('facility', 'selected_user', 'accounts', 'selected_account', 'account_warning_array', 'users'));
     }
 
     /**
@@ -202,6 +202,9 @@ class OrderController extends Controller
         if ($request->external_company_name) {
             $order->company_name = $request->external_company_name;
         }
+
+        $order->users()->sync($validated['additional_users'] ?? []);
+
         
         $order = $order->save();
         // get the id of the order that was just created
@@ -430,12 +433,28 @@ class OrderController extends Controller
             $fields_changed[] = 'user';
         }
 
+        // compare $order->users to $request->additional_users, remember $order->users is a collection of User objects
+        $users = $order->users->pluck('id')->toArray();
+        $additional_users = $request->additional_users ?? [];
+        if ($users != $additional_users) {
+            $fields_changed[] = 'additional users';
+        }
+
+
+        
+
+   
+    
+
+
+
     
 
         $order->title = $request->title;
         $order->description = $request->description;
         $order->date = $request->date;
         $order->facility_id = $facility_id;
+        $order->users()->sync($additional_users);
 
         if($request->price_group == 'internal'){
             $payment_account = PaymentAccount::find($request->payment_account_id)->id;

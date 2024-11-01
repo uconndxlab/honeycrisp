@@ -1,40 +1,41 @@
-
-
 @if (isset($order))
-@php 
-    $selected_account = $accounts->firstWhere('id', $order->payment_account_id);
-    $selected_user = $order->user;
+    @php
+        $selected_account = $accounts->firstWhere('id', $order->payment_account_id);
+        $selected_user = $order->user;
 
-    // if the order has a price group, set 
-    $selected_price_group = $order->price_group;
+        // if the order has a price group, set
+        $selected_price_group = $order->price_group;
 
-@endphp
-@else 
-@php
-$selected_account = $accounts->firstWhere('id', request('payment_account_id'));
-$selected_price_group = $selected_user->price_group;
+    @endphp
+@else
+    @php
+        $selected_account = $accounts->firstWhere('id', request('payment_account_id'));
+        $selected_price_group = $selected_user->price_group;
 
-@endphp
+    @endphp
 @endif
+
+
 <div class="container">
     <!-- Header Section -->
     <div class="row my-3">
         <div class="col-md-12">
             <div class="d-flex justify-content-between">
-            <h1>{{ isset($order) ? 'Edit Order #' . $order->id : 'Create Order' }}
-                <!-- status badge -->
-                @if (isset($order))
-                    <span class="badge badge-{{ $order->status_color }}">{{ Str::headline($order->status) }}</span>
-                @endif
-            </h1>
+                <h1>{{ isset($order) ? 'Edit Order #' . $order->id : 'Create Order' }}
+                    <!-- status badge -->
+                    @if (isset($order))
+                        <span class="badge badge-{{ $order->status_color }}">{{ Str::headline($order->status) }}</span>
+                    @endif
+                </h1>
 
-            <!-- if order is quote, a button to send to customer -->
-            <div>
-            @if (isset($order))
-                <a href="{{ route('orders.sendToCustomer', ['order' => $order]) }}" class="btn btn-outline-primary ">
-                    <i class="bi bi-envelope"></i> Send to Customer</a>
-            @endif
-            </div>
+                <!-- if order is quote, a button to send to customer -->
+                <div>
+                    @if (isset($order))
+                        <a href="{{ route('orders.sendToCustomer', ['order' => $order]) }}"
+                            class="btn btn-outline-primary ">
+                            <i class="bi bi-envelope"></i> Send to Customer</a>
+                    @endif
+                </div>
             </div>
             <h2>{{ $facility->name }} ({{ $facility->abbreviation }})</h2>
 
@@ -51,7 +52,8 @@ $selected_price_group = $selected_user->price_group;
         </div>
     @endif
 
-    <form id="order-meta-form" action="{{ isset($order) ? route('orders.update', ['order' => $order]) : route('orders.store') }}"
+    <form id="order-meta-form"
+        action="{{ isset($order) ? route('orders.update', ['order' => $order]) : route('orders.store') }}"
         method="POST" class="order-meta-form">
         @csrf
         @if (isset($order))
@@ -79,8 +81,8 @@ $selected_price_group = $selected_user->price_group;
                             <div class="accordion-body">
                                 <div class="form-group my-2">
                                     <label for="title">Title*:</label>
-                                    <input required value="{{ old('title', isset($order) ? $order->title : '') }}" type="text"
-                                        name="title" id="title" class="form-control">
+                                    <input required value="{{ old('title', isset($order) ? $order->title : '') }}"
+                                        type="text" name="title" id="title" class="form-control">
                                 </div>
 
                                 <div class="form-group my-2">
@@ -148,49 +150,44 @@ $selected_price_group = $selected_user->price_group;
                         <div id="customerInformationCollapse" class="accordion-collapse collapse show"
                             aria-labelledby="customerInformationHeading" data-bs-parent="#customerInformationAccordion">
                             <div class="accordion-body">
+
+
+
                                 @if (isset($order) && $order->user_id != null or isset($selected_user))
                                     <div class="form-group my-2">
-                                        <label for="user_id">User:</label>
+                                        <label for="user_id">Customer:</label>
                                         <input type="hidden" name="user_id" id="user_id"
-                                            value="{{ isset($order) ? $order->user_id : $selected_user->id }}">
+                                            value="{{ isset($order) ? $order->customer->id : $selected_user->id }}">
                                         <input type="text" name="user_name" id="user_name"
-                                            value="{{ isset($order) ? $order->user->name : $selected_user->name }} ({{ isset($order) ? $order->user->netid : $selected_user->netid }})"
+                                            value="{{ isset($order) ? $order->customer->name : $selected_user->name }} ({{ isset($order) ? $order->customer->netid : $selected_user->netid }})"
                                             class="form-control" disabled>
                                     </div>
-                                    <!-- select a new user -->
                                 @else
                                     <div class="alert alert-warning" role="alert">
-                                        Select a user first to see payment accounts and start an order.
-                                        <a href="{{ route('users.index') }}">Select A User</a>
-
+                                        Select a customer first to see payment accounts and start an order.
+                                        <a href="{{ route('users.index') }}">Select A Customer</a>
                                     </div>
                                 @endif
 
                                 <div id="user_accounts" class="form-group my-2">
                                     @if ($accounts != null && count($accounts) > 0)
                                         <label for="payment_account_id">Payment Account:</label>
-                                        <select name="payment_account_id" id="payment_account_id"
-                                        class="form-select"
-                                        hx-get="{{ route('orders.create') }}/{{ $facility->abbreviation }}?user_id={{ $selected_user->id }}"
-                                        hx-select="#user_accounts"
-                                        hx-target="#user_accounts"
-                                        hx-push-url="true">
-                                        
-                                        
-                                    
-                                        <option value="">Select a Payment Account</option>
-                                        @foreach ($accounts->sortBy('account_name') as $payment_account)
-                                            <option 
-                                            
+                                        <select name="payment_account_id" id="payment_account_id" class="form-select"
+                                            hx-get="{{ route('orders.create') }}/{{ $facility->abbreviation }}?user_id={{ isset($order) ? $order->customer->id : $selected_user->id }}"
+                                            hx-select="#user_accounts" hx-target="#user_accounts" hx-push-url="true">
 
-                                        {{ old('payment_account_id', isset($selected_account) ? $selected_account->id : '') == $payment_account->id ? 'selected' : '' }}
-                                            value="{{ $payment_account->id }}">
-                                                {{ $payment_account->account_name }}
-                                                ({{ strtoupper($payment_account->account_type) }}-{{ $payment_account->account_number }})
-                                            </option>
-                                        @endforeach
-                                    </select>
-                                    
+
+
+                                            <option value="">Select a Payment Account</option>
+                                            @foreach ($accounts->sortBy('account_name') as $payment_account)
+                                                <option
+                                                    {{ old('payment_account_id', isset($selected_account) ? $selected_account->id : '') == $payment_account->id ? 'selected' : '' }}
+                                                    value="{{ $payment_account->id }}">
+                                                    {{ $payment_account->account_name }}
+                                                    ({{ strtoupper($payment_account->account_type) }}-{{ $payment_account->account_number }})
+                                                </option>
+                                            @endforeach
+                                        </select>
                                     @elseif ($accounts == null)
                                         <div class="alert alert-warning" role="alert">
                                             Select a User to see Payment Accounts
@@ -209,6 +206,28 @@ $selected_price_group = $selected_user->price_group;
                                         </div>
                                     @endif
                                 </div>
+
+                                <div class="form-group my-2">
+                                    <label for="additional_users">Additional Users:</label>
+                                    @php 
+                                        $initialSelectedUsers = [];
+                                        if (isset($order)) {
+                                            $initialSelectedUsers = $order->users->pluck('id')->toArray();
+                                        }
+
+                                        $usersToExclude = [];
+                                        // exclude the customer from the list of users
+                                        if (isset($order)) {
+                                            $usersToExclude[] = $order->customer->id;
+                                        } else {
+                                            $usersToExclude[] = $selected_user->id;
+                                        }
+                                    @endphp
+
+                                    <livewire:user-search name="additional_users" id="additional_users" :initial-users="$initialSelectedUsers" :exclude="$usersToExclude" />
+
+                                </div>
+                                
 
                                 <div class="form-group my-2">
                                     <label for="price_group">Price Group*:</label>
