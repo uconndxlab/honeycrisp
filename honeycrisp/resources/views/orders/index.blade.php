@@ -209,7 +209,7 @@
                                     
 
                                 </td>
-                                <td>{{ $order->user->name }}
+                                <td>{{ $order->customer->name }}
                                     ({{ optional($order->paymentAccount)->account_category }})
                                 </td>
 

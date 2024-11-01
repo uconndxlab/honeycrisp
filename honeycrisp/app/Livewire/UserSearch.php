@@ -1,5 +1,4 @@
 <?php
-
 namespace App\Livewire;
 
 use Livewire\Component;
@@ -24,18 +23,17 @@ class UserSearch extends Component
         $this->name = $inputName;
         $this->id = $inputId;
 
-        $this->selectedUsers = $initialUsers;
+        foreach ($initialUsers as $user) {
+            $user = User::where('id', $user)->first();
+            $this->selectedUsers[] = $user;
+        }
+
         $this->exclude = $exclude;
 
     }
 
     public function render()
     {
-
-        if ($this->search === '') {
-            $users = User::whereIn('id', $this->selectedUsers)->get();
-        } else {
-
             // Fetch users based on the search input
             $users = User::when($this->search, function ($query) {
                 $query->where('name', 'like', '%' . $this->search . '%')
@@ -43,25 +41,35 @@ class UserSearch extends Component
             })
             ->whereNotIn('id', $this->exclude)
             ->get();
-        }
+        
 
         return view('livewire.user-search', ['users' => $users]);
     }
 
     public function removeUser($userId)
     {
-        // remove the user from the selected users array
-        $this->selectedUsers = array_values(array_filter($this->selectedUsers, function ($id) use ($userId) {
-            return $id !== $userId;
-        }));
+        // remove the user from the selected users array which is an array of user objects
+        $user = User::where('id', $userId)->first();
+        $this->selectedUsers = array_filter($this->selectedUsers, function ($selectedUser) use ($user) {
+            return $selectedUser->id !== $user->id;
+        });
+
+        $this->search = "";
+
+        
+        
     }
 
     public function addUser($userId)
     {
-        if (in_array($userId, $this->selectedUsers)) {
-            $this->removeUser($userId);
-        } else {
-            $this->selectedUsers[] = $userId;
+        // add the user to the selected users array, but only if it doesn't already exist
+        // it's an array of user objects
+
+        $user = User::where('id', $userId)->first();
+        if (!in_array($user, $this->selectedUsers)) {
+            $this->selectedUsers[] = $user;
         }
+
+        $this->search = "";
     }
 }
