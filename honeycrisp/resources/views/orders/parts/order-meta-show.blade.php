@@ -73,10 +73,21 @@
                 </div>
                 <div class="card-body">
 
-                    <p><strong>Customer Name:</strong> {{ $order->user->name }}</p>
-                    <p><strong>Customer Email:</strong> <a href="mailto:{{ $order->user->email }}">{{
-                            $order->user->email }}</a>
+                    <p><strong>Customer Name:</strong> {{ $order->customer->name }}</p>
+                    <p><strong>Customer Email:</strong> <a href="mailto:{{ $order->customer->email }}">{{
+                            $order->customer->email }}</a>
                     </p>
+
+                    <!-- if there are more users in the users object, display the additional users -->
+                    @if (count($order->users) > 1)
+                    <p><strong>Additional Users:</strong>
+                        @foreach ($order->users as $user)
+                        @if ($user->id != $order->user->id)
+                        <br>{{ $user->name }} - <a href="mailto:{{ $user->email }}">{{ $user->email }}</a>
+                        @endif
+                        @endforeach
+                    </p>
+                    @endif
                     <p><strong>Payment Account:</strong> {{ $payment_account->account_name }}
                         ({{ $payment_account->formatted() }})</p>
 

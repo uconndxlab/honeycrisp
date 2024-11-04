@@ -497,6 +497,15 @@ legend {
     font-size: 1.25rem;
   }
 
+  .card {
+    border: none;
+    box-shadow: none!important;
+  }
+
+  .container {
+    max-width: 100%;
+  }
+
 }
 
 
