@@ -208,7 +208,6 @@
                     <thead>
                         <tr>
                             <th>Order#</th>
-
                             <th>User</th>
                             <th>Title</th>
                             <th>Date</th>

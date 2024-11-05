@@ -50,6 +50,8 @@ Route::middleware(['auth'])->group(function () {
     Route::post('orders/remove-item', [OrderController::class, 'removeItem'])->name('orders.remove-item');
     Route::post('orders/import-csv', [OrderController::class, 'importCsv'])->name('orders.import-csv');
     Route::get('orders/{order}/sendToCustomer', [OrderController::class, 'sendToCustomer'])->name('orders.sendToCustomer');
+    Route::get('orders/{order}/financialFiles', [OrderController::class, 'financialFiles'])->name('orders.financialFiles');
+    
     Route::resource('payment-accounts', PaymentAccountController::class);
     Route::get('payment-accounts/{paymentAccount}/authorizedUsers', [PaymentAccountController::class, 'authorizedUsers'])->name('payment-accounts.authorizedUsers');
     Route::post('payment-accounts/{paymentAccount}/add-authorized-user', [PaymentAccountController::class, 'addAuthorizedUser'])->name('payment-accounts.authorizedUsers.store');

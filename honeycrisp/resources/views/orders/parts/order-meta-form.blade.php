@@ -30,6 +30,13 @@
 
                 <!-- if order is quote, a button to send to customer -->
                 <div>
+
+                    <!-- view financial files -->
+                    <a href="{{ route('orders.financialFiles', ['order' => $order]) }}"
+                        class="btn btn-outline-primary {{ !isset($order) ? 'disabled' : '' }}">
+                        <i class="bi bi-journal"></i> View Financial Files</a>
+                        
+
                     @if (isset($order))
                         <a href="{{ route('orders.sendToCustomer', ['order' => $order]) }}"
                             class="btn btn-outline-primary ">

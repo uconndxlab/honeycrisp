@@ -18,7 +18,7 @@
             </div>
         </div>
 
-        <pre>{{ file_get_contents($export->path) }}</pre>
+        <pre class="my-5">{{ file_get_contents($export->path) }}</pre>
     </div>
 </div>
 @endsection

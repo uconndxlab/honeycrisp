@@ -323,6 +323,16 @@ class OrderController extends Controller
         return view('orders.edit', compact('order', 'facility', 'users', 'selected_user', 'accounts', 'account_warning_array', 'status_options', 'categoryRequested'));
     }
 
+    // show the financial files for an order
+
+    public function financialFiles(Request $request) {
+       
+        $order = Order::find($request->order);
+        $payment_account = PaymentAccount::find($order->payment_account_id);
+        return view('orders.financialFiles', compact('order', 'payment_account'));
+
+    }
+
     public function export(Request $request)
     {
         // Retrieve orders based on current query parameters
