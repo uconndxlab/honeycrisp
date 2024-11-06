@@ -16,10 +16,27 @@
     <div class="alert alert-info">
         Customer account: is a UCH account. Facility account: is a UCH account.
     </div>
+
+    {{-- foreach order item, spit out kfsdebit and kfscredit --}}
+
+
+
 @elseif ($payment_account->account_type == 'kfs' && $order->facility->account_type == 'kfs')
-    <div class="alert alert-info">
-        Customer account: is a KFS account. Facility account: is a KFS account.
+
+
+
+    <div class="container">
+        <div class="alert alert-info">
+            <h3>This is a KFS to KFS Order</h3>
+            <p>Customer account is a KFS account. Facility account: is a KFS account.</p>
+            <a href="{{ route('orders.financialFiles.download', $order) }}" class="mt-4 btn btn-primary">
+                Download <strong>order-{{ $order->id }}.dat</strong>
+            </a>
+        </div>
+        <pre>{{ $order->financialFile() }}</pre>
     </div>
+
+     
 @endif
 
 @if ($payment_account->account_type == 'kfs' && $order->facility->account_type == 'uch')

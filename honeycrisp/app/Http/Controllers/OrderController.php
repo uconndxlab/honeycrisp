@@ -73,7 +73,7 @@ class OrderController extends Controller
             $search = request('search');
             $query->where('title', 'like', '%' . $search . '%')
                   ->orWhere('id', 'like', '%' . $search . '%')
-                  ->orWhereHas('user', function ($q) use ($search) {
+                  ->orWhereHas('customer', function ($q) use ($search) {
                       $q->where('netid', 'like', '%' . $search . '%');
                       $q->orWhere('name', 'like', '%' . $search . '%');
                   });
@@ -614,5 +614,27 @@ class OrderController extends Controller
         $order->save();
 
         return redirect()->route('orders.edit', $order)->with('success', 'Order sent to customer successfully!');
+    }
+
+    public function downloadFinancialFile($order){
+        // put the results of $order->financialFile into a .dat file and download it
+        $order = Order::find($order);
+        $financial_file = $order->financialFile();
+
+        // the output is just a sstring, so we can just put it in a file
+        $fileName = 'honeycrisp-' . $order->id . '.dat';
+        $filePath = storage_path('app/exports/' . $fileName);
+
+        if ( !file_exists($filePath) && $financial_file ) {
+            file_put_contents($filePath, $financial_file);
+
+
+            return response()->download($filePath);
+        } else {
+  
+
+            return response()->download($filePath);
+        }
+        
     }
 }

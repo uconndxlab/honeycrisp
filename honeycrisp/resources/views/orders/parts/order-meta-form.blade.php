@@ -150,6 +150,32 @@
                         </div>
                     </div>
                 </div>
+
+                {{-- financial files accordion --}}
+
+                @if (isset($order))
+                    <div class="accordion my-2" id="financialFilesAccordion">
+                        <div class="accordion-item">
+                            <h2 class="accordion-header" id="financialFilesHeading">
+                                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
+                                    data-bs-target="#financialFilesCollapse" aria-expanded="false"
+                                    aria-controls="financialFilesCollapse">
+                                    Financial Files
+                                </button>
+                            </h2>
+                            <div id="financialFilesCollapse" class="accordion-collapse collapse"
+                                aria-labelledby="financialFilesHeading" data-bs-parent="#financialFilesAccordion">
+                                <div class="accordion-body">
+                                        <a href="{{ route('orders.financialFiles.download', $order) }}"
+                                            class="btn btn-primary">
+                                            Download <strong>honeycrisp-{{ $order->id }}.dat</strong>
+                                        </a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                @endif
+
             </div>
 
             <div class="col-md-6">

@@ -52,6 +52,10 @@ Route::middleware(['auth'])->group(function () {
     Route::get('orders/{order}/sendToCustomer', [OrderController::class, 'sendToCustomer'])->name('orders.sendToCustomer');
     Route::get('orders/{order}/financialFiles', [OrderController::class, 'financialFiles'])->name('orders.financialFiles');
     
+    //orders.financialFiles.download
+    Route::get('orders/{order}/financialFiles/download', [OrderController::class, 'downloadFinancialFile'])->name('orders.financialFiles.download');
+
+
     Route::resource('payment-accounts', PaymentAccountController::class);
     Route::get('payment-accounts/{paymentAccount}/authorizedUsers', [PaymentAccountController::class, 'authorizedUsers'])->name('payment-accounts.authorizedUsers');
     Route::post('payment-accounts/{paymentAccount}/add-authorized-user', [PaymentAccountController::class, 'addAuthorizedUser'])->name('payment-accounts.authorizedUsers.store');
