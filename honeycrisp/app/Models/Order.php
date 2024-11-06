@@ -172,7 +172,7 @@ class Order extends Model
         $contactPerson = 'Cynthia Doherty';
         $deptName = 'COR2E';
         $deptAddress = '159 Discovery Dr, Storrs, CT';
-        $campusCode = 'ST';
+        $campusCode = '01';
         $deptPhone = '018605551234';
 
         $header = $fiscalYear
@@ -202,13 +202,18 @@ class Order extends Model
         // 47-51 $glCount
         // 52-91 blank spaces
         // 93-112 $total
+        //convert $total to be like 92.00
 
+        $total = $total*2;
+        $total = $total/100;
+        
+        $total = number_format($total, 2, '.', '');
 
         $footer = str_pad('', 25, ' ', STR_PAD_RIGHT)
             . 'TL'
             . str_pad('', 19, ' ', STR_PAD_RIGHT)
             . str_pad($glCount, 5, '0', STR_PAD_LEFT)
-            . str_pad('', 40, ' ', STR_PAD_RIGHT)
+            . str_pad('', 41, ' ', STR_PAD_RIGHT)
             . str_pad($total, 20, '0', STR_PAD_LEFT);
 
         return $footer. "\n";

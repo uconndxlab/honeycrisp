@@ -629,11 +629,11 @@ class OrderController extends Controller
             file_put_contents($filePath, $financial_file);
 
 
-            return response()->download($filePath);
+            return response()->download($filePath)->deleteFileAfterSend(true);
         } else {
   
-
-            return response()->download($filePath);
+            file_put_contents($filePath, $financial_file);
+            return response()->download($filePath)->deleteFileAfterSend(true);
         }
         
     }
