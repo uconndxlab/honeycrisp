@@ -31,10 +31,13 @@
                 <!-- if order is quote, a button to send to customer -->
                 <div>
 
+                    @if (isset($order) && $order->status == 'invoice')
+
                     <!-- view financial files -->
                     <a href="{{ route('orders.financialFiles', ['order' => $order]) }}"
                         class="btn btn-outline-primary {{ !isset($order) ? 'disabled' : '' }}">
                         <i class="bi bi-journal"></i> View Financial Files</a>
+                    @endif
                         
 
                     @if (isset($order))
@@ -153,7 +156,7 @@
 
                 {{-- financial files accordion --}}
 
-                @if (isset($order))
+                @if (isset($order) && $order->status == 'invoice')
                     <div class="accordion my-2" id="financialFilesAccordion">
                         <div class="accordion-item">
                             <h2 class="accordion-header" id="financialFilesHeading">
