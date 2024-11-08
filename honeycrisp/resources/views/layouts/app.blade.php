@@ -142,11 +142,9 @@
                     <li>
                         <a href="https://accessibility.uconn.edu/">Accessibility</a>
                     </li>
-                                    <li>
-                    <a href="https://pandemic-journaling-project.chip.uconn.edu/wp-admin/">Webmaster Login</a>
-                </li>
 
-                <li><a href="#" target="_blank">
+
+                <li><a href="https://core.uconn.edu" target="_blank">
                     Contact Information
                 </a></li>
 
