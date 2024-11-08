@@ -1,14 +1,14 @@
 <div class="container">
     <!-- Header Section -->
-    <div class="row my-3 no-print">
+    <div class="row my-3">
         <div class="col-md-12">
 
             <div class="order-lede mb-3">
-                <h1>Order Details</h1>
+                <h1>Core Facility Order Details</h1>
                 <span class="text-muted">Order ID: {{ $order->id }}</span>
             </div>
 
-            <div class="d-flex justify-content-between align-items-center">
+            <div class="d-flex justify-content-between align-items-center no-print">
                 <a href="{{ route('orders.index') }}" class="btn btn-secondary">
                     <i class="bi bi-arrow-left"></i>
                     Back to All Orders</a>
@@ -17,7 +17,7 @@
 
             <div class="order-meta my-4">
 
-                <h2> {{ $order->facility->name }}</h2>
+                <h2>{{ $order->facility->name }}</h2>
                 <a href="mailto:{{ $order->facility->email }}">{{ $order->facility->email }}</a>
 
             </div>
