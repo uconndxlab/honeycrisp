@@ -47,7 +47,7 @@
                     @endif
 
                     <button form="order-meta-form" type="submit" id="save-order" 
-                    class="btn btn-primary disabled">
+                    class="btn btn-primary">
                         @if (isset($order))
                             Save Order Details
                         @else
@@ -216,23 +216,8 @@
 
                                 <div id="user_accounts" class="form-group my-2">
                                     @if ($accounts != null && count($accounts) > 0)
-                                        <label for="payment_account_id">Payment Account:</label>
-                                        <select name="payment_account_id" id="payment_account_id" class="form-select"
-                                            hx-get="{{ route('orders.create') }}/{{ $facility->abbreviation }}?user_id={{ isset($order) ? $order->customer->id : $selected_user->id }}"
-                                            hx-select="#user_accounts" hx-target="#user_accounts" hx-push-url="true">
+                                    <livewire:account-search :accounts="$accounts" :selected-account="$selected_account" />
 
-
-
-                                            <option value="">Select a Payment Account</option>
-                                            @foreach ($accounts->sortBy('account_name') as $payment_account)
-                                                <option
-                                                    {{ old('payment_account_id', isset($selected_account) ? $selected_account->id : '') == $payment_account->id ? 'selected' : '' }}
-                                                    value="{{ $payment_account->id }}">
-                                                    {{ $payment_account->account_name }}
-                                                    ({{ strtoupper($payment_account->account_type) }}-{{ $payment_account->account_number }})
-                                                </option>
-                                            @endforeach
-                                        </select>
                                     @elseif ($accounts == null)
                                         <div class="alert alert-warning" role="alert">
                                             Select a User to see Payment Accounts

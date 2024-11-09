@@ -11,7 +11,7 @@
         </ul>
     @endif
 
-    <input type="text" wire:model.live.debounce.300ms="search" placeholder="Search Users..." class="form-control" />
+    <input id="user_search_input" type="text" wire:model.live.debounce.300ms="search" placeholder="Search Users..." class="form-control" />
 
     {{-- Hidden input array of selected users to submit with the form --}}
     @foreach($selectedUsers as $user)

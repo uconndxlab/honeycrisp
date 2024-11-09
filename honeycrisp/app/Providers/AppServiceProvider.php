@@ -10,6 +10,7 @@ use Money\Money;
 use Illuminate\Support\Facades\Blade;
 use Illuminate\Support\Facades\Gate;
 
+
 use Livewire\Livewire;
 
 class AppServiceProvider extends ServiceProvider
@@ -29,6 +30,7 @@ class AppServiceProvider extends ServiceProvider
     {
 
         Livewire::component('user-search', \App\Livewire\UserSearch::class);
+        Livewire::component('account-search', \App\Livewire\AccountSearch::class);
 
         // check if the table exists first
         if (!Schema::hasTable('facilities')) {
