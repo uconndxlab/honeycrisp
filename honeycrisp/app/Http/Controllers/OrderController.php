@@ -99,7 +99,7 @@ class OrderController extends Controller
         $selected_user = null;
 
         if (request('netid')) {
-            $user = User::all()->where('netid', request('netid'))->first();
+            $user = User::where('netid', request('netid'))->first();
             $selected_user = $user;
             $accounts = [];
 
@@ -152,7 +152,7 @@ class OrderController extends Controller
         }
 
 
-        $facility = Facility::all()->where('status', 'active')->where('abbreviation', $facilityAbbreviation)->first();
+        $facility = Facility::where('status', 'active')->where('abbreviation', $facilityAbbreviation)->first(); 
 
         return view('orders.create', compact('facility', 'selected_user', 'accounts', 'selected_account', 'account_warning_array'));
     }
@@ -226,7 +226,7 @@ class OrderController extends Controller
      */
     public function show(Order $order)
     {
-        $order_items = OrderItem::all()->where('order_id', $order->id);
+        $order_items = OrderItem::where('order_id', $order->id)->get();
         $payment_account = PaymentAccount::find($order->payment_account_id);
         
         $order->total = 0;
@@ -249,7 +249,7 @@ class OrderController extends Controller
         $status_options = Order::statusOptions();
 
         if($order->price_group == 'internal'){
-            $accounts = PaymentAccount::all()->where('user_id', $order->user_id);
+            $accounts = PaymentAccount::where('user_id', $order->user_id)->get();
         } else {
             $accounts = null;
         }
@@ -304,7 +304,7 @@ class OrderController extends Controller
 
         if (request('user_id') or $order->user_id) {
             if (request('user_id')) {
-                $user = User::all()->where('netid', request('user_id'))->first();
+                $user = User::where('netid', request('user_id'))->first();
             } else {
                 $user = User::find($order->user_id);
             }

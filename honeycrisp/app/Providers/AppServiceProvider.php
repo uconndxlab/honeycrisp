@@ -36,7 +36,7 @@ class AppServiceProvider extends ServiceProvider
         if (!Schema::hasTable('facilities')) {
             return;
         }
-        $facilities = Facility::all()->where('status', 'active');
+        $facilities = Facility::where('status', 'active')->get();
         View::share('facilities', $facilities);
 
         // blade directive to convert cents to dollars and cents

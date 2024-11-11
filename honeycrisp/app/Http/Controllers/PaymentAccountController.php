@@ -43,12 +43,12 @@ class PaymentAccountController extends Controller
      */
     public function create(Request $request)
     {
-        $users =  User::all();
+    
 
         // $request->netid is the netid of the user that was selected
         $selectedUser = User::where('netid', $request->netid)->first();
 
-        return view('payment-accounts.create')->with(compact('users', 'selectedUser'));
+        return view('payment-accounts.create')->with(compact('selectedUser'));
     }
 
     /**
@@ -169,8 +169,7 @@ class PaymentAccountController extends Controller
     public function authorizedUsers(PaymentAccount $paymentAccount)
     {
         return view('payment-accounts.authorized-users', [
-            'paymentAccount' => $paymentAccount,
-            'users' => User::all(),
+            'paymentAccount' => $paymentAccount
         ]);
     }
 

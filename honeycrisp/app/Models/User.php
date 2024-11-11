@@ -65,6 +65,6 @@ class User extends Authenticatable
     /** get owned accounts */
     public function ownedAccounts()
     {
-        return PaymentAccount::all()->where('account_owner', $this->id);
+        return PaymentAccount::where('account_owner', $this->id)->get();
     }
 }

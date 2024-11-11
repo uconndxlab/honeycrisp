@@ -22,7 +22,7 @@ class ProductController extends Controller
      */
     public function create($facilityAbbreviation)
     {
-        $facility = Facility::all()->where('status', 'active')->where('abbreviation', $facilityAbbreviation)->first();
+        $facility = Facility::where('status', 'active')->where('abbreviation', $facilityAbbreviation)->first();
 
         return view('products.create', compact('facility'));
     }
