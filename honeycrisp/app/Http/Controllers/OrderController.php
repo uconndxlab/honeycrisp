@@ -96,7 +96,6 @@ class OrderController extends Controller
         
         // if request[netid] is not null, get the user with that netid so they can be selected by default
 
-        $users = User::all()->where('status', 'active');
         $selected_user = null;
 
         if (request('netid')) {
@@ -155,7 +154,7 @@ class OrderController extends Controller
 
         $facility = Facility::all()->where('status', 'active')->where('abbreviation', $facilityAbbreviation)->first();
 
-        return view('orders.create', compact('facility', 'selected_user', 'accounts', 'selected_account', 'account_warning_array', 'users'));
+        return view('orders.create', compact('facility', 'selected_user', 'accounts', 'selected_account', 'account_warning_array'));
     }
 
     /**
@@ -245,7 +244,7 @@ class OrderController extends Controller
     {
         $order = Order::find($order->id);
         $facility = Facility::find($order->facility_id);
-        $users = User::all()->where('status', 'active');
+
         $selected_user = $order->user_id;
         $status_options = Order::statusOptions();
 
@@ -320,7 +319,7 @@ class OrderController extends Controller
         }
 
         
-        return view('orders.edit', compact('order', 'facility', 'users', 'selected_user', 'accounts', 'account_warning_array', 'status_options', 'categoryRequested'));
+        return view('orders.edit', compact('order', 'facility', 'selected_user', 'accounts', 'account_warning_array', 'status_options', 'categoryRequested'));
     }
 
     // show the financial files for an order
