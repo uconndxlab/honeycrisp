@@ -34,14 +34,20 @@ class UserSearch extends Component
 
     public function render()
     {
+
+
+            if($this->search) {
             // Fetch users based on the search input
-            $users = User::when($this->search, function ($query) {
-                $query->where('name', 'like', '%' . $this->search . '%')
-                    ->orWhere('netid', 'like', '%' . $this->search . '%');
-            })
-            ->whereNotIn('id', $this->exclude)
-            ->get();
-        
+                $users = User::when($this->search, function ($query) {
+                    $query->where('name', 'like', '%' . $this->search . '%')
+                        ->orWhere('netid', 'like', '%' . $this->search . '%');
+                })
+                ->whereNotIn('id', $this->exclude)
+                ->take(10)
+                ->get();
+            } else {
+                $users = collect();
+            }
 
         return view('livewire.user-search', ['users' => $users]);
     }

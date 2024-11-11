@@ -9,6 +9,8 @@ use Illuminate\Support\Facades\Schema;
 use Money\Money;
 use Illuminate\Support\Facades\Blade;
 use Illuminate\Support\Facades\Gate;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\File;
 
 
 use Livewire\Livewire;
@@ -72,7 +74,12 @@ class AppServiceProvider extends ServiceProvider
             return $user->role === 'admin' || $paymentAccount->user_id === $user->id;
         });
 
-
+        // DB::listen(function($query) {
+        //     File::append(
+        //         storage_path('/logs/query.log'),
+        //         '[' . date('Y-m-d H:i:s') . ']' . PHP_EOL . $query->sql . ' [' . implode(', ', $query->bindings) . ']' . PHP_EOL . PHP_EOL
+        //     );
+        // });
 
         
 
