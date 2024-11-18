@@ -171,7 +171,7 @@ class Order extends Model
         $email = 'honeycrisp@uconn.edu';
         $contactPerson = 'Cynthia Doherty';
         $deptName = 'COR2E';
-        $deptAddress = '159 Discovery Dr, Storrs, CT';
+        $deptAddress = '91 N. Eagleville Rd';
         $campusCode = '01';
         $deptPhone = '018605551234';
 

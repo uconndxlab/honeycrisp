@@ -176,16 +176,16 @@ class PaymentAccountController extends Controller
     public function addAuthorizedUser(Request $request, PaymentAccount $paymentAccount)
     {
         $request->validate([
-            'netid' => 'required|exists:users,netid',
+            'additional_users' => 'required|array',
+            'additional_users.*' => 'exists:users,id',
         ], [
-            'netid.required' => 'The user field is required.',
-            'netid.exists' => 'The selected user does not exist. Tell them to log in to create an account.',
+            'additional_users.required' => 'The user field is required.',
+            'additional_users.*.exists' => 'One or more selected users do not exist. Tell them to log in to create an account.',
         ]);
 
-        $user = User::where('netid', $request->netid)->first();
-        $paymentAccount = PaymentAccount::find($paymentAccount->id);
+        $paymentAccount->authorized_users()->syncWithoutDetaching($request->additional_users);
 
-        $paymentAccount->authorized_users()->attach($user->id, ['role' => 'authorized_user']);
+        
 
         return redirect()->route('payment-accounts.authorizedUsers', $paymentAccount)->with('success', 'User added successfully.');
     }

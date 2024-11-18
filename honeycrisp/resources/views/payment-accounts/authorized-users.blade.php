@@ -46,10 +46,9 @@
                 <div class="mb-3">
                     <form action="{{ route('payment-accounts.authorizedUsers.store', $paymentAccount) }}" method="POST">
                         @csrf
-                        <div class="input-group">
-                            <input type="text" class="form-control" name="netid" placeholder="NetID">
-                            <button type="submit" class="btn btn-primary">Add</button>
-                        </div>
+                        <livewire:user-search />
+
+                        <button type="submit" class="btn btn-primary">Add Authorized User</button>
                     </form>
                 </div>
                 <table class="table table-striped">
