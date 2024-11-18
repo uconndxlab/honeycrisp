@@ -46,16 +46,15 @@ class OrderItem extends Model
         $line .= str_pad($sequenceNumber, 13, '0', STR_PAD_LEFT); // Sequence Number for this debit/credit
         $line .= "     "; // 5 spaces
         // Now we have (57-97) lines to create a description
-        $description = "HnyCsp#"
-            . $this->order->id
-            . " "
-            . substr($this->product->name ?? $this->description, 0, 20)
-            . " "
-            . $this->quantity
-            . ($this->product->unit ?? 'unit')
-            . " @ "
-            . $this->price / 100
-            . " ea";
+        $description = "COR2E:" . $this->order->facility->abbreviation ." #"
+        . $this->order->id
+        . " "
+        . substr($this->product->name ?? $this->description, 0, 20)
+        . " "
+        . $this->quantity
+        . "@"
+        . $this->price / 100
+        . "ea";
 
         // Ensure it doesn't go over 40chars and pad it with spaces if it's short
         $line .= str_pad( substr($description, 0, 40), 40, ' ', STR_PAD_RIGHT);
@@ -68,6 +67,15 @@ class OrderItem extends Model
         $vals .= $this->order->created_at->format('Y-m-d');
 
         $line .= $vals;
+
+        // 129 - 138 for the order ID
+        $line .= str_pad($this->order->id, 10, ' ', STR_PAD_RIGHT);
+
+        // 139-148 just nothing
+        $line .= '  ';
+
+        // 149 - 157 for the facility abbreviation
+        $line .= str_pad($this->order->facility->abbreviation, 9, ' ', STR_PAD_RIGHT);
 
         return $line;
     }
@@ -96,16 +104,15 @@ class OrderItem extends Model
         $line .= str_pad($sequenceNumber, 13, '0', STR_PAD_LEFT); // Sequence Number for this debit/credit
         $line .= "     "; // 5 spaces
         // Now we have (57-97) lines to create a description
-        $description = "HnyCsp#"
+        $description = "COR2E:" . $this->order->facility->abbreviation ." #"
             . $this->order->id
             . " "
             . substr($this->product->name ?? $this->description, 0, 20)
             . " "
             . $this->quantity
-            . ($this->product->unit ?? 'unit')
-            . " @ "
+            . "@"
             . $this->price / 100
-            . " ea";
+            . "ea";
 
         // Ensure it doesn't go over 40chars and pad it with spaces if it's short
         $line .= str_pad( substr($description, 0, 40), 40, ' ', STR_PAD_RIGHT);
@@ -118,6 +125,15 @@ class OrderItem extends Model
         $vals .= $this->order->created_at->format('Y-m-d');
 
         $line .= $vals;
+
+        // 129 - 138 for the order ID
+        $line .= str_pad($this->order->id, 10, ' ', STR_PAD_RIGHT);
+
+        // 149-148 just nothing
+        $line .= '  ';
+
+        // 149 - 157 for the facility abbreviation
+        $line .= str_pad($this->order->facility->abbreviation, 9, ' ', STR_PAD_RIGHT);
 
         return $line;
     }
