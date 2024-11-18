@@ -106,4 +106,38 @@ class FacilityController extends Controller
 
         return redirect()->route('facilities.index')->with('alert', $msg);
     }
+
+    public function exportInvoices($facility)
+    {
+
+        $facility = Facility::where('abbreviation', $facility)->first();
+
+        $lines = "";
+        $lines = $facility->generateFinancialHeader();
+        $glCount = 0;
+        $total = 0;
+
+        //for each order, generate the financialLines
+        foreach ($facility->orders as $order) {
+            $financial_lines = $order->generateFinancialLines();
+            
+            foreach ($financial_lines as $line) {
+                $lines .= $line . "\n";
+            }
+
+            $glCount += $order->items->count();
+            $total += $order->total;
+        }
+
+        $lines .= $facility->generateFinancialFooter($glCount, $total);
+
+        $filename = $facility->abbreviation . '_financials.dat';
+
+        return response($lines)
+            ->header('Content-Type', 'text/plain')
+            ->header('Content-Disposition', 'attachment; filename="' . $filename . '"');
+
+
+        
+    }
 }

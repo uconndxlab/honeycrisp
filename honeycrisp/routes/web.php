@@ -45,12 +45,15 @@ Route::middleware(['auth'])->group(function () {
     Route::resource('users', UserController::class);
     // /orders/export with a request full of filters
     Route::get('/orders/export', [OrderController::class, 'export'])->name('orders.export');
+
     Route::resource('orders', OrderController::class);
     Route::post('orders/add-item', [OrderController::class, 'addItem'])->name('orders.add-item');
     Route::post('orders/remove-item', [OrderController::class, 'removeItem'])->name('orders.remove-item');
     Route::post('orders/import-csv', [OrderController::class, 'importCsv'])->name('orders.import-csv');
     Route::get('orders/{order}/sendToCustomer', [OrderController::class, 'sendToCustomer'])->name('orders.sendToCustomer');
     Route::get('orders/{order}/financialFiles', [OrderController::class, 'financialFiles'])->name('orders.financialFiles');
+    
+    Route::get('/facilities/{facilityAbbreviation}/exportInvoices', [FacilityController::class, 'exportInvoices'])->name('facilities.exportInvoices');
     
     //orders.financialFiles.download
     Route::get('orders/{order}/financialFiles/download', [OrderController::class, 'downloadFinancialFile'])->name('orders.financialFiles.download');
