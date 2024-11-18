@@ -26,10 +26,8 @@
 
         <div class="col-md-12">
             <!-- export button -->
-            <div class="d-flex justify-content-between align-items-center mt-3 py-3">
-
+            <div class="d-flex justify-content-between align-items-center  py-3">
                 <div class="active-filters">
-
                     @if (request('facility_id'))
                     <span class="badge bg-secondary">
                         Facility: {{ $data['facility']->abbreviation }}
@@ -85,10 +83,6 @@
                     </span>
                     @endif
 
-                </div>
-
-                <div>
-                    <a href="{{ route('orders.export', request()->all()) }}" class="btn btn-success">Export</a>
                 </div>
             </div>
 
@@ -198,73 +192,62 @@
                     </form>
                 </div>
             </div>
-            <div id="orderResults">
-                <table class="table mt-5">
-                    <thead>
-                        <tr>
-                            <th>Order#</th>
-                            <th>User</th>
-                            <th>Title</th>
-                            <th>Date</th>
-                            <th>Total</th>
-                            <th>Actions</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        @foreach ($orders as $order)
-                        <tr>
+            <div id="orderResults" class="card mt-5">
+                <div class="card-header">
+                    <h5>Orders</h5>
+                    @if ($orders->count() == 0)
+                    <p>No orders found matching your criteria.</p>
+                    @else
+                    <small class="d-block py-2">There are <span class="badge bg-dark">{{ $orders->count() }}</span> orders on this page, out of <span class="badge bg-dark">{{ $orders->total() }}</span> total matching your search.</small>
+                    @endif
+                </div>
+                <div class="card-body">
+                    <table class="table table-hover">
+                        <thead>
+                            <tr>
+                                <th>Order#</th>
+                                <th>User</th>
+                                <th>Title</th>
+                                <th>Date</th>
+                                <th>Total</th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach ($orders as $order)
+                            <tr>
+                                <td>{{ $order->facility->abbreviation }} - {{ $order->id }}</td>
+                                <td>{{ $order->customer->name }} ({{ strtoupper(optional($order->paymentAccount)->account_type) }})</td>
+                                <td>{{ $order->title }} <span class="badge badge-{{ $order->status_color }}">{{ $order->status }}</span></td>
+                                <td>{{ $order->date }}</td>
+                                <td>$@dollars($order->total)</td>
+                                <td>
+                                    <a href="{{ route('orders.show', $order->id) }}" class="btn btn-primary">View</a>
+                                    <a href="{{ route('orders.edit', $order->id) }}" class="btn btn-secondary">Edit</a>
 
-                            <td>
-                                {{ $order->facility->abbreviation }} - {{ $order->id }}
-
-
-                            </td>
-                            <td>{{ $order->customer->name }}
-                                ({{ optional($order->paymentAccount)->account_category }})
-                            </td>
-
-                            <td>
-
-                                {{ $order->title }} <span class="badge badge-{{ $order->status_color }}">{{
-                                    $order->status }}</span>
-
-                            </td>
-                            <td>{{ $order->date }}</td>
-
-
-                            <td>$@dollars($order->total)</td>
-                            <td>
-                                <a href="{{ route('orders.show', $order->id) }}" class="btn btn-primary">View</a>
-                                <a href="{{ route('orders.edit', $order->id) }}" class="btn btn-secondary">Edit</a>
-                                <form action="{{ route('orders.destroy', $order->id) }}" method="POST"
-                                    style="display: inline-block;"
-                                    onsubmit="return confirm('Are you sure you want to delete this order?');">
-                                    @csrf
-                                    @method('DELETE')
-                                    <button type="submit" class="btn btn-danger">Delete</button>
-                                </form>
-                            </td>
-                        </tr>
-                        @endforeach
-                    </tbody>
-                    <!-- total row -->
-                    <tfoot>
-                        <tr>
-                            <td colspan="4"><strong>Total</strong></td>
-                            <td>$@dollars($orders->sum('total'))</td>
-                            <td></td>
-                        </tr>
-                    </tfoot>
-                </table>
-
-                @if ($orders->count() == 0)
-                <p>No orders found matching your criteria.</p>
-                @else
-                <small class="d-block py-2">There are <span class="badge bg-dark">{{ $orders->count() }}</span>
-                    orders on
-                    this page, out of
-                    <span class="badge bg-dark">{{ $orders->total() }}</span> total matching your search.</small>
-                @endif
+                                </td>
+                            </tr>
+                            @endforeach
+                        </tbody>
+                        <tfoot>
+                            <tr>
+                                <td colspan="4"><strong>Total</strong></td>
+                                <td>$@dollars($orders->sum('total'))</td>
+                                <td></td>
+                            </tr>
+                        </tfoot>
+                    </table>
+                    <div class="d-flex justify-content-between align-items-center">
+                        <div class="pagination">
+                            {{ $orders->appends(request()->except('page'))->links() }}
+                        </div>
+                        <div class="exports">
+                            <a href="{{ route('orders.export', ['order_ids' => $orders->pluck('id')->toArray()]) }}" class="btn btn-success">
+                                <i class="bi bi-file-earmark-spreadsheet"></i> Export Current Results as CSV
+                            </a>
+                        </div>
+                    </div>
+                </div>
             </div>
         </div>
     </div>

@@ -334,57 +334,47 @@ class OrderController extends Controller
 
     public function export(Request $request)
     {
-        // Retrieve orders based on current query parameters
-        $orders = Order::query();
-    
-        if ($request->has('status')) {
-            $orders->where('status', $request->status);
+        // Check if specific order IDs are provided
+        if ($request->has('order_ids')) {
+            $orders = Order::with(['facility', 'customer'])
+                ->whereIn('id', $request->order_ids)
+                ->get();
+        } else {
+            // If no specific IDs are passed, fetch all orders (fallback)
+            $orders = Order::with(['facility', 'customer'])->get();
         }
-        
-        if ($request->has('facility_id')) {
-            $orders->where('facility_id', $request->facility_id);
-        }
-        
-        if ($request->has('search')) {
-            $orders->where(function ($query) use ($request) {
-                $query->where('netid', 'like', '%' . $request->search . '%')
-                      ->orWhere('title', 'like', '%' . $request->search . '%')
-                      ->orWhere('id', $request->search);
-            });
-        }
-    
-        if ($request->has('start_date') && $request->has('end_date')) {
-            $orders->whereBetween('date', [$request->start_date, $request->end_date]);
-        }
-    
-        $orders = $orders->get();
     
         // Prepare CSV export
         $csvFileName = 'orders_' . now()->format('Ymd') . '.csv';
-        $handle = fopen('php://output', 'w');
-        
-        // Set headers for the CSV file
-        header('Content-Type: text/csv');
-        header('Content-Disposition: attachment; filename="' . $csvFileName . '"');
-        
-        // Add the CSV header row
-        fputcsv($handle, ['ID', 'Facility', 'User', 'Title', 'Date', 'Status', 'Total']);
     
-        foreach ($orders as $order) {
-            fputcsv($handle, [
-                $order->id,
-                $order->facility->abbreviation,
-                $order->user->name,
-                $order->title,
-                $order->date,
-                $order->status,
-                $order->total,
-            ]);
-        }
+        // Use Laravel's response handling for streaming CSV
+        return response()->streamDownload(function () use ($orders) {
+            $handle = fopen('php://output', 'w');
     
-        fclose($handle);
-        exit();
+            // Add CSV header row
+            fputcsv($handle, ['ID', 'Facility', 'User', 'Title', 'Date', 'Status', 'Account', 'Total']);
+    
+            // Write data for each order
+            foreach ($orders as $order) {
+                fputcsv($handle, [
+                    $order->id,
+                    optional($order->facility)->abbreviation,
+                    optional($order->customer)->name,
+                    $order->title,
+                    $order->date,
+                    $order->status,
+                    $order->paymentAccount->formatted(),
+                    $order->total,
+                ]);
+            }
+    
+            fclose($handle);
+        }, $csvFileName, [
+            'Content-Type' => 'text/csv',
+            'Content-Disposition' => 'attachment; filename="' . $csvFileName . '"',
+        ]);
     }
+    
 
     /**
      * Update the specified resource in storage.
