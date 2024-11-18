@@ -181,7 +181,7 @@
                         <li class="list-group-item">
                             <strong>Order ID:</strong> {{ $order->id }}<br>
                             <strong>Date:</strong> {{ $order->created_at->format('d M Y') }}<br>
-                            <strong>Total:</strong> ${{ number_format($order->total, 2) }}<br>
+                            <strong>Total:</strong> $@dollars($order->total)<br>
                             <strong>Customer:</strong> {{ $order->customer->name }}<br>
                             <strong>Title:</strong> {{ $order->title }}
                         </li>
