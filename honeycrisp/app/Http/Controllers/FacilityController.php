@@ -116,13 +116,18 @@ class FacilityController extends Controller
         $lines = $facility->generateFinancialHeader();
         $glCount = 0;
         $total = 0;
+        $sequenceNumber = 0;
 
         //for each order, generate the financialLines
         foreach ($facility->orders as $order) {
             $financial_lines = $order->generateFinancialLines();
             
-            foreach ($financial_lines as $line) {
-                $lines .= $line . "\n";
+            foreach ( $order->items as $item ) {
+
+                $lines .= $item->kfsDebitLine($sequenceNumber) . "\n";
+                $lines .= $item->kfsCreditLine($sequenceNumber) . "\n";
+
+                $sequenceNumber++;
             }
 
             $glCount += $order->items->count();

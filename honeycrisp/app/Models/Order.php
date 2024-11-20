@@ -125,9 +125,10 @@ class Order extends Model
         }
     }
 
-    public function generateFinancialLines(){
+    public function generateFinancialLines($counter=0){
 
         $financial_line_items = collect();
+        
         $counter = 0;
 
         foreach ( $this->items as $item ) {

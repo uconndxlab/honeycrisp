@@ -173,7 +173,6 @@
                 <h3>Pending Invoices</h3>
                 <div class="alert alert-info my-3">
                     <a href="{{ route('facilities.exportInvoices', $facility->abbreviation) }}" class="btn btn-primary mb-3">Export Invoices as Financial Report</a>
-
                     {{-- List the orders marked as invoice --}}
                     <h5>Orders Marked as Invoice</h5>
                     <ul class="list-group">
@@ -188,14 +187,7 @@
                         @endforeach
                     </ul>
                 </div>
-
-
-                
-
             </div>
-
-
-
         </div>
     </div>
 </div>
