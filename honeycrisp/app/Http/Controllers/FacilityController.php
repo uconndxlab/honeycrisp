@@ -141,8 +141,5 @@ class FacilityController extends Controller
         return response($lines)
             ->header('Content-Type', 'text/plain')
             ->header('Content-Disposition', 'attachment; filename="' . $filename . '"');
-
-
-        
     }
 }

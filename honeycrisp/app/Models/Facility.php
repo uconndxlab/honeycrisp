@@ -88,14 +88,15 @@ class Facility extends Model
 
         // get the fiscal year from the date of the order
         
-        $orderDate = date_create($this->date);
+        // current date wiuth vanilla php
+        $orderDate = new \DateTime();
         $month = date_format($orderDate, 'm');
         $year = date_format($orderDate, 'Y');
 
         $fiscalYear = $month < 7 ? $year : $year + 1;
         $chartCode = 'UC';
         $orgCode = 1348;
-        $transDate = $this->date;
+        $transDate = $orderDate->format('Y-m-d');
         $batchSeq = 0;
         $email = 'honeycrisp@uconn.edu';
         $contactPerson = 'Cynthia Doherty';
