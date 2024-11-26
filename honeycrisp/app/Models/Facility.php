@@ -142,7 +142,7 @@ class Facility extends Model
         $footer = str_pad('', 25, ' ', STR_PAD_RIGHT)
             . 'TL'
             . str_pad('', 19, ' ', STR_PAD_RIGHT)
-            . str_pad($glCount, 5, '0', STR_PAD_LEFT)
+            . str_pad($glCount*2, 5, '0', STR_PAD_LEFT)
             . str_pad('', 41, ' ', STR_PAD_RIGHT)
             . str_pad($total, 20, '0', STR_PAD_LEFT);
 

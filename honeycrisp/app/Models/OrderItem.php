@@ -72,7 +72,7 @@ class OrderItem extends Model
         $line .= str_pad($this->order->id, 10, ' ', STR_PAD_RIGHT);
 
         // 139-148 just nothing
-        $line .= str_pad('', 8, ' ', STR_PAD_RIGHT);
+        $line .= str_pad('', 10, ' ', STR_PAD_RIGHT);
 
         // 149 - 157 for the facility abbreviation
         $line .= str_pad($this->order->facility->abbreviation, 9, ' ', STR_PAD_RIGHT);
@@ -130,7 +130,7 @@ class OrderItem extends Model
         $line .= str_pad($this->order->id, 10, ' ', STR_PAD_RIGHT);
 
         // 149-147 just nothing
-        $line .= str_pad('', 8, ' ', STR_PAD_RIGHT);
+        $line .= str_pad('', 10, ' ', STR_PAD_RIGHT);
 
         // 149 - 157 for the facility abbreviation
         $line .= str_pad($this->order->facility->abbreviation, 9, ' ', STR_PAD_RIGHT);
