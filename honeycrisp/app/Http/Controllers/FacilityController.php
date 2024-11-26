@@ -131,6 +131,9 @@ class FacilityController extends Controller
 
             $glCount += $order->items->count();
             $total += $order->total;
+
+            $order->status = 'sent_to_kfs';
+            $order->save();
         }
 
         $lines .= $facility->generateFinancialFooter($glCount, $total);
