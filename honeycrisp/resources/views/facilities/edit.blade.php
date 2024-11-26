@@ -46,6 +46,14 @@
                     <a class="nav-link" href="#invoices">Export Invoices ({{ $facility->orders->where('status', 'invoice')->count() }})</a>
                 </li>
                 @endif
+
+                @can('admin')
+                <li class="nav-item">
+                    {{-- danger zone --}}
+                    <a class="nav-link text-danger btn-outline-danger btn" href="#danger-zone">Danger Zone</a>
+                </li>
+                @endcan
+
             </ul>
         </div>
         <div class="col-md-6">
@@ -169,6 +177,7 @@
                 
             </div>
 
+            @if($facility->orders->where('status', 'invoice')->count() > 0)
             <div id="invoices">
                 <h3>Pending Internal Invoices ({{ $facility->orders->where('status', 'invoice')->where('price_group', 'internal')->count() }})</h3>
                 <div class="alert alert-info my-3">
@@ -188,6 +197,21 @@
                     </ul>
                 </div>
             </div>
+            @endif
+
+            @can('admin')
+            <div id="danger-zone" class="my-4">
+                <h3 class="text-danger">Danger Zone</h3>
+                <div class="alert alert-danger">
+                    <p>Deleting a facility is permanent and cannot be undone. This will also delete all associated products, categories, and orders. Are you sure you want to delete this facility?</p>
+                    <form action="{{ route('facilities.destroy', $facility->id) }}" method="POST" onsubmit="return confirm('Are you sure you want to delete this facility?');">
+                        @csrf
+                        @method('DELETE')
+                        <button type="submit" class="btn btn-danger">Delete Facility</button>
+                    </form>
+                </div>
+            </div>
+            @endcan
         </div>
     </div>
 </div>

@@ -19,11 +19,11 @@
                     <div class="card-footer">
                         @can('admin')
                         <a href="{{ route('facilities.edit', $facility->id) }}" class="btn btn-secondary">Manage</a>
-                        <form action="{{ route('facilities.destroy', $facility->id) }}" method="POST" class="d-inline">
+                        {{-- <form action="{{ route('facilities.destroy', $facility->id) }}" method="POST" class="d-inline">
                             @csrf
                             @method('DELETE')
                             <button type="submit" class="btn btn-danger">Delete</button>
-                        </form>
+                        </form> --}}
                         @endcan
                     </div>
                 </div>
