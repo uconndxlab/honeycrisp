@@ -40,10 +40,10 @@
                                 <div class="col">
                                     <label for="status">Status:</label>
                                     <select class="form-select" id="status" name="status">
-                                        <option value="">All Statuses</option>
+                                        <option value="">Filter by Status</option>
                                         @foreach ($status_options as $slug => $name)
                                             <option value="{{ $slug }}"
-                                                {{ $slug == request('status') ? 'selected' : '' }}>
+                                                {{ $slug == $selected_status ? 'selected' : '' }}>
                                                 {{ $name }}
                                             </option>
                                         @endforeach

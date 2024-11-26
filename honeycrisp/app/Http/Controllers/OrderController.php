@@ -78,6 +78,12 @@ class OrderController extends Controller
                       $q->orWhere('name', 'like', '%' . $search . '%');
                   });
         }
+
+        // if there is no selected status, show only quotes
+        if (!$selected_status) {
+            $query->where('status', 'quote');
+            $selected_status = 'quote';
+        }
     
         // Get the filtered orders
         $orders = $query->where('status', '!=', 'complete')
