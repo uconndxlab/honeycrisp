@@ -120,8 +120,11 @@ class FacilityController extends Controller
 
         //for each order, generate the financialLines
         foreach ($facility->orders as $order) {
-            $financial_lines = $order->generateFinancialLines();
-            
+
+            // if it's not status of 'invoice' then skip it
+            if ($order->status != 'invoice') {
+                continue;
+            }
             foreach ( $order->items as $item ) {
 
                 $lines .= $item->kfsDebitLine($sequenceNumber) . "\n";
@@ -131,6 +134,7 @@ class FacilityController extends Controller
             }
 
             $glCount += $order->items->count();
+            $glCount *= 2;
             $total += $order->total;
         }
 
