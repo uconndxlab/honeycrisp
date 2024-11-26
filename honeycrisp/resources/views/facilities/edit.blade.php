@@ -43,7 +43,7 @@
                 @if($facility->orders->where('status', 'invoice')->count() > 0)
                 <li class="nav-item">
                     {{-- pending invoice exports with count of orders marked invoice --}}
-                    <a class="nav-link" href="">Export Invoices ({{ $facility->orders->where('status', 'invoice')->count() }})</a>
+                    <a class="nav-link" href="#invoices">Export Invoices ({{ $facility->orders->where('status', 'invoice')->count() }})</a>
                 </li>
                 @endif
             </ul>
@@ -170,13 +170,13 @@
             </div>
 
             <div id="invoices">
-                <h3>Pending Invoices</h3>
+                <h3>Pending Internal Invoices ({{ $facility->orders->where('status', 'invoice')->where('price_group', 'internal')->count() }})</h3>
                 <div class="alert alert-info my-3">
                     <a href="{{ route('facilities.exportInvoices', $facility->abbreviation) }}" class="btn btn-primary mb-3">Export Invoices as Financial Report</a>
                     {{-- List the orders marked as invoice --}}
                     <h5>Orders Marked as Invoice</h5>
                     <ul class="list-group">
-                        @foreach($facility->orders->where('status', 'invoice') as $order)
+                        @foreach($facility->orders->where('status', 'invoice')->where('price_group','internal') as $order)
                         <li class="list-group-item">
                             <strong>Order ID:</strong> {{ $order->id }}<br>
                             <strong>Date:</strong> {{ $order->created_at->format('d M Y') }}<br>

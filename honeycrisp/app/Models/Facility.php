@@ -138,6 +138,7 @@ class Facility extends Model
         $total = $total/100;
         
         $total = number_format($total, 2, '.', '');
+        $glCount = $glCount*2;
 
         $footer = str_pad('', 25, ' ', STR_PAD_RIGHT)
             . 'TL'
