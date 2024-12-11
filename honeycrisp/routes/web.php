@@ -15,6 +15,8 @@ use App\Http\Controllers\ExportController;
 use App\Http\Controllers\ScheduleRuleController;
 use App\Http\Controllers\ReservationController;
 use Illuminate\Foundation\Http\Middleware\VerifyCsrfToken;
+use App\Mail\OrderCreated;
+
 
 Route::get('/', function () {
     // facilities.index controller
@@ -109,3 +111,14 @@ Route::get('exports/{id}', [ExportController::class, 'show'])->name('exports.sho
  */
 Route::get('schedule-rules/create', [ScheduleRuleController::class, 'createForm'])->name('schedule-rules.create');
 Route::post('schedule-rules/create', [ScheduleRuleController::class, 'store'])->name('schedule-rules.store');
+
+
+/** 
+ * Emails
+ */
+
+
+Route::get('/mail/orderCreated', function () {
+    $order = \App\Models\Order::find(4); // Replace with an actual order ID
+    return new OrderCreated($order);
+});
