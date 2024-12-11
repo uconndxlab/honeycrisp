@@ -28,15 +28,27 @@ class OrderItem extends Model
     public function kfsDebitLine( $sequenceNumber ) {
         $fiscalYear = Carbon::now()->month < 7 ? Carbon::now()->year : Carbon::now()->year + 1;
         $objectcode = 6610;
+        $uch_object_code = 1390;
+        $uch_payment_account = "4643530";
+        $payment_account = $this->order->paymentAccount->account_number;
+
+        // if the paymentaccount type is uch, then object code should be $uch_object_code and payment account should be $uch_payment_account
+
+        if ($this->order->paymentAccount->account_type == 'uch') {
+            $objectcode = $uch_object_code;
+            $payment_account = $uch_payment_account;
+        }
 
         //if the payment account account_category is 'tc' then the object code is actually 2750
         if ($this->order->paymentAccount->account_category == 'tc') {
             $objectcode = 2750;
         }
 
+
+
         $line = $fiscalYear
             . "UC" // Chart Code, always UC for now
-            . $this->order->paymentAccount->account_number; // Account Number
+            . $payment_account; // Account Number
 
         // If $line is not yet 18 characters long, pad it with spaces
         $line = str_pad($line, 18, ' ', STR_PAD_RIGHT);
@@ -83,13 +95,14 @@ class OrderItem extends Model
 
     public function kfsCreditLine( $sequenceNumber ) {
         $fiscalYear = Carbon::now()->month < 7 ? Carbon::now()->year : Carbon::now()->year + 1;
-
         $object_code = 4565;
 
         //if the payment account account_category is 'tc' then the object code is actually 4510
-        if ($this->order->paymentAccount->account_category == 'tc') {
+        if ($this->order->paymentAccount->account_category == 'tc' || $this->order->paymentAccount->account_type == 'uch') {
             $object_code = 4510;
         }
+
+
         $line = $fiscalYear
             . "UC" // Chart Code, always UC for now
             . ($this->product->recharge_account ?? $this->order->facility->recharge_account); // Account Number of Product, or parent Facility

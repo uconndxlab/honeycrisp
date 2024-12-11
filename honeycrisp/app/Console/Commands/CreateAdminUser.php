@@ -19,30 +19,35 @@ class CreateAdminUser extends Command
         $email = $this->argument('email');
 
         // Check if user already exists
-        if (User::where('email', $email)->exists()) {
-            $this->error("A user with the email {$email} already exists.");
-            return;
-        }
+        $user = User::where('email', $email)->first();
 
         // Auto-generate a password
         $password = Str::random(12);
 
-        // Create the user and assign them the admin role
-        $user = User::create([
+        if ($user) {
+            // Update the existing user
+            $user->update([
+            'name' => $name,
+            'password' => Hash::make($password),
+            'role' => 'admin', // Assuming you have a role field in your users table
+            ]);
+
+            $this->info("Admin user updated successfully.");
+        } else {
+            // Create a new user
+            $user = User::create([
             'name' => $name,
             'email' => $email,
             'price_group' => 'internal',
             'password' => Hash::make($password),
             'role' => 'admin', // Assuming you have a role field in your users table
-        ]);
+            ]);
 
-        if ($user) {
             $this->info("Admin user created successfully.");
-            $this->info("Name: {$name}");
-            $this->info("Email: {$email}");
-            $this->info("Password: {$password}"); // Show the password in the console
-        } else {
-            $this->error("Failed to create admin user.");
         }
+
+        $this->info("Name: {$name}");
+        $this->info("Email: {$email}");
+        $this->info("Password: {$password}"); // Show the password in the console
     }
 }
