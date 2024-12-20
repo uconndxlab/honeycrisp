@@ -28,12 +28,12 @@
                 <div class="mb-3">
                     <label for="account_owner" class="form-label">Account Owner</label>
                     <small>(You can add authorized users to this account later.)</small>
-                    <select class="form-select" id="account_owner" name="account_owner">
-                        <option value="">Select an owner</option>
-                        @foreach ($users as $user)
-                            <option value="{{ $user->id }}" @if(isset($selectedUser->id) && $selectedUser->id == $user->id) selected @endif>{{ $user->name }} ({{$user->netid}})</option>
-                        @endforeach
-                    </select>
+                    <h5>{{ $selectedUser->name }} 
+                        <small>({{ $selectedUser->email }})</small>
+                    </h5>
+
+                    <input type="hidden" class="form-control" id="account_owner" name="account_owner" value="{{ $selectedUser->id }}" readonly>
+
 
                 </div>
               

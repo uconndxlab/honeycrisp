@@ -88,15 +88,23 @@
                         @endforeach
                     </p>
                     @endif
+
+                    @if ($order->payment_account_id)
                     <p><strong>Payment Account:</strong> {{ $payment_account->account_name }}
                         ({{ $payment_account->formatted() }})</p>
+                    @endif
 
                     <p><strong>Price Group:</strong> {{ $order->price_group}}</p>
 
                     <!-- if price group is not internal, display the external organization and account number -->
-                    @if ($order->price_group != 'internal')
-                    <p><strong>External Organization:</strong> {{ $order->user->external_organization }}</p>
-                    <p><strong>External Account Number:</strong> {{ $order->user->external_customer_id }}</p>
+                    @if ($order->price_group != 'internal' && $order->customer->external_organization)
+                    <p><strong>External Organization:</strong> {{ $order->external_organization ?? $order->customer->external_organization }}</p>
+                    <p><strong>External Account Number:</strong> {{ $order->external_customer_id ?? $order->customer->external_customer_id }}</p>
+                    {{-- mailing_address --}}
+                    @endif
+
+                    @if ($order->mailing_address)
+                    <p><strong>Mailing Address:</strong> {{ $order->mailing_address }}</p>
                     @endif
 
 
