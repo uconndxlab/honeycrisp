@@ -15,6 +15,7 @@ use App\Http\Controllers\ExportController;
 use App\Http\Controllers\ScheduleRuleController;
 use App\Http\Controllers\ReservationController;
 use Illuminate\Foundation\Http\Middleware\VerifyCsrfToken;
+use Illuminate\Support\Facades\Mail;
 use App\Mail\OrderCreated;
 
 
@@ -120,5 +121,22 @@ Route::post('schedule-rules/create', [ScheduleRuleController::class, 'store'])->
 
 Route::get('/mail/orderCreated', function () {
     $order = \App\Models\Order::find(4); // Replace with an actual order ID
-    return new OrderCreated($order);
+    
+    if (!$order || !$order->customer || !$order->customer->email) {
+        return response()->json(['error' => 'Order or customer email not found.'], 404);
+    }
+
+    try {
+        // Send the email
+        Mail::to($order->customer->email)->send(new OrderCreated($order));
+        
+        return response()->json(['message' => 'Email sent successfully to ' . $order->customer->email], 200);
+    } catch (\Exception $e) {
+        // Catch and display any errors
+        return response()->json([
+            'error' => 'Failed to send email.',
+            'details' => $e->getMessage()
+        ], 500);
+    }
+
 });

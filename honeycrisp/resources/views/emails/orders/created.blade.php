@@ -1,4 +1,4 @@
-            <x-mail::message>
+<x-mail::message>
 # A New {{ $facility }} Order Has Been Created #
 
 Hi {{ $customer->name }},

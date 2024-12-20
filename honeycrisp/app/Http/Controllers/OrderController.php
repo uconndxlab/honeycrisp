@@ -11,6 +11,10 @@ use App\Models\User;
 use App\Models\OrderItem;
 use App\Models\Product;
 use App\Models\OrderLog;
+use Illuminate\Support\Facades\Mail;
+use App\Mail\OrderCreated;
+use App\Mail\OrderSentToCustomer;
+
 
 
 class OrderController extends Controller
@@ -541,6 +545,8 @@ class OrderController extends Controller
         $order = Order::find($request->order_id);
         $order->updateTotal();
 
+
+
         return redirect()->route('orders.edit', $request->order_id)->with('success', 'Item added to order successfully!');
     }
 
@@ -562,6 +568,8 @@ class OrderController extends Controller
             'user_id' => auth()->user()->id ?? null,
             'changed_at' => now(),
         ]);
+
+
 
         return redirect()->route('orders.edit', $request->order_id)->with('success', 'Item removed from order successfully!');
     }
@@ -607,6 +615,10 @@ class OrderController extends Controller
 
         $order->status = 'pending';
         $order->save();
+
+        if ($order->customer && $order->customer->email) {
+            Mail::to($order->customer->email)->cc($order->users->pluck('email'))->send(new OrderSentToCustomer($order));
+        }
 
         return redirect()->route('orders.edit', $order)->with('success', 'Order sent to customer successfully!');
     }
