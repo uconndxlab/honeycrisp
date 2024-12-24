@@ -48,7 +48,7 @@ class PaymentAccountController extends Controller
         // $request->netid is the netid of the user that was selected
         $selectedUser = User::where('netid', $request->netid)->first();
 
-        return view('payment-accounts.create')->with(compact('selectedUser'));
+        return view('payment-accounts.create', compact('selectedUser'));
     }
 
     /**

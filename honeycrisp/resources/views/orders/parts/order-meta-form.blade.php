@@ -225,7 +225,7 @@
                                     @elseif (count($accounts) == 0 && $accounts != null)
                                         <div class="alert alert-warning" role="alert">
                                             No Payment Accounts found for this user. <a
-                                                href="{{ route('payment-accounts.create', ['netid' => request()->netid]) }}">Add
+                                                href="{{ route('payment-accounts.create', ['netid' => $selected_user->netid]) }}">Add
                                                 One</a>
                                         </div>
                                     @endif

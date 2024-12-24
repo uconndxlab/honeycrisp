@@ -4,7 +4,8 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
-use App\Models\OrderItem;
+use Illuminate\Support\Facades\Http;
+use Illuminate\Support\Facades\Log;
 
 class Order extends Model
 {
@@ -236,5 +237,33 @@ class Order extends Model
         $ledgerString .= $this->generateFinancialFooter($glCount, $total);
 
         return $ledgerString;
+    }
+
+    protected static function booted(): void {
+        static::created(function (Order $order) {
+            // Post slack message
+            try {
+                Http::post(env('SLACK_WEBHOOK_URL'), [
+                    'text' => 'New order created: ' . $order->title . ' for ' . $order->customer->name . ' to ' . $order->facility->name . ' (' . route('orders.show', $order) . ')'
+                ]);
+            } catch(\Error $e) {
+                // silently fail
+                Log::error('Failed to post to slack: ' . $e->getMessage());
+            }
+        });
+
+        static::updated(function(Order $order) {
+            // Post slack message
+            try {
+                if ( $order->wasChanged('status') ) {
+                    Http::post(env('SLACK_WEBHOOK_URL'), [
+                        'text' => 'Order status updated: ' . $order->title . ' for ' . $order->customer->name . ' to ' . $order->status . ' (' . route('orders.show', $order) . ')'
+                    ]);
+                }
+            } catch(\Error $e) {
+                // silently fail
+                Log::error('Failed to post to slack: ' . $e->getMessage());
+            }
+        });
     }
 }

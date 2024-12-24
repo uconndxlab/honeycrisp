@@ -121,7 +121,7 @@
                                 <tr>
                                     <td colspan="5" class="text-start"><strong>
                                         <!-- category is a json object, so we need to decode it -->
-                                        {{ json_decode($category)->name }}
+                                        {{ json_decode($category)->name ?? '- No Category Listed -' }}
                                     </strong></td>
                                 </tr>
                                 @foreach ($products as $product)
