@@ -14,6 +14,9 @@ use App\Models\OrderLog;
 use Illuminate\Support\Facades\Mail;
 use App\Mail\OrderCreated;
 use App\Mail\OrderSentToCustomer;
+use App\Mail\UCHInvoiceCreated;
+// use log
+use Illuminate\Support\Facades\Log;
 
 
 
@@ -490,6 +493,16 @@ class OrderController extends Controller
         }
 
         $order->save();
+
+        // if the payment_account type is uch, and the status has been switched to invoice, send the order to the UCH finance team
+        if ($order->paymentAccount->account_type === 'uch' && $order->status === 'invoice') {
+            try {
+                Mail::to(env('UCH_FINANCE_EMAIL'))->send(new UCHInvoiceCreated($order));
+            } catch (\Exception $e) {
+                // Optionally, log the error if email fails to send
+                Log::error('Failed to send UCH invoice email: ' . $e->getMessage());
+            }
+        }
 
         return redirect()->route('orders.edit', $order)->with('success', 'Order updated successfully!');
     }

@@ -133,6 +133,7 @@ class FacilityController extends Controller
             $total += $order->total;
 
             $order->status = 'sent_to_kfs';
+
             $order->save();
         }
 
