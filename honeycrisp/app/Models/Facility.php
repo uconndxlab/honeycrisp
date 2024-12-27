@@ -160,6 +160,21 @@ class Facility extends Model
             ->withTimestamps();
     }
 
+    public function getStudentStaffAttribute()
+    {
+        return $this->users()->wherePivot('role', 'student_staff')->get();
+    }
+
+    public function getSeniorStaffAttribute()
+    {
+        return $this->users()->wherePivot('role', 'senior_staff')->get();
+    }
+
+    public function getBillingStaffAttribute()
+    {
+        return $this->users()->wherePivot('role', 'billing_staff')->get();
+    }
+
     
     
 }

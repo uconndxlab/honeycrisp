@@ -33,12 +33,12 @@ class FacilityController extends Controller
      */
     public function store(Request $request)
     {
-        
+
         $facility = new Facility();
         $facility->name = $request->name;
         $facility->description = $request->description;
         $facility->abbreviation = $request->abbreviation;
-        $facility->email= $request->email;
+        $facility->email = $request->email;
         $facility->recharge_account = $request->recharge_account;
         $facility->address = $request->address;
         $facility->account_type = $request->account_type;
@@ -46,8 +46,6 @@ class FacilityController extends Controller
         $facility->save();
 
         return redirect()->route('facilities.index');
-
-
     }
 
     /**
@@ -64,7 +62,7 @@ class FacilityController extends Controller
     public function edit(Facility $facility)
     {
         // admin gate
-        if(Gate::denies('admin')){
+        if (Gate::denies('admin')) {
             return redirect()->route('facilities.index');
         }
 
@@ -81,14 +79,61 @@ class FacilityController extends Controller
         $facility->name = $request->name;
         $facility->description = $request->description;
         $facility->abbreviation = $request->abbreviation;
-        $facility->email= $request->email;
+        $facility->email = $request->email;
         $facility->recharge_account = $request->recharge_account;
         $facility->address = $request->address;
         $facility->account_type = $request->account_type;
 
+        // attach the users in the senior_staff, student_staff, and billing_staff arrays
+
+        $usersUpdated = false;
+
+        // Handle senior_staff
+        if (!empty($request->senior_staff)) {
+            $seniorStaffWithRole = [];
+            foreach ($request->senior_staff as $userId) {
+                $seniorStaffWithRole[$userId] = ['role' => 'senior_staff'];
+            }
+            $facility->users()->sync($seniorStaffWithRole, false); // false prevents detaching other roles
+            $usersUpdated = true;
+        } else {
+            // Remove all users with the senior_staff role
+            $facility->users()->wherePivot('role', 'senior_staff')->detach();
+        }
+
+        // Handle student_staff
+        if (!empty($request->student_staff)) {
+            $studentStaffWithRole = [];
+            foreach ($request->student_staff as $userId) {
+                $studentStaffWithRole[$userId] = ['role' => 'student_staff'];
+            }
+            $facility->users()->sync($studentStaffWithRole, false); // false prevents detaching other roles
+            $usersUpdated = true;
+        } else {
+            // Remove all users with the student_staff role
+            $facility->users()->wherePivot('role', 'student_staff')->detach();
+        }
+
+        // Handle billing_staff
+        if (!empty($request->billing_staff)) {
+            $billingStaffWithRole = [];
+            foreach ($request->billing_staff as $userId) {
+                $billingStaffWithRole[$userId] = ['role' => 'billing_staff'];
+            }
+            $facility->users()->sync($billingStaffWithRole, false); // false prevents detaching other roles
+            $usersUpdated = true;
+        } else {
+            // Remove all users with the billing_staff role
+            $facility->users()->wherePivot('role', 'billing_staff')->detach();
+        }
+
+
+
+
+
         $facility->save();
 
-        if($facility->wasChanged()){
+        if ($facility->wasChanged() || $usersUpdated) {
             $state = 'success';
             $msg = $facility->name . ' has been updated';
         } else {
@@ -124,7 +169,7 @@ class FacilityController extends Controller
         //for each order, generate the financialLines
         foreach ($facility->orders->where('status', 'invoice')->where('price_group', 'internal') as $order) {
 
-            foreach ( $order->items as $item ) {
+            foreach ($order->items as $item) {
 
                 $lines .= $item->kfsDebitLine($sequenceNumber) . "\n";
                 $lines .= $item->kfsCreditLine($sequenceNumber) . "\n";

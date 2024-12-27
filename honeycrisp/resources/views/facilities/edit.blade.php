@@ -133,7 +133,9 @@
                                         <div class="accordion-body">
                                             <div class="form-group">
                                                 <label for="senior_staff">Senior Staff</label>
-                                              <livewire:user-search name="facility_senior_staff">
+                                                @php $senior_staff = $facility->seniorStaff->pluck('id')->toArray() ?? []; @endphp
+
+                                              <livewire:user-search input-name="senior_staff" :initial-users="$senior_staff">
                                             </div>
                                         </div>
                                     </div>
@@ -148,7 +150,10 @@
                                         <div class="accordion-body">
                                             <div class="form-group">
                                                 <label for="student_employees">Student Employees</label>
-                                                <livewire:user-search name="facility_student_employees">
+                                                @php
+                                                $student_employees = $facility->studentStaff->pluck('id')->toArray() ?? [];
+                                                @endphp
+                                                <livewire:user-search input-name="student_staff" :initial-users="$student_employees">
                                             </div>
                                         </div>
                                     </div>
@@ -164,7 +169,10 @@
                                         <div class="accordion-body">
                                             <div class="form-group">
                                                 <label for="billing_staff">Billing Staff</label>
-                                                <livewire:user-search name="facility_billing_staff">
+                                                @php 
+                                                $billing_staff = $facility->billingStaff->pluck('id')->toArray() ?? [];
+                                                @endphp
+                                                <livewire:user-search input-name="billing_staff" :initial-users="$billing_staff">
                                             </div>
                                         </div>
                                     </div>
