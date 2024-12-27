@@ -67,6 +67,9 @@ class FacilityController extends Controller
         if(Gate::denies('admin')){
             return redirect()->route('facilities.index');
         }
+
+        // get the facility users
+        $facility->load('users');
         return view('facilities.edit', compact('facility'));
     }
 

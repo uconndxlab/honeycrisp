@@ -151,6 +151,15 @@ class Facility extends Model
 
     }
 
+    // users can have many roles in a facility
+    
+    public function users()
+    {
+        return $this->belongsToMany(User::class)
+            ->withPivot('role')
+            ->withTimestamps();
+    }
+
     
     
 }

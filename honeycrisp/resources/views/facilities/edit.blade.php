@@ -116,6 +116,65 @@
 
 
 
+                    <div class="card my-4">
+                        <div class="card-header">
+                            <h3>Facility Staff</h3>
+                        </div>
+                        <div class="card-body">
+                            {{-- accordion with three headers: senior staff, student employee, billing staff --}}
+                            <div class="accordion" id="staff">
+                                <div class="accordion-item">
+                                    <h2 class="accordion-header" id="senior-staff">
+                                        <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#senior-staff-collapse" aria-expanded="true" aria-controls="senior-staff-collapse">
+                                            Senior Staff
+                                        </button>
+                                    </h2>
+                                    <div id="senior-staff-collapse" class="accordion-collapse collapse show" aria-labelledby="senior-staff" data-bs-parent="#staff">
+                                        <div class="accordion-body">
+                                            <div class="form-group">
+                                                <label for="senior_staff">Senior Staff</label>
+                                              <livewire:user-search name="facility_senior_staff">
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="accordion-item">
+                                    <h2 class="accordion-header" id="student-employees">
+                                        <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#student-employees-collapse" aria-expanded="false" aria-controls="student-employees-collapse">
+                                            Student Employees
+                                        </button>
+                                    </h2>
+                                    <div id="student-employees-collapse" class="accordion-collapse collapse" aria-labelledby="student-employees" data-bs-parent="#staff">
+                                        <div class="accordion-body">
+                                            <div class="form-group">
+                                                <label for="student_employees">Student Employees</label>
+                                                <livewire:user-search name="facility_student_employees">
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="accordion-item">
+                                    <h2 class="accordion-header" id="billing-staff">
+                                        <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#billing-staff-collapse" aria-expanded="false" aria-controls="billing-staff-collapse">
+                                            Billing Staff
+                                        </button>
+                                    </h2>
+                                    <div id="billing-staff-collapse" class="accordion-collapse collapse" aria-labelledby="billing-staff" data-bs-parent="#staff">
+                                        <div class="accordion-body">
+                                            <div class="form-group">
+                                                <label for="billing_staff">Billing Staff</label>
+                                                <livewire:user-search name="facility_billing_staff">
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+
+
                     <!-- Submit Button -->
                     <div class="form-group">
                         <button type="submit" class="btn btn-primary">Save Facility</button>
@@ -172,10 +231,6 @@
                 @endif
             </div>
 
-            <div class="d-none" id="staff">
-                <h3>Facility Staff</h3>
-                
-            </div>
 
             @if($facility->orders->where('status', 'invoice')->count() > 0)
             <div id="invoices">
