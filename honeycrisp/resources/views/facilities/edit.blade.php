@@ -250,6 +250,7 @@
                     <ul class="list-group">
                         @foreach($facility->orders->where('status', 'invoice')->where('price_group','internal') as $order)
                         <li class="list-group-item">
+                            <span class="badge bg-primary">{{ strtoupper($order->paymentAccount->account_type) }}</span>
                             <strong>Order ID:</strong> {{ $order->id }}<br>
                             <strong>Date:</strong> {{ $order->created_at->format('d M Y') }}<br>
                             <strong>Total:</strong> $@dollars($order->total)<br>
