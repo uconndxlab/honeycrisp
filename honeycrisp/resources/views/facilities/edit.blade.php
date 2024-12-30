@@ -262,6 +262,7 @@
             </div>
             @endif
 
+
             @can('admin')
             <div id="danger-zone" class="my-4">
                 <h3 class="text-danger">Danger Zone</h3>

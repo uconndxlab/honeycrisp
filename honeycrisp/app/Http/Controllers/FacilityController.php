@@ -188,6 +188,14 @@ class FacilityController extends Controller
         $lines .= $facility->generateFinancialFooter($glCount, $total);
 
         $filename = $facility->abbreviation . '_financials.dat';
+        $timestamp = now()->format('Ymd_His');
+        $filename = $facility->abbreviation . '_financials_' . $timestamp . '.dat';
+
+        // save the file to the server in the storage/app/exports   directory
+        $path = storage_path('app/exports/' . $filename);
+        file_put_contents($path, $lines);
+
+
 
         return response($lines)
             ->header('Content-Type', 'text/plain')
