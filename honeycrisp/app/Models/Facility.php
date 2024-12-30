@@ -24,14 +24,15 @@ class Facility extends Model
 
     public function director()
     {
-        return $this->staff()->where('role', 'director')->first();
+        return $this->staff()->wherePivot('role', 'director');
+
     }
 
     public function staff()
     {
-        return $this->belongsToMany(User::class)
-            ->withPivot('role')
-            ->withTimestamps();
+        return $this->belongsToMany(User::class, 'facility_user')
+        ->withPivot('role')
+        ->withTimestamps();
     }
 
     public function ledgers()
@@ -162,17 +163,17 @@ class Facility extends Model
 
     public function getStudentStaffAttribute()
     {
-        return $this->users()->wherePivot('role', 'student_staff')->get();
+        return $this->staff()->wherePivot('role', 'student_staff')->get();
     }
 
     public function getSeniorStaffAttribute()
     {
-        return $this->users()->wherePivot('role', 'senior_staff')->get();
+        return $this->staff()->wherePivot('role', 'senior_staff')->get();
     }
 
     public function getBillingStaffAttribute()
     {
-        return $this->users()->wherePivot('role', 'billing_staff')->get();
+        return $this->staff()->wherePivot('role', 'billing_staff')->get();
     }
 
     

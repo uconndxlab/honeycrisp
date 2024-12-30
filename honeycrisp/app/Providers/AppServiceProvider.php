@@ -74,6 +74,13 @@ class AppServiceProvider extends ServiceProvider
             return $user->role === 'admin' || $paymentAccount->user_id === $user->id;
         });
 
+        // gate for seeing an order, which would be if it's the user's order or if the user is the director, senior staff, or billing staff of the facility
+        
+        Gate::define('see-order', function ($user, $order) {
+            
+            return $user->role === 'admin' || $order->user_id === $user->id || $order->facility->seniorStaff->contains($user) || $order->facility->billingStaff->contains($user);
+        });
+
         // DB::listen(function($query) {
         //     File::append(
         //         storage_path('/logs/query.log'),

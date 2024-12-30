@@ -5,6 +5,12 @@
 
 @section('content')
 
+@cannot ('see-order', $order)
+    <div class="container">
+        <div class="alert alert-danger">You do not have permission to view this order.</div>
+    </div>
+@else
+
 @include('orders.parts.order-meta-show')
 
     <div class="container order-show">
@@ -54,4 +60,6 @@
                     </div>
                 </div>
             </div>
+            @endcannot
+
         @endsection

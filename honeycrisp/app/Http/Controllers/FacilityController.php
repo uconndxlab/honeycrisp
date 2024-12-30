@@ -94,38 +94,61 @@ class FacilityController extends Controller
             foreach ($request->senior_staff as $userId) {
                 $seniorStaffWithRole[$userId] = ['role' => 'senior_staff'];
             }
-            $facility->users()->sync($seniorStaffWithRole, false); // false prevents detaching other roles
+
+            // Sync only the users with the 'senior_staff' role
+            $facility->users()
+                ->wherePivot('role', 'senior_staff') // Filter to only the 'senior_staff' role
+                ->sync($seniorStaffWithRole); // Sync will remove any not in the provided array
             $usersUpdated = true;
+
         } else {
-            // Remove all users with the senior_staff role
-            $facility->users()->wherePivot('role', 'senior_staff')->detach();
+            // If no senior staff provided, remove all users with the 'senior_staff' role
+            $facility->users()
+                ->wherePivot('role', 'senior_staff')
+                ->detach();
         }
 
-        // Handle student_staff
+        // handle student_staff
         if (!empty($request->student_staff)) {
             $studentStaffWithRole = [];
             foreach ($request->student_staff as $userId) {
                 $studentStaffWithRole[$userId] = ['role' => 'student_staff'];
             }
-            $facility->users()->sync($studentStaffWithRole, false); // false prevents detaching other roles
+
+            // Sync only the users with the 'student_staff' role
+            $facility->users()
+                ->wherePivot('role', 'student_staff') // Filter to only the 'student_staff' role
+                ->sync($studentStaffWithRole); // Sync will remove any not in the provided array
             $usersUpdated = true;
+
         } else {
-            // Remove all users with the student_staff role
-            $facility->users()->wherePivot('role', 'student_staff')->detach();
+            // If no student staff provided, remove all users with the 'student_staff' role
+            $facility->users()
+                ->wherePivot('role', 'student_staff')
+                ->detach();
         }
 
-        // Handle billing_staff
+        // handle billing_staff
         if (!empty($request->billing_staff)) {
             $billingStaffWithRole = [];
             foreach ($request->billing_staff as $userId) {
                 $billingStaffWithRole[$userId] = ['role' => 'billing_staff'];
             }
-            $facility->users()->sync($billingStaffWithRole, false); // false prevents detaching other roles
+
+            // Sync only the users with the 'billing_staff' role
+            $facility->users()
+                ->wherePivot('role', 'billing_staff') // Filter to only the 'billing_staff' role
+                ->sync($billingStaffWithRole); // Sync will remove any not in the provided array
             $usersUpdated = true;
+
         } else {
-            // Remove all users with the billing_staff role
-            $facility->users()->wherePivot('role', 'billing_staff')->detach();
+            // If no billing staff provided, remove all users with the 'billing_staff' role
+            $facility->users()
+                ->wherePivot('role', 'billing_staff')
+                ->detach();
         }
+
+
 
 
 
