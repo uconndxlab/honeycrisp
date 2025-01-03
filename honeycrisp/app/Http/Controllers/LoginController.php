@@ -80,6 +80,6 @@ class LoginController extends Controller
     public function casLogin() {
         cas()->authenticate();
 
-        return redirect()->route('users.index');
+        return redirect()->route('facilities.index');
     }
 }

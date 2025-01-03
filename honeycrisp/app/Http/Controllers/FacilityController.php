@@ -181,6 +181,7 @@ class FacilityController extends Controller
     public function exportInvoices($facility)
     {
 
+
         $facility = Facility::where('abbreviation', $facility)->first();
 
         $lines = "";
@@ -189,9 +190,13 @@ class FacilityController extends Controller
         $total = 0;
         $sequenceNumber = 0;
 
+        $account_type = request('account_type');
+
         //for each order, generate the financialLines
         foreach ($facility->orders->where('status', 'invoice')->where('price_group', 'internal') as $order) {
 
+            // Check if the order's payment account type matches the requested account type
+            if ($order->paymentAccount->account_type === $account_type) {
             foreach ($order->items as $item) {
 
                 $lines .= $item->kfsDebitLine($sequenceNumber) . "\n";
@@ -206,6 +211,7 @@ class FacilityController extends Controller
             $order->status = 'sent_to_kfs';
 
             $order->save();
+            }
         }
 
         $lines .= $facility->generateFinancialFooter($glCount, $total);

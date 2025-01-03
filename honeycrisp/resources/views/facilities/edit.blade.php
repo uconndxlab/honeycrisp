@@ -244,7 +244,21 @@
             <div id="invoices">
                 <h3>Pending Internal Invoices ({{ $facility->orders->where('status', 'invoice')->where('price_group', 'internal')->count() }})</h3>
                 <div class="alert alert-info my-3">
-                    <a href="{{ route('facilities.exportInvoices', $facility->abbreviation) }}" class="btn btn-primary mb-3">Export Invoices as Financial Report</a>
+                    {{-- add the ability to switch between UCH and KFS before exporting --}}
+                    <form action="{{ route('facilities.exportInvoices', $facility->abbreviation) }}" method="GET">
+                        @csrf
+                        <div class="form-group mb-2">
+                            <label for="account_type">Account Type</label>
+                            <select name="account_type" id="account_type" class="form-select" required>
+                                <option value="kfs">KFS</option>
+                                <option value="uch">UCH</option>
+                            </select>
+                        </div>
+
+                        <button type="submit" class="btn btn-primary">Export Invoices</button>
+
+                    </form>
+
                     {{-- List the orders marked as invoice --}}
                     <h5>Orders Marked as Invoice</h5>
                     <ul class="list-group">
@@ -268,7 +282,7 @@
             <div id="danger-zone" class="my-4">
                 <h3 class="text-danger">Danger Zone</h3>
                 <div class="alert alert-danger">
-                    <p>Deleting a facility is permanent and cannot be undone. This will also delete all associated products, categories, and orders. Are you sure you want to delete this facility?</p>
+                    <p class="mb-3"> Deleting a facility is permanent and cannot be undone. This will also delete all associated products, categories, and orders. Are you sure you want to delete this facility?</p>
                     <form action="{{ route('facilities.destroy', $facility->id) }}" method="POST" onsubmit="return confirm('Are you sure you want to delete this facility?');">
                         @csrf
                         @method('DELETE')

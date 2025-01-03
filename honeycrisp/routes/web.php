@@ -29,11 +29,6 @@ Route::resource('facilities', FacilityController::class);
 
 
 
-Route::resource('ledgers', LedgerController::class);
-
-
-Route::resource('categories', CategoryController::class);
-
 Route::get('/products/{product}/', [ProductController::class, 'show'])->name('products.show');
 
 /**
@@ -48,6 +43,9 @@ Route::middleware(['auth'])->group(function () {
     Route::resource('users', UserController::class);
     // /orders/export with a request full of filters
     Route::get('/orders/export', [OrderController::class, 'export'])->name('orders.export');
+
+    Route::resource('categories', CategoryController::class);
+
 
     Route::resource('orders', OrderController::class);
     Route::post('orders/add-item', [OrderController::class, 'addItem'])->name('orders.add-item');
