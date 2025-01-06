@@ -2,7 +2,7 @@
 
 @section('content')
     <div class="container">
-        <h1>Reservable Products</h1>
+        <h1>Reservable Products at {{ $facility->name }}</h1>
 
         @if($products->isEmpty())
             <p>No products available for reservation at this facility.</p>

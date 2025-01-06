@@ -21,7 +21,7 @@ class ReservationController extends Controller
 
         $facility = Facility::where('abbreviation', $facilityAbbreviation)->first();
         $products = Product::where('facility_id', $facility->id)->where('can_reserve', true)->get();
-        return view('reservations.create', compact('products'));
+        return view('reservations.create', compact('products', 'facility'));
     }
 
     public function createForProduct(Product $product)
@@ -68,4 +68,6 @@ class ReservationController extends Controller
 
         return redirect()->route('reservations.index')->with('success', 'Reservation created successfully.');
     }
+
+
 }
