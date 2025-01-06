@@ -90,6 +90,14 @@ Route::middleware(['auth'])->group(function () {
 
 
     Route::get('orders/create/{facilityAbbreviation}', [OrderController::class, 'create']);
+
+    Route::get('reservations/create/{facilityAbbreviation}', [ReservationController::class, 'create'])->name('reservations.create');
+    Route::get('reservations/create/product/{product}', [ReservationController::class, 'createForProduct'])->name('reservations.create.product');
+    Route::get('reservations', [ReservationController::class, 'index'])->name('reservations.index');
+    Route::post('reservations', [ReservationController::class, 'store'])->name('reservations.store');
+    Route::get('reservations/{reservation}/edit', [ReservationController::class, 'edit'])->name('reservations.edit');
+    Route::put('reservations/{reservation}', [ReservationController::class, 'update'])->name('reservations.update');
+
 });
 
 // register routes

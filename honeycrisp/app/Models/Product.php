@@ -50,5 +50,23 @@ class Product extends Model
         return $this->hasMany(ScheduleRule::class);
     }
 
-    
+    public function isReservable($start, $end)
+    {
+        $dayOfWeek = strtolower($start->format('l')); // e.g., 'monday'
+        $rules = $this->scheduleRules()->where('day', $dayOfWeek)->get();
+
+        foreach ($rules as $rule) {
+            $ruleStart = new \DateTime($rule->time_of_day_start);
+            $ruleEnd = new \DateTime($rule->time_of_day_end);
+
+            if (
+                $start->format('H:i') >= $ruleStart->format('H:i') &&
+                $end->format('H:i') <= $ruleEnd->format('H:i')
+            ) {
+                return true;
+            }
+        }
+
+        return false;
+    }
 }

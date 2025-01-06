@@ -45,14 +45,16 @@
                         </div>
                     </div>
 
+                    {{-- start time and end time --}}
+
                     <div class="form-group">
-                        <label for="start_minutes">Start Minutes</label>
-                        <input type="number" name="start_minutes" id="start_minutes" class="form-control" min="0" max="1439">
+                        <label for="start_time">Start Time</label>
+                        <input type="time" class="form-control" id="start_time" name="start_time">
                     </div>
 
                     <div class="form-group">
-                        <label for="end_minutes">End Minutes</label>
-                        <input type="number" name="end_minutes" id="end_minutes" class="form-control" min="0" max="1439">
+                        <label for="end_time">End Time</label>
+                        <input type="time" class="form-control" id="end_time" name="end_time">
                     </div>
 
                     <button type="submit" class="btn btn-primary">Create</button>
