@@ -43,6 +43,7 @@ Route::middleware(['auth'])->group(function () {
     Route::resource('users', UserController::class);
     // /orders/export with a request full of filters
     Route::get('/orders/export', [OrderController::class, 'export'])->name('orders.export');
+    Route::post('/orders/bulkUpdate', [OrderController::class, 'bulkUpdate'])->name('orders.bulkUpdate');
 
     Route::resource('categories', CategoryController::class);
 

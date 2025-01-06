@@ -345,6 +345,35 @@ class OrderController extends Controller
 
     }
 
+    public function bulkUpdate(Request $request)
+    {
+        $request->validate([
+            'order_ids' => 'required',
+            'status' => 'required',
+        ]);
+
+        $orders = Order::whereIn('id', $request->order_ids)->get();
+        $fields_changed = [];
+
+        foreach ($orders as $order) {
+            if ($order->status != $request->status) {
+                $fields_changed[] = 'status';
+            }
+
+            $order->status = $request->status;
+            $order->save();
+
+            OrderLog::create([
+                'order_id' => $order->id,
+                'message' => 'Order status changed to ' . $request->status,
+                'user_id' => auth()->user()->id ?? null,
+                'changed_at' => now(),
+            ]);
+        }
+
+        return redirect()->route('orders.index')->with('success', 'Orders updated successfully!');
+    }
+
     public function export(Request $request)
     {
         // Check if specific order IDs are provided
