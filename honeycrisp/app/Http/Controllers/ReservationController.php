@@ -6,6 +6,8 @@ use Illuminate\Http\Request;
 use App\Models\Product;
 use App\Models\Reservation;
 use App\Models\Facility;
+use App\Models\Order;
+use App\Models\OrderItem;
 
 class ReservationController extends Controller
 {
@@ -13,6 +15,11 @@ class ReservationController extends Controller
     public function index()
     {
         $reservations = Reservation::all();
+
+
+        
+
+
         return view('reservations.index', compact('reservations'));
     }
 
@@ -34,8 +41,13 @@ class ReservationController extends Controller
 
         // Fetch schedule rules for the product
         $scheduleRules = $product->scheduleRules;
+    
+        // get product reservations in the next 30 days
+        $reservations = $product->reservations()->where('reservation_start', '>=', now())
+            ->where('reservation_start', '<=', now()->addDays(30))
+            ->get();
 
-        return view('reservations.createForProduct', compact('product', 'scheduleRules'));
+        return view('reservations.createForProduct', compact('product', 'scheduleRules', 'reservations'));
     }
 
 
@@ -57,14 +69,43 @@ class ReservationController extends Controller
             return back()->withErrors(['error' => 'The reservation does not match the product\'s schedule rules.']);
         }
 
+        // create an order to go with it, with a status of 'pending' and a quantity of 1 of the product
+        $order = Order::create([
+            'status' => 'pending',
+            'quantity' => 1,
+            'user_id' => auth()->user()->id ?? null,
+            'facility_id' => $product->facility_id,
+            'title' => 'Reservation for ' . $product->name. ' on ' . $start->format('Y-m-d'),
+            'date' => $start->format('Y-m-d'),
+            'price_group' => 'internal',
+            'description' => 'Reservation for ' . $product->name. ' on ' . $start->format('Y-m-d'),
+        ]);
+
+
+        // add an OrderItem to the order for the product
+        $order->items()->create([
+            'name' => $product->name,
+            'product_id' => $product->id,
+            'price' => $product->price,
+            'description' => $product->name,
+            'price' => 1000, // $10.00
+            'quantity' => 1,
+        ]);
+
+        // get the order ID
+        $order_id = $order->id;
+
+        
+
         Reservation::create([
             'product_id' => $product->id,
-            'order_id' => $request->order_id,
             'reservation_start' => $request->reservation_start,
+            'order_id' => $order_id,
             'reservation_end' => $request->reservation_end,
             'status' => 'pending',
             'notes' => $request->notes,
         ]);
+
 
         return redirect()->route('reservations.index')->with('success', 'Reservation created successfully.');
     }

@@ -9,7 +9,7 @@ use Illuminate\Support\Number;
 
 class OrderItem extends Model
 {
-    protected $fillable = ['order_id', 'product_id', 'quantity', 'price', 'description'];
+    protected $fillable = ['order_id', 'product_id', 'quantity', 'price', 'description', 'name'];
 
     public function order()
     {

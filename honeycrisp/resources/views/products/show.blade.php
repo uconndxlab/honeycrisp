@@ -80,16 +80,21 @@
 
         @if ( $product->can_reserve )
             <div class="mt-5">
-                <h3>Schedule Rules</h3>
+                <h3>Reservation Availability</h3>
 
                 <p class="mb-2">In order for users to reserve products and equipment, the product must have a set of schedule rules.</p>
+                <a href="{{ route('schedule-rules.create', ['product_id' => $product->id]) }}" class="btn btn-primary">Add Schedule Rule</a>
 
                 @if ( $product->scheduleRules->isEmpty() )
                     <p class="mb-2">No schedule rules found for this product.</p>
 
-                    <a href="{{ route('schedule-rules.create', ['product_id' => $product->id]) }}" class="btn btn-primary">Add Schedule Rule</a>
                 @else
-                    @dump($product->scheduleRules)
+                
+                    @foreach ($product->scheduleRules as $rule)
+                        <p>
+                            Available on <strong>{{ ucfirst($rule->day) }}</strong> from {{ $rule->time_of_day_start }} to {{ $rule->time_of_day_end }}
+                        </p>
+                    @endforeach
                 @endif
             </div>
 

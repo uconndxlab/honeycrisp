@@ -6,6 +6,25 @@
         <div class="row">
             <div class="col-md-12">
                 <h3>Create Schedule Rule</h3>
+
+                {{-- Display any success messages --}}
+                @if(session('success'))
+                    <div class="alert alert-success">
+                        {{ session('success') }}
+                    </div>
+                @endif
+
+                {{-- Display validation errors --}}
+                @if($errors->any())
+                    <div class="alert alert-danger">
+                        <ul>
+                            @foreach($errors->all() as $error)
+                                <li>{{ $error }}</li>
+                            @endforeach
+                        </ul>
+                    </div>
+                @endif
+
                 <form action="{{ route('schedule-rules.store') }}" method="POST">
                     @csrf
                     <input type="hidden" name="product_id" value="{{ $product->id }}">
@@ -15,46 +34,31 @@
 
                     <div class="form-group">
                         <label for="day_of_week">Day(s) of the Week</label>
-                        <div class="form-check">
-                            <input class="form-check-input" type="checkbox" name="day_of_week[]" id="monday" value="monday">
-                            <label class="form-check-label" for="monday">Monday</label>
-                        </div>
-                        <div class="form-check">
-                            <input class="form-check-input" type="checkbox" name="day_of_week[]" id="tuesday" value="tuesday">
-                            <label class="form-check-label" for="tuesday">Tuesday</label>
-                        </div>
-                        <div class="form-check">
-                            <input class="form-check-input" type="checkbox" name="day_of_week[]" id="wednesday" value="wednesday">
-                            <label class="form-check-label" for="wednesday">Wednesday</label>
-                        </div>
-                        <div class="form-check">
-                            <input class="form-check-input" type="checkbox" name="day_of_week[]" id="thursday" value="thursday">
-                            <label class="form-check-label" for="thursday">Thursday</label>
-                        </div>
-                        <div class="form-check">
-                            <input class="form-check-input" type="checkbox" name="day_of_week[]" id="friday" value="friday">
-                            <label class="form-check-label" for="friday">Friday</label>
-                        </div>
-                        <div class="form-check">
-                            <input class="form-check-input" type="checkbox" name="day_of_week[]" id="saturday" value="saturday">
-                            <label class="form-check-label" for="saturday">Saturday</label>
-                        </div>
-                        <div class="form-check">
-                            <input class="form-check-input" type="checkbox" name="day_of_week[]" id="sunday" value="sunday">
-                            <label class="form-check-label" for="sunday">Sunday</label>
-                        </div>
-                    </div>
-
-                    {{-- start time and end time --}}
-
-                    <div class="form-group">
-                        <label for="start_time">Start Time</label>
-                        <input type="time" class="form-control" id="start_time" name="start_time">
+                        @foreach(['monday', 'tuesday', 'wednesday', 'thursday', 'friday', 'saturday', 'sunday'] as $day)
+                            <div class="form-check">
+                                <input class="form-check-input" type="checkbox" name="day[]" id="{{ $day }}" value="{{ $day }}" {{ in_array($day, old('day', [])) ? 'checked' : '' }}>
+                                <label class="form-check-label" for="{{ $day }}">{{ ucfirst($day) }}</label>
+                            </div>
+                        @endforeach
+                        @error('day')
+                            <div class="text-danger">{{ $message }}</div>
+                        @enderror
                     </div>
 
                     <div class="form-group">
-                        <label for="end_time">End Time</label>
-                        <input type="time" class="form-control" id="end_time" name="end_time">
+                        <label for="time_of_day_start">Start Time</label>
+                        <input type="time" class="form-control" id="time_of_day_start" name="time_of_day_start" value="{{ old('time_of_day_start') }}">
+                        @error('time_of_day_start')
+                            <div class="text-danger">{{ $message }}</div>
+                        @enderror
+                    </div>
+
+                    <div class="form-group">
+                        <label for="time_of_day_end">End Time</label>
+                        <input type="time" class="form-control" id="time_of_day_end" name="time_of_day_end" value="{{ old('time_of_day_end') }}">
+                        @error('time_of_day_end')
+                            <div class="text-danger">{{ $message }}</div>
+                        @enderror
                     </div>
 
                     <button type="submit" class="btn btn-primary">Create</button>
