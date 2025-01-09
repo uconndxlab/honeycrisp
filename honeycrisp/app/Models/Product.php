@@ -52,6 +52,7 @@ class Product extends Model
 
     public function isReservable($start, $end)
     {
+        
         $dayOfWeek = strtolower($start->format('l')); // e.g., 'monday'
         $rules = $this->scheduleRules()->where('day', $dayOfWeek)->get();
 

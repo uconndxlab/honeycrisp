@@ -52,6 +52,7 @@ class ReservationController extends Controller
 
     public function update(Request $request, Reservation $reservation)
     {
+        dd($request->all());
         $reservation->update($request->all());
         return redirect()->route('reservations.index')->with('success', 'Reservation updated successfully.');
     }
@@ -68,43 +69,37 @@ class ReservationController extends Controller
 
     public function store(Request $request)
     {
+        
         $product = Product::find($request->product_id);
-
+       
         if (!$product->can_reserve) {
             return back()->withErrors(['error' => 'This product cannot be reserved.']);
         }
 
-        $start = new \DateTime($request->reservation_start);
-        $end = new \DateTime($request->reservation_end);
+        
+
+        $start = \DateTime::createFromFormat('Y-m-d H:i:s', $request->reservation_date . ' ' . $request->reservation_start);
+        $end = \DateTime::createFromFormat('Y-m-d H:i:s', $request->reservation_date . ' ' . $request->reservation_end);
+
+        
 
         if (!$product->isReservable($start, $end)) {
             return back()->withErrors(['error' => 'The reservation does not match the product\'s schedule rules.']);
         }
+   
 
-        // create an order to go with it, with a status of 'pending' and a quantity of 1 of the product
+        // create an order to go with it, with no items
         $order = Order::create([
-            'status' => 'pending',
-            'quantity' => 1,
-            'user_id' => auth()->user()->id ?? null,
+            'user_id' => auth()->user()->id,
             'facility_id' => $product->facility_id,
-            'title' => 'Reservation for ' . $product->name. ' on ' . $start->format('Y-m-d'),
-            'date' => $start->format('Y-m-d'),
+            'title' => 'Reservation for ' . $product->name,
+            'date' => now(),
+            'description' => 'Reserved by ' . auth()->user()->name . ' for ' . $product->name . ' on ' . $start->format('Y-m-d H:i') . ' to ' . $end->format('Y-m-d H:i'),
+            'status' => 'pending',
             'price_group' => 'internal',
-            'description' => 'Reservation for ' . $product->name. ' on ' . $start->format('Y-m-d'),
+            'notes' => $request->notes,
         ]);
 
-
-        // add an OrderItem to the order for the product
-        $order->items()->create([
-            'name' => $product->name,
-            'product_id' => $product->id,
-            'price' => $product->price,
-            'description' => $product->name,
-            'price' => 1000, // $10.00
-            'quantity' => 1,
-        ]);
-
-        // get the order ID
         $order_id = $order->id;
 
         

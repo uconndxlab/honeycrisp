@@ -22,6 +22,7 @@ return new class extends Migration
             $table->foreignId('order_id')->constrained()->onDelete('cascade');
             $table->dateTime('reservation_start');
             $table->dateTime('reservation_end');
+
             $table->dateTime('actual_start')->nullable();
             $table->dateTime('actual_end')->nullable();
             $table->enum('status', ['pending', 'active', 'cancelled', 'complete'])->default('pending');
@@ -46,10 +47,12 @@ return new class extends Migration
 
         Schema::dropIfExists('schedule_rules');
 
-        Schema::dropIfExists('reservation');
+        Schema::dropIfExists('reservations');
 
-        Schema::table('product', function (Blueprint $table) {
+        Schema::table('products', function (Blueprint $table) {
             $table->dropColumn('can_reserve');
         });
+
+        
     }
 };

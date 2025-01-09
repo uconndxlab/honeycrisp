@@ -29,7 +29,8 @@
                     @csrf
                     <input type="hidden" name="product_id" value="{{ $product->id }}">
                     <div>
-                        <p>{{ $product->name }}</p>
+                        <p><strong>Product:</strong> {{ $product->name }}</p>
+                        <p><strong>Reservation Interval:</strong> {{ $product->reservation_interval }} minutes</p>
                     </div>
 
                     <div class="form-group">
@@ -45,9 +46,29 @@
                         @enderror
                     </div>
 
+                    @php
+                        // Generate time options based on the product's reservation interval
+                        $interval = (int) $product->reservation_interval; // Interval in minutes
+                        $timeOptions = [];
+                        $currentTime = \Carbon\Carbon::createFromTime(0, 0, 0); // Start at 12:00 AM
+                        $endOfDay = \Carbon\Carbon::createFromTime(23, 59, 59); // End at 11:59 PM
+
+                        while ($currentTime <= $endOfDay) {
+                            $timeOptions[] = $currentTime->format('H:i');
+                            $currentTime->addMinutes($interval);
+                        }
+                    @endphp
+
                     <div class="form-group">
                         <label for="time_of_day_start">Start Time</label>
-                        <input type="time" class="form-control" id="time_of_day_start" name="time_of_day_start" value="{{ old('time_of_day_start') }}">
+                        <select class="form-control" id="time_of_day_start" name="time_of_day_start">
+                            <option value="">Select Start Time</option>
+                            @foreach($timeOptions as $time)
+                                <option value="{{ $time }}" {{ old('time_of_day_start') === $time ? 'selected' : '' }}>
+                                    {{ \Carbon\Carbon::createFromFormat('H:i', $time)->format('g:i A') }}
+                                </option>
+                            @endforeach
+                        </select>
                         @error('time_of_day_start')
                             <div class="text-danger">{{ $message }}</div>
                         @enderror
@@ -55,7 +76,14 @@
 
                     <div class="form-group">
                         <label for="time_of_day_end">End Time</label>
-                        <input type="time" class="form-control" id="time_of_day_end" name="time_of_day_end" value="{{ old('time_of_day_end') }}">
+                        <select class="form-control" id="time_of_day_end" name="time_of_day_end">
+                            <option value="">Select End Time</option>
+                            @foreach($timeOptions as $time)
+                                <option value="{{ $time }}" {{ old('time_of_day_end') === $time ? 'selected' : '' }}>
+                                    {{ \Carbon\Carbon::createFromFormat('H:i', $time)->format('g:i A') }}
+                                </option>
+                            @endforeach
+                        </select>
                         @error('time_of_day_end')
                             <div class="text-danger">{{ $message }}</div>
                         @enderror

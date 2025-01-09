@@ -9,217 +9,177 @@
                 <p><strong>Description:</strong> {{ $product->description ?? 'No description available.' }}</p>
                 <p><strong>Facility:</strong> {{ $product->facility->name }}</p>
                 <p><strong>Schedule Rules:</strong></p>
-                @if($scheduleRules->isEmpty())
+                @if ($scheduleRules->isEmpty())
                     <p>No specific schedule rules for this product.</p>
                 @else
                     <ul>
-                        @foreach($scheduleRules as $rule)
+                        @foreach ($scheduleRules as $rule)
                             <li>
-                                Available on <strong>{{ ucfirst($rule->day) }}</strong>: 
+                                Available on <strong>{{ ucfirst($rule->day) }}</strong>:
                                 {{ $rule->time_of_day_start }} - {{ $rule->time_of_day_end }}
                             </li>
                         @endforeach
                     </ul>
                 @endif
+
+                <p><strong>Reservation Interval:</strong> {{ $product->reservation_interval }} minutes</p>
+                <p><strong>Minimum Reservation Duration:</strong> {{ $product->minimum_reservation_time }} minutes</p>
+                <p><strong>Maximum Reservation Duration:</strong> {{ $product->maximum_reservation_time }} minutes</p>
+                <p><strong>Price:</strong> ${{ number_format($product->price, 2) }}/minute</p>
             </div>
         </div>
 
-        {{-- show the next 5 days, their availability (based on schedulerules and on the current reservations) --}}
+        {{-- Reservation Form --}}
+        <form action="{{ route('reservations.store') }}" method="POST">
+            @csrf
 
-    <div class="card mb-4">
-        <div class="card-body">
-        <h5>Availability for the next 5 days</h5>
-        @for ($i = 0; $i < 5; $i++)
-            @php
-            $date = \Carbon\Carbon::now()->addDays($i);
-            $dayName = $date->format('l');
-            $rulesForDay = $scheduleRules->where('day', strtolower($dayName));
-            $reservationsForDay = $reservations->where('date', $date->toDateString());
-            @endphp
+            <input type="hidden" name="product_id" value="{{ $product->id }}">
+
+
+            <!-- Date Picker -->
             <div class="mb-3">
-            <h6>{{ $date->format('l, F j, Y') }}</h6>
-            @if ($rulesForDay->isEmpty())
-                <p>No availability for this day.</p>
-            @else
-                <ul>
-                @foreach ($rulesForDay as $rule)
+                <label for="reservation_date" class="form-label">Select a Date</label>
+
+                {{-- next available date --}}
+                <strong>Next available date:</strong>
+                {{-- show the next available date based on the schedule rules --}}
+                @if ($scheduleRules->isNotEmpty())
                     @php
-                    $available = true;
-                    foreach ($reservationsForDay as $reservation) {
-                        if ($reservation->time_of_day_start < $rule->time_of_day_end && $reservation->time_of_day_end > $rule->time_of_day_start) {
-                        $available = false;
-                        break;
+                        $nextAvailableDate = \Carbon\Carbon::now();
+                        $found = false;
+                        for ($i = 0; $i < 7; $i++) {
+                            $dayName = strtolower($nextAvailableDate->format('l'));
+                            $ruleForDay = $scheduleRules->firstWhere('day', $dayName);
+                            if ($ruleForDay) {
+                                $nextAvailableDate->setTimeFromTimeString($ruleForDay->time_of_day_start);
+                                $found = true;
+                                break;
+                            }
+                            $nextAvailableDate->addDay();
                         }
-                    }
                     @endphp
-                    <li>
-                    {{ $rule->time_of_day_start }} - {{ $rule->time_of_day_end }}: 
-                    @if ($available)
-                        <span class="text-success">Available</span>
+                    @if ($found)
+                        {{ $nextAvailableDate->format('l, F j, Y') }}
                     @else
-                        <span class="text-danger">Not Available</span>
+                        No available dates.
                     @endif
-                    </li>
-                @endforeach
-                </ul>
-            @endif
+
+                @else
+                   <div class="alert alert-warning" role="alert">
+                        No available dates.
+                    </div>
+                @endif
+                
+
+
+                    <input type="date" class="form-control" id="reservation_date" name="reservation_date" required
+                        hx-get="{{ route('reservations.create.product', ['product' => $product->id]) }}"
+                        hx-target="#reservation_times" hx-select="#reservation_times" hx-swap="outerHTML" hx-push-url="true"
+                        hx-trigger="change" value="{{ request('reservation_date') }}"
+                        min="{{ \Carbon\Carbon::now()->format('Y-m-d') }}">
             </div>
-        @endfor
-        </div>
+
+                <div id="reservation_times">
+
+            @if (request('reservation_date'))
+            @php
+                $selectedDate = \Carbon\Carbon::parse(request('reservation_date'));
+                $dayName = $selectedDate->format('l');
+                $rulesForDay = $scheduleRules->where('day', strtolower($dayName));
+            @endphp
+                    @if ($rulesForDay->isEmpty())
+                        <div class="alert alert-warning" role="alert">
+                            No times available that day.
+                        </div>
+                    @else
+                        <!-- Time Slot Picker -->
+                        <div class="mb-3">
+                            <label for="reservation_start" class="form-label">Select a Start Time</label>
+                            <select class="form-select" id="reservation_start" name="reservation_start" required
+                                hx-get="{{ route('reservations.create.product', ['product' => $product->id]) }}?reservation_date={{ request('reservation_date') }}"
+                                hx-target="#reservation_times" hx-select="#reservation_times" hx-swap="outerHTML"
+                                hx-push-url="true" hx-trigger="change">
+                                <option value="" disabled {{ request('reservation_start') ? '' : 'selected' }}>Select
+                                    a start time</option>
+                                @foreach ($rulesForDay as $rule)
+                                    @php
+                                        $intervalStart = \Carbon\Carbon::createFromTimeString($rule->time_of_day_start);
+                                        $intervalEnd = \Carbon\Carbon::createFromTimeString($rule->time_of_day_end);
+                                    @endphp
+                                    @while ($intervalStart->lt($intervalEnd))
+                                        @php
+                                            $nextTime = $intervalStart->copy()->addMinutes(30);
+                                            $isAvailable = !$reservations
+                                                ->where('date', request('reservation_date'))
+                                                ->where('time_of_day_start', '<=', $intervalStart->format('H:i:s'))
+                                                ->where('time_of_day_end', '>', $intervalStart->format('H:i:s'))
+                                                ->count();
+                                        @endphp
+                                        @if ($isAvailable)
+                                            <option value="{{ $intervalStart->format('H:i:s') }}"
+                                                {{ request('reservation_start') === $intervalStart->format('H:i:s') ? 'selected' : '' }}>
+                                                {{ $intervalStart->format('g:i A') }}
+                                            </option>
+                                        @endif
+                                        @php $intervalStart = $nextTime; @endphp
+                                    @endwhile
+                                @endforeach
+                            </select>
+                        </div>
+
+
+                        <div class="mb-3">
+                            <label for="reservation_end" class="form-label">Select an End Time</label>
+                            <select class="form-select" id="reservation_end" name="reservation_end" required>
+                                <option value="" disabled {{ request('reservation_end') ? '' : 'selected' }}>Select
+                                    an end time</option>
+                                @if (request('reservation_start'))
+                                    @php
+                                        $selectedStart = \Carbon\Carbon::createFromTimeString(
+                                            request('reservation_start'),
+                                        );
+                                        $ruleForStart = $rulesForDay->firstWhere(
+                                            'time_of_day_start',
+                                            '<=',
+                                            $selectedStart->format('H:i:s'),
+                                        );
+                                        $intervalEnd = $ruleForStart
+                                            ? \Carbon\Carbon::createFromTimeString($ruleForStart->time_of_day_end)
+                                            : null;
+                                    @endphp
+                                    @if ($intervalEnd)
+                                        @while ($selectedStart->lt($intervalEnd))
+                                            @php
+                                                $nextTime = $selectedStart->copy()->addMinutes(30);
+                                                $isAvailable = !$reservations
+                                                    ->where('date', request('reservation_date'))
+                                                    ->where('time_of_day_start', '<=', $selectedStart->format('H:i:s'))
+                                                    ->where('time_of_day_end', '>', $selectedStart->format('H:i:s'))
+                                                    ->count();
+                                            @endphp
+                                            @if ($isAvailable)
+                                                <option value="{{ $nextTime->format('H:i:s') }}"
+                                                    {{ request('reservation_end') === $nextTime->format('H:i:s') ? 'selected' : '' }}>
+                                                    {{ $nextTime->format('g:i A') }}
+                                                </option>
+                                            @endif
+                                            @php $selectedStart = $nextTime; @endphp
+                                        @endwhile
+                                    @endif
+                                @endif
+                            </select>
+                            @endif
+                        </div>
+
+                @else
+                    <div class="alert alert-warning" role="alert">
+                        Please pick a date to see available times.
+                    </div>
+            @endif
+
+
+            <button type="submit" class="btn btn-success">Submit Reservation</button>
+        </form>
+
     </div>
-
-
-    <form action="{{ route('reservations.store') }}" method="POST">
-        @csrf
-    
-        <input type="hidden" name="product_id" value="{{ $product->id }}">
-    
-        <!-- Date Picker -->
-        <div class="mb-3">
-            <label for="reservation_date" class="form-label">Select a Date</label>
-            <select class="form-select @error('reservation_date') is-invalid @enderror" id="reservation_date" name="reservation_date" required>
-                <option value="" disabled selected>Select a date</option>
-                @for ($i = 0; $i < 5; $i++)
-                    @php
-                    $date = \Carbon\Carbon::now()->addDays($i);
-                    $dayName = $date->format('l');
-                    $rulesForDay = $scheduleRules->where('day', strtolower($dayName));
-                    $isAvailable = !$rulesForDay->isEmpty();
-                    @endphp
-                    @if ($isAvailable)
-                        <option value="{{ $date->toDateString() }}">{{ $date->format('l, F j, Y') }}</option>
-                    @endif
-                @endfor
-            </select>
-            @error('reservation_date')
-                <div class="invalid-feedback">{{ $message }}</div>
-            @enderror
-        </div>
-    
-        <!-- Time Slot Picker -->
-        <div class="mb-3">
-            <label for="reservation_start" class="form-label">Select a Start Time</label>
-            <select class="form-select @error('reservation_start') is-invalid @enderror" id="reservation_start" name="reservation_start" required>
-                <option value="" disabled selected>Select a start time</option>
-            </select>
-            @error('reservation_start')
-                <div class="invalid-feedback">{{ $message }}</div>
-            @enderror
-        </div>
-    
-        <div class="mb-3">
-            <label for="reservation_end" class="form-label">Select an End Time</label>
-            <select class="form-select @error('reservation_end') is-invalid @enderror" id="reservation_end" name="reservation_end" required>
-                <option value="" disabled selected>Select an end time</option>
-            </select>
-            @error('reservation_end')
-                <div class="invalid-feedback">{{ $message }}</div>
-            @enderror
-        </div>
-    
-        <div class="mb-3">
-            <label for="notes" class="form-label">Notes (Optional)</label>
-            <textarea class="form-control @error('notes') is-invalid @enderror" id="notes" name="notes" rows="3">{{ old('notes') }}</textarea>
-            @error('notes')
-                <div class="invalid-feedback">{{ $message }}</div>
-            @enderror
-        </div>
-    
-        <button type="submit" class="btn btn-success">Submit Reservation</button>
-        <a href="{{ url()->previous() }}" class="btn btn-secondary">Cancel</a>
-    </form>
-    
-    </div>
-
-    <script>
-        document.getElementById('reservation_date').addEventListener('change', function () {
-            const selectedDate = this.value;
-            const startTimeSelect = document.getElementById('reservation_start');
-            const endTimeSelect = document.getElementById('reservation_end');
-    
-            // Clear existing options
-            startTimeSelect.innerHTML = '<option value="" disabled selected>Select a start time</option>';
-            endTimeSelect.innerHTML = '<option value="" disabled selected>Select an end time</option>';
-    
-            // Fetch availability rules and reservations
-            const scheduleRules = @json($scheduleRules);
-            const reservations = @json($reservations);
-    
-            const dayName = new Date(selectedDate).toLocaleDateString('en-US', { weekday: 'long' }).toLowerCase();
-            const rulesForDay = scheduleRules.filter(rule => rule.day === dayName);
-            const reservationsForDay = reservations.filter(reservation => reservation.date === selectedDate);
-    
-            // Helper function to check availability
-            function isTimeSlotAvailable(start, end) {
-                return !reservationsForDay.some(reservation => {
-                    return (
-                        (start >= reservation.time_of_day_start && start < reservation.time_of_day_end) || // Overlaps existing
-                        (end > reservation.time_of_day_start && end <= reservation.time_of_day_end)
-                    );
-                });
-            }
-    
-            if (rulesForDay.length === 0) {
-                startTimeSelect.innerHTML = '<option value="" disabled>No time slots available</option>';
-                return;
-            }
-    
-            // Generate time slots for the selected date
-            rulesForDay.forEach(rule => {
-                const ruleStart = new Date(`1970-01-01T${rule.time_of_day_start}:00`);
-                const ruleEnd = new Date(`1970-01-01T${rule.time_of_day_end}:00`);
-    
-                let currentTime = new Date(ruleStart); // Start from the rule's start time
-                while (currentTime < ruleEnd) {
-                    const nextTime = new Date(currentTime.getTime() + 30 * 60000); // Add 30 minutes
-                    if (nextTime > ruleEnd) break;
-    
-                    const start = currentTime.toTimeString().slice(0, 5); // "HH:MM"
-                    const end = nextTime.toTimeString().slice(0, 5); // "HH:MM"
-    
-                    if (isTimeSlotAvailable(start, end)) {
-                        const startOption = document.createElement('option');
-                        startOption.value = start;
-                        startOption.textContent = start;
-                        startTimeSelect.appendChild(startOption);
-                    }
-    
-                    currentTime = nextTime;
-                }
-            });
-    
-            // Populate end time options based on selected start time
-            startTimeSelect.addEventListener('change', function () {
-                const selectedStart = this.value;
-                const rule = rulesForDay.find(rule => {
-                    return selectedStart >= rule.time_of_day_start && selectedStart < rule.time_of_day_end;
-                });
-    
-                endTimeSelect.innerHTML = '<option value="" disabled selected>Select an end time</option>';
-    
-                if (rule) {
-                    let currentTime = new Date(`1970-01-01T${selectedStart}:00`);
-                    const ruleEnd = new Date(`1970-01-01T${rule.time_of_day_end}:00`);
-    
-                    while (currentTime < ruleEnd) {
-                        const nextTime = new Date(currentTime.getTime() + 30 * 60000);
-                        if (nextTime > ruleEnd) break;
-    
-                        const end = nextTime.toTimeString().slice(0, 5);
-    
-                        if (isTimeSlotAvailable(selectedStart, end)) {
-                            const endOption = document.createElement('option');
-                            endOption.value = end;
-                            endOption.textContent = end;
-                            endTimeSelect.appendChild(endOption);
-                        }
-    
-                        currentTime = nextTime;
-                    }
-                }
-            });
-        });
-    </script>
-    
-    
 @endsection

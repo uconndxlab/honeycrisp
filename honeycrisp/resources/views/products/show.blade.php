@@ -79,29 +79,35 @@
         </div>
 
         @if ( $product->can_reserve )
-            <div class="my-5">
-                <h3>Reservation Availability</h3>
-
-                <p class="mb-2">In order for users to reserve products and equipment, the product must have a set of schedule rules.</p>
-                <a href="{{ route('schedule-rules.create', ['product_id' => $product->id]) }}" class="btn btn-primary mb-2">Add Schedule Rule</a>
-
-                @if ( $product->scheduleRules->isEmpty() )
-                    <p class="my-2 mb-2">No schedule rules found for this product.</p>
-
-                @else
-                
-                    @foreach ($product->scheduleRules as $rule)
-                        <p>
-                            Available on <strong>{{ ucfirst($rule->day) }}</strong> from {{ $rule->time_of_day_start }} to {{ $rule->time_of_day_end }}
-                        </p>
-                        <form action="{{ route('schedule-rules.destroy', $rule->id) }}" method="POST" style="display: inline;">
-                            @csrf
-                            @method('DELETE')
-                            <button type="submit" class="btn btn-danger">Delete</button>
-                        </form>
-                    @endforeach
-                @endif
-            </div>
+        <div class="my-5">
+            <h3>Reservation Availability</h3>
+    
+            <p class="mb-2">To allow users to reserve this product or equipment, it must have a defined set of schedule rules.</p>
+            <a href="{{ route('schedule-rules.create', ['product_id' => $product->id]) }}" class="btn btn-primary mb-4">Add Schedule Rule</a>
+    
+            @if ($product->scheduleRules->isEmpty())
+                <div class="alert alert-warning">No schedule rules found for this product.</div>
+            @else
+                <table class="table table-bordered table-hover">
+                    <thead class="table-light">
+                        <tr>
+                            <th>Day</th>
+                            <th>Start Time</th>
+                            <th>End Time</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach ($product->scheduleRules as $rule)
+                            <tr>
+                                <td>{{ ucfirst($rule->day) }}</td>
+                                <td>{{ $rule->time_of_day_start }}</td>
+                                <td>{{ $rule->time_of_day_end }}</td>
+                            </tr>
+                        @endforeach
+                    </tbody>
+                </table>
+            @endif
+        </div>
 
             <div class="mt-5">
                 <h3>Reservations</h3>
@@ -123,11 +129,6 @@
                             <div class="card-footer">
                                 <a href="{{ route('reservations.show', $reservation->id) }}" class="btn btn-primary">View</a>
                                 <a href="{{ route('reservations.edit', $reservation->id) }}" class="btn btn-primary">Edit</a>
-                                <form action="{{ route('reservations.destroy', $reservation->id) }}" method="POST" style="display: inline;">
-                                    @csrf
-                                    @method('DELETE')
-                                    <button type="submit" class="btn btn-danger">Delete</button>
-                                </form>
                             </div>
                         </div>
                     @endforeach
