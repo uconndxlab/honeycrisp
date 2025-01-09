@@ -15,11 +15,6 @@ class ReservationController extends Controller
     public function index()
     {
         $reservations = Reservation::all();
-
-
-        
-
-
         return view('reservations.index', compact('reservations'));
     }
 
@@ -48,6 +43,23 @@ class ReservationController extends Controller
             ->get();
 
         return view('reservations.createForProduct', compact('product', 'scheduleRules', 'reservations'));
+    }
+
+    public function edit(Reservation $reservation)
+    {
+        return view('reservations.edit', compact('reservation'));
+    }
+
+    public function update(Request $request, Reservation $reservation)
+    {
+        $reservation->update($request->all());
+        return redirect()->route('reservations.index')->with('success', 'Reservation updated successfully.');
+    }
+
+    public function destroy(Reservation $reservation)
+    {
+        $reservation->delete();
+        return redirect()->route('reservations.index')->with('success', 'Reservation deleted successfully.');
     }
 
 
