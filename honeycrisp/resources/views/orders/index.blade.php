@@ -124,7 +124,7 @@
                                             <td>{{ $order->customer->name }} ({{ strtoupper(optional($order->paymentAccount)->account_type) }})</td>
                                             <td>{{ $order->title }} <span class="badge badge-{{ $order->status_color }}">{{ $order->status }}</span></td>
                                             <td>{{ $order->date }}</td>
-                                            <td>${{ number_format($order->total, 2) }}</td>
+                                            <td>$@dollars($order->total)</td>
                                             <td>
                                                 <a href="{{ route('orders.show', $order->id) }}" class="btn btn-primary btn-sm">View</a>
                                                 <a href="{{ route('orders.edit', $order->id) }}" class="btn btn-secondary btn-sm">Edit</a>

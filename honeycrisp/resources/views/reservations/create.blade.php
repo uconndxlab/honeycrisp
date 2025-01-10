@@ -14,7 +14,7 @@
                             <strong>{{ $product->name }}</strong> <br>
                             {{ $product->description ?? 'No description available.' }}
                         </span>
-                        <a href="{{ route('reservations.create.product', $product->id) }}" class="btn btn-primary">
+                        <a href="{{ route('reservations.create.product', $product->id) }}?user_id={{ request()->user_id }}" class="btn btn-primary">
                             Reserve
                         </a>
                     </li>

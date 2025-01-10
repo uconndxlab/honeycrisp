@@ -2,36 +2,37 @@
 
 @section('content')
     <div class="container">
-        <h1>Reserve {{ $product->name }}</h1>
-
+        @include ('reservations.parts.reservation-meta-form')
         <div class="card mb-4">
+            <div class="card-header">
+            <h5 class="card-title">Product Details</h5>
+            </div>
             <div class="card-body">
-                <p><strong>Description:</strong> {{ $product->description ?? 'No description available.' }}</p>
-                <p><strong>Facility:</strong> {{ $product->facility->name }}</p>
-                <p><strong>Schedule Rules:</strong></p>
-                @if ($scheduleRules->isEmpty())
-                    <p>No specific schedule rules for this product.</p>
-                @else
-                    <ul>
-                        @foreach ($scheduleRules as $rule)
-                            <li>
-                                Available on <strong>{{ ucfirst($rule->day) }}</strong>:
-                                {{ $rule->time_of_day_start }} - {{ $rule->time_of_day_end }}
-                            </li>
-                        @endforeach
-                    </ul>
-                @endif
+            <p><strong>Description:</strong> {{ $product->description ?? 'No description available.' }}</p>
+            <p><strong>Schedule Rules:</strong></p>
+            @if ($scheduleRules->isEmpty())
+                <p>No specific schedule rules for this product.</p>
+            @else
+                <ul>
+                @foreach ($scheduleRules as $rule)
+                    <li>
+                    Available on <strong>{{ ucfirst($rule->day) }}</strong>:
+                    {{ $rule->time_of_day_start }} - {{ $rule->time_of_day_end }}
+                    </li>
+                @endforeach
+                </ul>
+            @endif
 
-                <p><strong>Reservation Interval:</strong> {{ $product->reservation_interval }} minutes</p>
-                <p><strong>Minimum Reservation Duration:</strong> {{ $product->minimum_reservation_time }} minutes</p>
-                <p><strong>Maximum Reservation Duration:</strong> {{ $product->maximum_reservation_time }} minutes</p>
-                <p><strong>Price:</strong> ${{ number_format($product->price, 2) }}/minute</p>
+            <p><strong>Reservation Interval:</strong> {{ $product->reservation_interval }} minutes</p>
+            <p><strong>Minimum Reservation Duration:</strong> {{ $product->minimum_reservation_time }} minutes</p>
+            <p><strong>Maximum Reservation Duration:</strong> {{ $product->maximum_reservation_time }} minutes</p>
+            <p><strong>Price:</strong> ${{ number_format($product->price, 2) }}/minute</p>
             </div>
         </div>
 
-        {{-- Reservation Form --}}
-        <form action="{{ route('reservations.store') }}" method="POST">
-            @csrf
+
+
+
 
             <input type="hidden" name="product_id" value="{{ $product->id }}">
 
