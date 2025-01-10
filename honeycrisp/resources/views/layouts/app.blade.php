@@ -68,6 +68,12 @@
                         </li>
                         @endcan
 
+                        @can('admin')
+                        <li class="nav-item">
+                            <a class="nav-link" href="{{ route('reservations.index') }}">Reservations</a>
+                        </li>
+                        @endcan
+
                         <li class="nav-item">
                             <a class="nav-link" href="{{ route('facilities.index') }}">Facilities</a>
                         </li>

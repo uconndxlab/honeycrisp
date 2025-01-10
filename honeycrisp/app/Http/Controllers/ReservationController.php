@@ -129,18 +129,18 @@ class ReservationController extends Controller
 
 
         // add order item to the order, with the product, and quantity is # of minutes
-        $orderItem = OrderItem::create([
-            'order_id' => $order_id,
-            'product_id' => $product->id,
-            'quantity' => $minutes,
-            'name' => $product->name,
-            'description' => 'Reservation for ' . $product->name,
-            'price' => $price,
-            'status' => 'pending',
-        ]);
+        // $orderItem = OrderItem::create([
+        //     'order_id' => $order_id,
+        //     'product_id' => $product->id,
+        //     'quantity' => $minutes,
+        //     'name' => $product->name,
+        //     'description' => 'Reservation for ' . $product->name,
+        //     'price' => $price,
+        //     'status' => 'pending',
+        // ]);
 
-        $orderItem->quantity = 8;
-        $orderItem->save();
+        // $orderItem->quantity = 8;
+        // $orderItem->save();
 
         // add the orderlog to the order
         $order->logs()->create([

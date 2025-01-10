@@ -69,33 +69,28 @@
                     </div>
 
                     {{-- if can_reserve, show "reservation interval" and "minimum length" --}}
-                    <div class="form-group" id="reservation_interval"
-                        style="display: {{ $product->can_reserve ? 'block' : 'none' }}">
-                        <label for="reservation_interval">Reservation Interval (minutes)</label>
-                        <input type="number" class="form-control" id="reservation_interval" name="reservation_interval"
-                            value="{{ $product->reservation_interval }}">
-                    </div>
+
                     {{-- if can_reserve, show "reservation interval" and "minimum length" --}}
                     <div class="form-group" id="reservation_interval"
-                        style="display: {{ $product->can_reserve ? 'block' : 'none' }}">
+                        >
                         <label for="reservation_interval">Reservation Interval (minutes)</label>
                         <input type="number" class="form-control" id="reservation_interval" name="reservation_interval"
-                            value="{{ $product->reservation_interval }}">
+                            >
                     </div>
 
                     <div class="form-group" id="minimum_length"
-                        style="display: {{ $product->can_reserve ? 'block' : 'none' }}">
+                        >
                         <label for="minimum_reservation_length">Minimum Reservation Length (minutes)</label>
                         <input type="number" class="form-control" id="minimum_reservation_length"
-                            name="minimum_reservation_time" value="{{ $product->minimum_reservation_time }}">
+                            name="minimum_reservation_time">
 
                     </div>
 
                     <div class="form-group" id="maximum_length"
-                        style="display: {{ $product->can_reserve ? 'block' : 'none' }}">
+                        >
                         <label for="maximum_reservation_length">Maximum Reservation Length (minutes)</label>
                         <input type="number" class="form-control" id="maximum_reservation_length"
-                            name="maximum_reservation_time" value="{{ $product->max_reservation_time }}">
+                            name="maximum_reservation_time">
                     </div>
 
                     <!-- requires approval -->
