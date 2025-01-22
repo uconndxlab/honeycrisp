@@ -85,7 +85,15 @@
                         value="{{ $product->recharge_account }}">
                 </div>
 
-
+                <div class="mb-3">
+                    <label for="purchase_price" class="form-label">Purchase Price</label>
+                    <input type="number" step="0.01" class="form-control" id="purchase_price" name="purchase_price" value="{{ old('purchase_price', $product->purchase_price ?? '') }}" required>
+                </div>
+                
+                <div class="mb-3">
+                    <label for="size" class="form-label">Size</label>
+                    <input type="text" class="form-control" id="size" name="size" value="{{ old('size', $product->size ?? '') }}" required>
+                </div>
 
                 
                 <button type="submit" class="btn btn-primary">Update Product</button>

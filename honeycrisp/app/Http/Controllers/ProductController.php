@@ -47,6 +47,8 @@ class ProductController extends Controller
         $product->recharge_account = $request->recharge_account;
         $product->recharge_object_code = $request->recharge_object_code ?? null;
         $product->can_reserve = $request->can_reserve ?? false;
+        $product->purchase_price = $request->purchase_price ?? null;
+        $product->size = $request->size ?? null;
 
 
         $product->save();
@@ -90,6 +92,10 @@ class ProductController extends Controller
         $product->category_id = $request->category_id ?? null;
         $product->recharge_account = $request->recharge_account;
         $product->can_reserve = $request->can_reserve ?? false;
+        $product->recharge_object_code = $request->recharge_object_code ?? null;
+        $product->purchase_price = $request->purchase_price ?? null;
+        $product->size = $request->size ?? null;
+        
 
         $product->save();
 
