@@ -22,7 +22,9 @@ class Product extends Model
         'facility_id',
         'category_id',
         'recharge_account',
-        'recharge_object_code'
+        'recharge_object_code',
+        'purchase_price',
+        'size',
     ];
 
     public function facility()

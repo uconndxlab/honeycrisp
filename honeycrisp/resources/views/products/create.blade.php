@@ -86,6 +86,16 @@
                     <input type="text" class="form-control" id="recharge_object_code" name="recharge_object_code" value="{{ old('recharge_object_code') }}">
                 </div>
 
+                <div class="mb-3">
+                    <label for="purchase_price" class="form-label">Purchase Price</label>
+                    <input type="number" step="0.01" class="form-control" id="purchase_price" name="purchase_price" value="{{ old('purchase_price', $product->purchase_price ?? '') }}" required>
+                </div>
+                
+                <div class="mb-3">
+                    <label for="size" class="form-label">Size</label>
+                    <input type="text" class="form-control" id="size" name="size" value="{{ old('size', $product->size ?? '') }}" required>
+                </div>
+
                 <!-- image -->
 
                 <!-- alert about setting pricing: you can set pricing after creating the product and editing its price groups -->

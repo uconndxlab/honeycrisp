@@ -31,7 +31,7 @@
 
                 <div class="form-group my-2">
                     <label for="price">Price</label>
-                    <input type="number" step="0.50" class="form-control" id="price" name="price" value="@dollars(old('price', $priceGroup->price))" required>
+                    <input type="number" step="0.01" class="form-control" id="price" name="price" value="@dollars(old('price', $priceGroup->price))" required>
                 </div>
 
                 <div class="form-group my-2">
