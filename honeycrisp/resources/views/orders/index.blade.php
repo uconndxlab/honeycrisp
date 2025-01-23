@@ -136,7 +136,7 @@
 
                             <div class="d-flex justify-content-between align-items-center">
                                 <div>{{ $orders->appends(request()->except('page'))->links() }}</div>
-                                <small>Total: ${{ number_format($orders->sum('total'), 2) }}</small>
+                                <small>Total: $@dollars($orders->sum('total'))</small>
                             </div>
                         </div>
                     </div>
