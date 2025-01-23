@@ -45,7 +45,7 @@ class CategoryController extends Controller
         $category->save();
 
         // redirect to facility show page with success message
-        return redirect()->route('facilities.edit', $category->facility_id)->with('success', 'Category created successfully');
+        return redirect()->route('facilities.products', $category->facility_id)->with('success', 'Category created successfully');
     }
 
     /**

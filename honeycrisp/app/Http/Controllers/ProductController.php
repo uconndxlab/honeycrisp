@@ -60,7 +60,7 @@ class ProductController extends Controller
 
         $product->save();
 
-        return redirect()->route('facilities.edit', $product->facility_id)->with('success', 'Product created successfully.');
+        return redirect()->route('facilities.products', $product->facility_id)->with('success', 'Product created successfully');
     }
 
     /**

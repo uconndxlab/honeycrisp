@@ -71,6 +71,30 @@ class FacilityController extends Controller
         return view('facilities.edit', compact('facility'));
     }
 
+    public function showProducts(Facility $facility)
+    {
+        // admin gate
+        if (Gate::denies('admin')) {
+            return redirect()->route('facilities.index');
+        }
+
+        $search = request('search');
+        $category_id = request('category_id');
+
+
+        $products = $facility->products->filter(function ($product) use ($search, $category_id) {
+            return !$product->is_deleted 
+            && (!$search || stripos($product->name, $search) !== false)
+            && (!$category_id || $product->category_id == $category_id);
+        })->sortBy('name')->sortBy('category_id');
+
+        $categories = $facility->categories->sortBy('name');
+
+
+
+        return view('facilities.products', compact('facility', 'products', 'categories'));
+    }
+
     /**
      * Update the specified resource in storage.
      */
@@ -100,7 +124,6 @@ class FacilityController extends Controller
                 ->wherePivot('role', 'senior_staff') // Filter to only the 'senior_staff' role
                 ->sync($seniorStaffWithRole); // Sync will remove any not in the provided array
             $usersUpdated = true;
-
         } else {
             // If no senior staff provided, remove all users with the 'senior_staff' role
             $facility->users()
@@ -120,7 +143,6 @@ class FacilityController extends Controller
                 ->wherePivot('role', 'student_staff') // Filter to only the 'student_staff' role
                 ->sync($studentStaffWithRole); // Sync will remove any not in the provided array
             $usersUpdated = true;
-
         } else {
             // If no student staff provided, remove all users with the 'student_staff' role
             $facility->users()
@@ -140,7 +162,6 @@ class FacilityController extends Controller
                 ->wherePivot('role', 'billing_staff') // Filter to only the 'billing_staff' role
                 ->sync($billingStaffWithRole); // Sync will remove any not in the provided array
             $usersUpdated = true;
-
         } else {
             // If no billing staff provided, remove all users with the 'billing_staff' role
             $facility->users()
@@ -197,20 +218,20 @@ class FacilityController extends Controller
 
             // Check if the order's payment account type matches the requested account type
             if ($order->paymentAccount->account_type === $account_type) {
-            foreach ($order->items as $item) {
+                foreach ($order->items as $item) {
 
-                $lines .= $item->kfsDebitLine($sequenceNumber) . "\n";
-                $lines .= $item->kfsCreditLine($sequenceNumber) . "\n";
+                    $lines .= $item->kfsDebitLine($sequenceNumber) . "\n";
+                    $lines .= $item->kfsCreditLine($sequenceNumber) . "\n";
 
-                $sequenceNumber++;
-            }
+                    $sequenceNumber++;
+                }
 
-            $glCount += $order->items->count();
-            $total += $order->total;
+                $glCount += $order->items->count();
+                $total += $order->total;
 
-            $order->status = 'sent_to_kfs';
+                $order->status = 'sent_to_kfs';
 
-            $order->save();
+                $order->save();
             }
         }
 

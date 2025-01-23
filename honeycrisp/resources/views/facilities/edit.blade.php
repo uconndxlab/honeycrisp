@@ -27,18 +27,13 @@
                     <a href="#facility-meta" 
                     class="nav-link">Facility Information</a>
                 </li>
-                <li class="nav-item">
-                    <a href="#facility-products"
-                     class="nav-link"> Products & Services</a>
-                </li>
 
                 <li class="nav-item">
-                    <a href="#facility-categories"
-                    class="nav-link"> Product Categories</a>
+                    <a href="{{ route('facilities.products', $facility->id) }}"
+                    
+                     class="nav-link"> Products</a>
                 </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="#staff">Facility Staff</a>
-                </li>
+
 
                 @if($facility->orders->where('status', 'invoice')->count() > 0)
                 <li class="nav-item">
@@ -47,12 +42,7 @@
                 </li>
                 @endif
 
-                @can('admin')
-                <li class="nav-item">
-                    {{-- danger zone --}}
-                    <a class="nav-link text-danger btn-outline-danger btn" href="#danger-zone">Danger Zone</a>
-                </li>
-                @endcan
+
 
             </ul>
         </div>
@@ -189,55 +179,8 @@
                     </div>
                 </form>
             </div>
-            <div id="facility-products" class="products-services my-4">
-                <h3>Products & Services Available</h3>
-                <a class="btn btn-primary"
-                href="{{ route('products.create', ['facilityAbbreviation' => $facility->abbreviation]) }}">
-                    Create Product for {{ $facility->name }}
-                </a>
-                                @if ($facility->products->isEmpty())
-                <div class="alert alert-info my-3">
-                    <p>No products available at this time.</p>
-                </div>
-                @else
 
-                <ul class="list-group my-4">
-                    @foreach ($facility->products as $product)
-                    @if($product->is_deleted == 0)
-                    <li class="list-group-item">
-                        <a href="{{ route('products.show', $product->id) }}">
-                            {{ $product->name }} 
-                        </a>
-                    </li>
-                    @endif
-                    @endforeach
 
-                </ul>
-                @endif
-            </div>
-
-            <div id="facility-categories" class="product-categories my-4">
-                <h3>Product Categories</h3>
-                <a href="{{ route('categories.create') }}/{{$facility->abbreviation}}" class="btn btn-primary">Add Category</a>
-
-                @if ($facility->categories->isEmpty())
-                <div class="alert alert-info my-3">
-                    <p>No categories available at this time.</p>
-                </div>
-                @else
-
-                <ul class="list-group my-4">
-                    @foreach ($facility->categories as $category)
-                    <li class="list-group-item">
-                        <a href="{{ route('categories.show', $category->id) }}">
-                            {{ $category->name }}
-                        </a>
-                    </li>
-                    @endforeach
-
-                </ul>
-                @endif
-            </div>
 
 
             @if($facility->orders->where('status', 'invoice')->count() > 0)

@@ -95,9 +95,9 @@
                                                     data-bs-target="#productForm{{ $product->id }}"
                                                     aria-expanded="false"
                                                     aria-controls="productForm{{ $product->id }}">
-                                                    <h6 class="mb-0 d-block">
+                                                    <a href="javascript:void(0);">
                                                         {{ $product->name }}
-                                                    </h6>
+                                                    </a>
                                                     <i class="bi bi-chevron-down"></i>
                                                 </div>
                                                 <div class="collapse mt-3" id="productForm{{ $product->id }}">

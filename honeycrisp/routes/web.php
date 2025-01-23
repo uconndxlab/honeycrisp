@@ -17,7 +17,7 @@ use App\Http\Controllers\ReservationController;
 use Illuminate\Foundation\Http\Middleware\VerifyCsrfToken;
 use Illuminate\Support\Facades\Mail;
 use App\Mail\OrderCreated;
-
+use App\Models\Facility;
 
 Route::get('/', function () {
     // facilities.index controller
@@ -26,6 +26,7 @@ Route::get('/', function () {
 
 
 Route::resource('facilities', FacilityController::class);
+Route::get('facilities/{facility}/products', [FacilityController::class, 'showProducts'])->name('facilities.products');
 
 
 
