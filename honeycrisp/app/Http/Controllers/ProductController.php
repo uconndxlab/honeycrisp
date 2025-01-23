@@ -49,6 +49,13 @@ class ProductController extends Controller
         $product->can_reserve = $request->can_reserve ?? false;
         $product->purchase_price = $request->purchase_price ?? null;
         $product->size = $request->size ?? null;
+        
+        // if can reserve, set reservation interval, minimum reservation time, and maximum reservation time
+        if ($product->can_reserve) {
+            $product->reservation_interval = $request->reservation_interval ?? 30;
+            $product->minimum_reservation_time = $request->minimum_reservation_time ?? 30;
+            $product->maximum_reservation_time = $request->maximum_reservation_time ?? 120;
+        }
 
 
         $product->save();
@@ -77,6 +84,7 @@ class ProductController extends Controller
      */
     public function update(Request $request, Product $product)
     {
+        
         $product->name = $request->name;
         $product->description = $request->description;
         $product->unit = $request->unit;
@@ -97,9 +105,18 @@ class ProductController extends Controller
         $product->size = $request->size ?? null;
         
 
+        // if can reserve, set reservation interval, minimum reservation time, and maximum reservation time
+        if ($product->can_reserve) {
+            $product->reservation_interval = $request->reservation_interval ?? 30;
+            $product->minimum_reservation_time = $request->minimum_reservation_time ?? 30;
+            $product->maximum_reservation_time = $request->maximum_reservation_time ?? 120;
+        }
+
         $product->save();
 
-        return redirect()->route('facilities.edit', $product->facility_id)->with('success', 'Product updated successfully.');
+
+
+        return redirect()->route('products.edit', $product->id)->with('success', 'Product updated successfully.');
 
     }
 

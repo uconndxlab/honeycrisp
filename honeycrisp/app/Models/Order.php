@@ -10,7 +10,7 @@ class Order extends Model
 {
     use HasFactory;
 
-    protected $fillable = ['title', 'description', 'date', 'user_id', 'facility_id', 'payment_account_id', 'status', 'tags', 'total'];
+    protected $fillable = ['title', 'description', 'date', 'user_id', 'facility_id', 'payment_account_id', 'status', 'tags', 'total', 'price_group', 'company_name', 'mailing_address', 'purchase_order_number'];
 
     // set status color based on status
 

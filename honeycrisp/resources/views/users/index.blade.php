@@ -79,16 +79,36 @@
                                                 <a class="dropdown-item"
                                                     href="{{ route('orders.create') }}/{{ $facility->abbreviation }}?user_id={{ $user->id }}">{{ $facility->name }}</a>
                                             </li>
-                                           
                                         @endforeach
                                     </ul>
                                 </div>
+
+                                {{-- Make a Reservation --}}
+                                {{-- list the facilities with reservable products --}}
+
+                                <div class = "dropdown d-inline">
+                                    <button class="btn btn-primary dropdown-toggle" type="button" id="dropdownMenuButton"
+                                        data-bs-toggle="dropdown" aria-expanded="false">
+                                        Make a Reservation
+                                    </button>
+                                    <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                                        @foreach ($facilities as $facility)
+                                            @if ($facility->products->where('can_reserve', true)->count() > 0)
+                                                <li>
+                                                    <a class="dropdown-item"
+                                                        href="{{ route('reservations.create', ['facilityAbbreviation' => $facility->abbreviation, 'user_id' => $user->id]) }}">{{ $facility->name }}</a>
+                                                </li>
+                                            @endif
+                                        @endforeach
+                                    </ul>
+                                </div>
+
                                 <a href="{{ route('users.edit', $user->id) }}" class="btn btn-secondary">Edit</a>
-                                <form action="{{ route('users.destroy', $user->id) }}" method="POST" class="d-inline">
+                                {{-- <form action="{{ route('users.destroy', $user->id) }}" method="POST" class="d-inline">
                                     @csrf
                                     @method('DELETE')
                                     <button type="submit" class="btn btn-danger">Delete</button>
-                                </form>
+                                </form> --}}
                             </td>
                         </tr>
                     @endforeach

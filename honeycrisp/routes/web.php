@@ -90,6 +90,16 @@ Route::middleware(['auth'])->group(function () {
 
 
     Route::get('orders/create/{facilityAbbreviation}', [OrderController::class, 'create']);
+
+    Route::get('reservations/create/{facilityAbbreviation}', [ReservationController::class, 'create'])->name('reservations.create');
+    Route::get('reservations/create/product/{product}', [ReservationController::class, 'createForProduct'])->name('reservations.create.product');
+    Route::get('reservations', [ReservationController::class, 'index'])->name('reservations.index');
+    Route::post('reservations', [ReservationController::class, 'store'])->name('reservations.store');
+    Route::get('reservations/{reservation}/edit', [ReservationController::class, 'edit'])->name('reservations.edit');
+    Route::put('reservations/{reservation}', [ReservationController::class, 'update'])->name('reservations.update');
+    Route::delete('reservations/{reservation}', [ReservationController::class, 'destroy'])->name('reservations.destroy');
+    Route::get('reservations/{reservation}', [ReservationController::class, 'show'])->name('reservations.show');
+
 });
 
 // register routes
@@ -111,6 +121,9 @@ Route::get('exports/{id}', [ExportController::class, 'show'])->name('exports.sho
  */
 Route::get('schedule-rules/create', [ScheduleRuleController::class, 'createForm'])->name('schedule-rules.create');
 Route::post('schedule-rules/create', [ScheduleRuleController::class, 'store'])->name('schedule-rules.store');
+Route::get('schedule-rules/{product}/edit', [ScheduleRuleController::class, 'edit'])->name('schedule-rules.edit');
+Route::post('schedule-rules/{product}/edit', [ScheduleRuleController::class, 'update'])->name('schedule-rules.update');
+Route::delete('schedule-rules/{scheduleRule}', [ScheduleRuleController::class, 'destroy'])->name('schedule-rules.destroy');
 
 
 /** 

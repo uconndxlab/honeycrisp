@@ -9,8 +9,8 @@ class ScheduleRule extends Model
 
     protected $fillable = [
         'product_id',
-        'start',
-        'end',
+        'time_of_day_start',
+        'time_of_day_end',
         'day'
     ];
 
