@@ -266,14 +266,50 @@ class OrderController extends Controller
         } else {
             $accounts = null;
         }
-      
         if (request('categoryRequested')) {
-            $categoryRequested = Category::find(request('categoryRequested'))->get();
+            $categoryRequested = Category::find(request('categoryRequested'));
+
+            // if request('product_search') is not null, filter the products by that search term
+            if (request('product_search')) {
+                $facility_products = $categoryRequested->products()
+                    ->where('facility_id', $facility->id)
+                    ->where('is_deleted', 0)
+                    ->where('name', 'like', '%' . request('product_search') . '%')
+                    ->get();
+            } else {
+                // Else, get all products associated with the category
+                $facility_products = $categoryRequested->products()
+                    ->where('facility_id', $facility->id)
+                    ->where('is_deleted', 0)
+                    ->get();
+            }
+    
+
             
         } else {
-            // else, get all categories for the facility and set $categoryRequested to all categories
+            // Else, get all categories for the facility and group products by category
             $categoryRequested = null;
+
+            // if request('product_search') is not null, filter the products by that search term
+            if (request('product_search')) {
+                $facility_products = Product::where('facility_id', $facility->id)
+                    ->where('is_deleted', 0)
+                    ->where('name', 'like', '%' . request('product_search') . '%')
+                    ->get();
+            } else {
+                // get the 5 most recently added products from the facility
+                $facility_products = Product::where('facility_id', $facility->id)
+                    ->where('is_deleted', 0)
+                    ->orderBy('created_at', 'desc')
+                    ->take(5)
+                    ->get();
+            }
         }
+
+
+        
+
+        
 
         //handling for internal-only orders
 
@@ -332,7 +368,7 @@ class OrderController extends Controller
         }
 
         
-        return view('orders.edit', compact('order', 'facility', 'selected_user', 'accounts', 'account_warning_array', 'status_options', 'categoryRequested'));
+        return view('orders.edit', compact('order', 'facility', 'selected_user', 'accounts', 'account_warning_array', 'status_options', 'categoryRequested', 'facility_products'));
     }
 
     // show the financial files for an order
@@ -533,7 +569,7 @@ class OrderController extends Controller
             }
         }
 
-        return redirect()->route('orders.edit', $order)->with('success', 'Order updated successfully!');
+        return redirect()->route('orders.edit', $order)->with('success', 'Order updated successfully!')->withFragment('order_items');
     }
 
     /**
