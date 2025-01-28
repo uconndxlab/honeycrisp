@@ -168,6 +168,9 @@
                                     <input type="number" name="price" class="form-control" placeholder="Price"
                                         step="0.01" required>
                                 </div>
+
+                                <input type="hidden" name="is_custom" value="1">
+                                
                                 <div class="mb-3">
                                     <input type="number" name="quantity" class="form-control"
                                         placeholder="Quantity" value="1" required>
