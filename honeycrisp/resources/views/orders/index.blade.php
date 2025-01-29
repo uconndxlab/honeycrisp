@@ -34,7 +34,7 @@
                                 <div class="col">
                                     <label for="status">Status:</label>
                                     <select class="form-select" id="status" name="status">
-                                        <option value="">Filter by Status</option>
+                                        <option value="">All Active</option>
                                         @foreach ($status_options as $slug => $name)
                                             <option value="{{ $slug }}" {{ $slug == $selected_status ? 'selected' : '' }}>
                                                 {{ $name }}

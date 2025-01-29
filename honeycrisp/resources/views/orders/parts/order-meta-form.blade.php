@@ -31,6 +31,14 @@
                 <!-- if order is quote, a button to send to customer -->
                 <div>
 
+
+                    {{-- link to order.view --}}
+                    @if (isset($order))
+                        <a target="_blank" href="{{ route('orders.show', ['order' => $order]) }}"
+                            class="btn btn-outline-secondary">
+                            <i class="bi bi-eye"></i> View /Print Order</a>
+                    @endif
+
                     @if (isset($order) && $order->status == 'invoice')
 
                     <!-- view financial files -->
@@ -54,6 +62,8 @@
                             Save Draft and Add items <i class="bi bi-arrow-right"></i>
                         @endif
                     </button>
+
+
                 </div>
             </div>
             <h2>{{ $facility->name }} ({{ $facility->abbreviation }})</h2>

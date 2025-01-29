@@ -88,8 +88,9 @@ class OrderController extends Controller
 
         // if there is no selected status, show only quotes
         if (!$selected_status) {
-            $query->where('status', 'quote');
-            $selected_status = 'quote';
+            // get anything that is quote, pending, accepted, in_progress, or invoice
+            $query->whereIn('status', ['quote', 'pending', 'accepted', 'in_progress', 'invoice']);
+            $selected_status = '';
         }
     
         // Get the filtered orders
