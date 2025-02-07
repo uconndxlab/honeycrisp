@@ -575,14 +575,16 @@ class OrderController extends Controller
         $order->save();
 
  
-        // if ($order->paymentAccount->account_type === 'uch' && $order->status === 'invoice') {
-        //     try {
-        //         Mail::to(env('UCH_FINANCE_EMAIL'))->send(new UCHInvoiceCreated($order));
-        //     } catch (\Exception $e) {
-               
-        //         Log::error('Failed to send UCH invoice email: ' . $e->getMessage());
-        //     }
-        // }
+        if($order->paymentAccount != null){
+            if ($order->paymentAccount->account_type === 'uch' && $order->status === 'invoice') {
+                try {
+                    Mail::to(env('UCH_FINANCE_EMAIL'))->send(new UCHInvoiceCreated($order));
+                } catch (\Exception $e) {
+                
+                    Log::error('Failed to send UCH invoice email: ' . $e->getMessage());
+                }
+            }          
+        }
 
 
         return redirect()->route('orders.edit', $order)->with('success', 'Order updated successfully!')->withFragment('order_items');

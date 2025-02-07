@@ -23,7 +23,9 @@
                             <h3>Pricing</h3>
                             @if ($product->priceGroups->isEmpty())
                             <p>No price groups found for this product.</p>
+                            @if (Auth::user()->can('update-facility', $product->facility))
                             <a href="{{ route('price-groups.create', $product->id) }}" class="btn btn-primary">Add Price Group</a>
+                            @endif
                         @else
                             <table class="table">
                                 <thead>

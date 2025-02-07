@@ -66,10 +66,16 @@ class AppServiceProvider extends ServiceProvider
         });
 
         Gate::define('update-facility', function ($user, $facility) {
-            // if the user is an admin, the facility belongs to the user, or the user is senior_staff or billing_staff on that facility
-            return $user->role === 'admin' || $facility->director_id === $user->id || $facility->seniorStaff->contains($user) || $facility->billingStaff->contains($user);
+            // Ensure seniorStaff and billingStaff are always collections
+            $seniorStaff = $facility->seniorStaff ?? collect();
+            $billingStaff = $facility->billingStaff ?? collect();
+        
+            return $user->role === 'admin' 
+                || $facility->director_id === $user->id 
+                || $seniorStaff->contains($user->id) 
+                || $billingStaff->contains($user->id);
         });
-
+        
 
         Gate::define('update-payment-account', function ($user, $paymentAccount) {
             return $user->role === 'admin' || $paymentAccount->user_id === $user->id;
@@ -78,11 +84,11 @@ class AppServiceProvider extends ServiceProvider
         // gate for seeing an order, which would be if it's the user's order or if the user is the director, senior staff, or billing staff of the facility
         
         Gate::define('see-order', function ($user, $order) {
-            return $user->role === 'admin' || $order->user_id === $user->id || $order->facility->seniorStaff->contains($user) || $order->facility->billingStaff->contains($user);
+            return $user->role === 'admin' || $order->user_id === $user->id || ($order->facility->seniorStaff ?? collect())->contains($user) || ($order->facility->billingStaff ?? collect())->contains($user);
         });
 
         Gate::define('update-order', function ($user, $order) {
-            return $user->role === 'admin' || $order->user_id === $user->id || $order->facility->seniorStaff->contains($user) || $order->facility->billingStaff->contains($user);
+            return $user->role === 'admin' || $order->user_id === $user->id || ($order->facility->seniorStaff ?? collect())->contains($user) || ($order->facility->billingStaff ?? collect())->contains($user);
         });
 
         // DB::listen(function($query) {

@@ -127,7 +127,23 @@
                                                 <input type="checkbox" name="order_ids[]" value="{{ $order->id }}">
                                             </td>
                                             <td>{{ $order->facility->abbreviation }} - {{ $order->id }}</td>
-                                            <td>{{ $order->customer->name }} ({{ strtoupper(optional($order->paymentAccount)->account_type) }})</td>
+                                            
+                                            <td>{{ $order->customer->name }} 
+                                                @if ($order->paymentAccount)
+                                                    ({{ strtoupper(optional($order->paymentAccount)->account_type) }})
+                                                @endif
+
+                                                @if ($order->price_group == 'internal')
+                                                    <span class="badge bg-primary">Internal</span>
+                                                @elseif ($order->price_group == 'external_forprofit')
+                                                    <span class="badge bg-danger">External For Profit</span>
+                                                @elseif ($order->price_group == 'external_nonprofit')
+                                                    <span class="badge bg-success">External Non Profit</span>
+                                                @endif
+
+
+                                            </td>
+
                                             <td>{{ $order->title }} <span class="badge badge-{{ $order->status_color }}">{{ $order->status }}</span></td>
                                             <td>{{ $order->date }}</td>
                                             <td>$@dollars($order->total)</td>

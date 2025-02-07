@@ -11,10 +11,27 @@
     </div>
 @else
 
-@include('orders.parts.order-meta-show')
+    {{-- little breadcrumb nav --}}
+    <div class="container">
+        <nav aria-label="breadcrumb">
+            <ol class="breadcrumb">
+                <li class="breadcrumb-item"><a href="{{ route('orders.index') }}">Orders</a></li>
+                @if(request()->has('filtered'))
+                    <li class="breadcrumb-item"><a href="{{ route('orders.index', request()->query()) }}">Back to filtered results</a></li>
+                @endif
+                <li class="breadcrumb-item active" aria-current="page">{{ $order->title }}</li>
+            </ol>
+        </nav>
+    </div>
+
+    {{-- Order Meta Section --}}
+
+    @include('orders.parts.order-meta-show')
 
     <div class="container order-show">
         <div class="row">
+
+
 
             <div class="col-md-12">
 

@@ -9,9 +9,7 @@
             </div>
 
             <div class="d-flex justify-content-between align-items-center no-print">
-                <a href="{{ route('orders.index') }}" class="btn btn-secondary no-print">
-                    <i class="bi bi-arrow-left"></i>
-                    Back to All Orders</a>
+                <div></div>
                 <a href="javascript:print();" class="btn btn-primary no-print">Print Order <i class="bi bi-printer"></i></a>
             </div>
 
