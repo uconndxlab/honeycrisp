@@ -100,6 +100,12 @@
                             </div>
                         </div>
                         <div class="card-body">
+
+                            @if ($orders->isEmpty())
+                                <div class="alert alert-info">No orders found.</div>
+
+                            @else
+
                             <table class="table table-hover">
                                 <thead>
                                     <tr>
@@ -126,13 +132,21 @@
                                             <td>{{ $order->date }}</td>
                                             <td>$@dollars($order->total)</td>
                                             <td>
-                                                <a href="{{ route('orders.show', $order->id) }}" class="btn btn-primary btn-sm">View</a>
-                                                <a href="{{ route('orders.edit', $order->id) }}" class="btn btn-secondary btn-sm">Edit</a>
+                                                @can('see-order', $order)
+                                                    <a href="{{ route('orders.show', $order->id) }}" class="btn btn-primary btn-sm">View</a>
+                                                @endcan
+
+                                                @can('update-order', $order)
+                                                    <a href="{{ route('orders.edit', $order->id) }}" class="btn btn-secondary btn-sm">Edit</a>
+                                                @endcan
                                             </td>
                                         </tr>
                                     @endforeach
                                 </tbody>
                             </table>
+
+                            @endif
+
 
                             <div class="d-flex justify-content-between align-items-center">
                                 <div>{{ $orders->appends(request()->except('page'))->links() }}</div>

@@ -26,80 +26,94 @@ class OrderController extends Controller
      * Display a listing of the resource.
      */
     public function index()
-    {
-        $account_types = PaymentAccount::types();
-        $status_options = Order::statusOptions();
-        $selected_status = request('status') ?? null;
-        $start_date = request('start_date') ?? null;
-        $end_date = request('end_date') ?? null;
-        $facility_id = request('facility_id') ?? null;
-        $price_group = request('price_group') ?? null;
-        $account_type = request('account_type') ?? null;
-        $data = [];
-    
-        // Build the query
-        $query = Order::query();
-    
-        // Filter by status
-        if ($selected_status) {
-            $query->where('status', $selected_status);
-        }
-    
-        // Filter by start date
-        if ($start_date) {
-            $query->whereDate('date', '>=', $start_date);
-        }
-    
-        // Filter by end date
-        if ($end_date) {
-            $query->whereDate('date', '<=', $end_date);
-        }
-    
-        // Filter by facility id
-        if ($facility_id) {
-            $query->where('facility_id', $facility_id);
-            $data['facility'] = Facility::find($facility_id);
-        }
-    
-        // Filter by price group
-        if ($price_group) {
-            $query->where('price_group', $price_group);
-        }
-    
-        // Filter by account type (only orders with users who have payment accounts of that type)
-        if ($account_type) {
-            // where order->paymentAccount->account_type == $account_type
-            $query->whereHas('paymentAccount', function ($q) use ($account_type) {
-                $q->where('account_type', $account_type);
-            });
+{
+    $user = auth()->user(); // Get the authenticated user
 
-        }
-    
-        // Process search query for netid, order title, order id
-        if (request('search')) {
-            $search = request('search');
-            $query->where('title', 'like', '%' . $search . '%')
-                  ->orWhere('id', 'like', '%' . $search . '%')
-                  ->orWhereHas('customer', function ($q) use ($search) {
-                      $q->where('netid', 'like', '%' . $search . '%');
-                      $q->orWhere('name', 'like', '%' . $search . '%');
-                  });
-        }
+    //dd($user->id);
 
-        // if there is no selected status, show only quotes
-        if (!$selected_status) {
-            // get anything that is quote, pending, accepted, in_progress, or invoice
-            $query->whereIn('status', ['quote', 'pending', 'accepted', 'in_progress', 'invoice']);
-            $selected_status = '';
-        }
-    
-        // Get the filtered orders
-        $orders = $query->where('status', '!=', 'complete')
-                        ->orderBy('date')
-                        ->paginate(30);
-    
-        return view('orders.index', compact('orders', 'status_options', 'selected_status', 'data', 'account_types'));
+    $account_types = PaymentAccount::types();
+    $status_options = Order::statusOptions();
+    $selected_status = request('status') ?? null;
+    $start_date = request('start_date') ?? null;
+    $end_date = request('end_date') ?? null;
+    $facility_id = request('facility_id') ?? null;
+    $price_group = request('price_group') ?? null;
+    $account_type = request('account_type') ?? null;
+    $data = [];
+
+    // Build the query
+    $query = Order::query();
+
+    // Restrict orders based on user role
+    if (!$user->isAdmin()) { 
+        $user_facilities = $user->facilities->pluck('id')->toArray(); // Facilities the user is staff at
+        
+        $query->where(function ($q) use ($user, $user_facilities) {
+            $q->where('user_id', $user->id) // Orders placed by the user
+              ->orWhereIn('facility_id', $user_facilities); // Orders at facilities the user is staff at
+        });
     }
+
+    // Filter by status
+    if ($selected_status) {
+        $query->where('status', $selected_status);
+    }
+
+    // Filter by start date
+    if ($start_date) {
+        $query->whereDate('date', '>=', $start_date);
+    }
+
+    // Filter by end date
+    if ($end_date) {
+        $query->whereDate('date', '<=', $end_date);
+    }
+
+    // Filter by facility id
+    if ($facility_id) {
+        $query->where('facility_id', $facility_id);
+        $data['facility'] = Facility::find($facility_id);
+    }
+
+    // Filter by price group
+    if ($price_group) {
+        $query->where('price_group', $price_group);
+    }
+
+    // Filter by account type (only orders with users who have payment accounts of that type)
+    if ($account_type) {
+        $query->whereHas('paymentAccount', function ($q) use ($account_type) {
+            $q->where('account_type', $account_type);
+        });
+    }
+
+    // Process search query for netid, order title, order id
+    if (request('search')) {
+        $search = request('search');
+        $query->where(function ($q) use ($search) {
+            $q->where('title', 'like', '%' . $search . '%')
+              ->orWhere('id', 'like', '%' . $search . '%')
+              ->orWhereHas('customer', function ($q) use ($search) {
+                  $q->where('netid', 'like', '%' . $search . '%')
+                    ->orWhere('name', 'like', '%' . $search . '%');
+              });
+        });
+    }
+
+    // If no status is selected, show specific statuses
+    if (!$selected_status) {
+        $query->whereIn('status', ['quote', 'pending', 'accepted', 'in_progress', 'invoice']);
+        $selected_status = '';
+    }
+
+    // Get the filtered orders
+    $orders = $query->where('status', '!=', 'complete')
+                    ->orderBy('date')
+                    ->paginate(30);
+
+    return view('orders.index', compact('orders', 'status_options', 'selected_status', 'data', 'account_types'));
+}
+
     
 
     /**

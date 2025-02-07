@@ -67,4 +67,17 @@ class User extends Authenticatable
     {
         return PaymentAccount::where('account_owner', $this->id)->get();
     }
+
+    public function isAdmin()
+    {
+        return $this->role === 'admin';
+    }
+
+    public function facilities()
+    {
+        // get the facilities where the user is on the staff
+        return $this->belongsToMany(Facility::class, 'facility_user', 'user_id', 'facility_id')
+            ->withPivot('role')
+            ->withTimestamps();
+    }
 }
