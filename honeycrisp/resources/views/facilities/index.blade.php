@@ -26,8 +26,8 @@
             </div>
         </div>
         @else
-        @foreach ($facilities as $facility)
-        <div class="col-md-6">
+        @foreach ($facilities->sortBy('name') as $facility)
+        <div class="col-md-4">
             <div class="card mt-4">
                 <div class="card-body">
                     <h5 class="card-title">{{ $facility->name }} ({{$facility->abbreviation}}) </h5>
