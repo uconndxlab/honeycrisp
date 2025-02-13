@@ -26,102 +26,102 @@ class OrderController extends Controller
      * Display a listing of the resource.
      */
     public function index()
-{
-    $user = auth()->user(); // Get the authenticated user
+    {
+        $user = auth()->user(); // Get the authenticated user
 
-    //dd($user->id);
+        //dd($user->id);
 
-    $account_types = PaymentAccount::types();
-    $status_options = Order::statusOptions();
-    $selected_status = request('status') ?? null;
-    $start_date = request('start_date') ?? null;
-    $end_date = request('end_date') ?? null;
-    $facility_id = request('facility_id') ?? null;
-    $price_group = request('price_group') ?? null;
-    $account_type = request('account_type') ?? null;
-    $data = [];
+        $account_types = PaymentAccount::types();
+        $status_options = Order::statusOptions();
+        $selected_status = request('status') ?? null;
+        $start_date = request('start_date') ?? null;
+        $end_date = request('end_date') ?? null;
+        $facility_id = request('facility_id') ?? null;
+        $price_group = request('price_group') ?? null;
+        $account_type = request('account_type') ?? null;
+        $data = [];
 
-    // Build the query
-    $query = Order::query();
+        // Build the query
+        $query = Order::query();
 
-    // Restrict orders based on user role
-    if (!$user->isAdmin()) { 
-        $user_facilities = $user->facilities->pluck('id')->toArray(); // Facilities the user is staff at
-        
-        $query->where(function ($q) use ($user, $user_facilities) {
-            $q->where('user_id', $user->id) // Orders placed by the user
-              ->orWhereIn('facility_id', $user_facilities); // Orders at facilities the user is staff at
-        });
+        // Restrict orders based on user role
+        if (!$user->isAdmin()) {
+            $user_facilities = $user->facilities->pluck('id')->toArray(); // Facilities the user is staff at
+
+            $query->where(function ($q) use ($user, $user_facilities) {
+                $q->where('user_id', $user->id) // Orders placed by the user
+                    ->orWhereIn('facility_id', $user_facilities); // Orders at facilities the user is staff at
+            });
+        }
+
+        // Filter by status
+        if ($selected_status) {
+            $query->where('status', $selected_status);
+        }
+
+        // Filter by start date
+        if ($start_date) {
+            $query->whereDate('date', '>=', $start_date);
+        }
+
+        // Filter by end date
+        if ($end_date) {
+            $query->whereDate('date', '<=', $end_date);
+        }
+
+        // Filter by facility id
+        if ($facility_id) {
+            $query->where('facility_id', $facility_id);
+            $data['facility'] = Facility::find($facility_id);
+        }
+
+        // Filter by price group
+        if ($price_group) {
+            $query->where('price_group', $price_group);
+        }
+
+        // Filter by account type (only orders with users who have payment accounts of that type)
+        if ($account_type) {
+            $query->whereHas('paymentAccount', function ($q) use ($account_type) {
+                $q->where('account_type', $account_type);
+            });
+        }
+
+        // Process search query for netid, order title, order id
+        if (request('search')) {
+            $search = request('search');
+            $query->where(function ($q) use ($search) {
+                $q->where('title', 'like', '%' . $search . '%')
+                    ->orWhere('id', 'like', '%' . $search . '%')
+                    ->orWhereHas('customer', function ($q) use ($search) {
+                        $q->where('netid', 'like', '%' . $search . '%')
+                            ->orWhere('name', 'like', '%' . $search . '%');
+                    });
+            });
+        }
+
+        // If no status is selected, show specific statuses
+        if (!$selected_status) {
+            $query->whereIn('status', ['quote', 'pending', 'accepted', 'in_progress', 'invoice']);
+            $selected_status = '';
+        }
+
+        // Get the filtered orders
+        $orders = $query->where('status', '!=', 'complete')
+            ->orderBy('date', 'desc')
+            ->paginate(60);
+
+        return view('orders.index', compact('orders', 'status_options', 'selected_status', 'data', 'account_types'));
     }
 
-    // Filter by status
-    if ($selected_status) {
-        $query->where('status', $selected_status);
-    }
 
-    // Filter by start date
-    if ($start_date) {
-        $query->whereDate('date', '>=', $start_date);
-    }
-
-    // Filter by end date
-    if ($end_date) {
-        $query->whereDate('date', '<=', $end_date);
-    }
-
-    // Filter by facility id
-    if ($facility_id) {
-        $query->where('facility_id', $facility_id);
-        $data['facility'] = Facility::find($facility_id);
-    }
-
-    // Filter by price group
-    if ($price_group) {
-        $query->where('price_group', $price_group);
-    }
-
-    // Filter by account type (only orders with users who have payment accounts of that type)
-    if ($account_type) {
-        $query->whereHas('paymentAccount', function ($q) use ($account_type) {
-            $q->where('account_type', $account_type);
-        });
-    }
-
-    // Process search query for netid, order title, order id
-    if (request('search')) {
-        $search = request('search');
-        $query->where(function ($q) use ($search) {
-            $q->where('title', 'like', '%' . $search . '%')
-              ->orWhere('id', 'like', '%' . $search . '%')
-              ->orWhereHas('customer', function ($q) use ($search) {
-                  $q->where('netid', 'like', '%' . $search . '%')
-                    ->orWhere('name', 'like', '%' . $search . '%');
-              });
-        });
-    }
-
-    // If no status is selected, show specific statuses
-    if (!$selected_status) {
-        $query->whereIn('status', ['quote', 'pending', 'accepted', 'in_progress', 'invoice']);
-        $selected_status = '';
-    }
-
-    // Get the filtered orders
-    $orders = $query->where('status', '!=', 'complete')
-                    ->orderBy('date')
-                    ->paginate(30);
-
-    return view('orders.index', compact('orders', 'status_options', 'selected_status', 'data', 'account_types'));
-}
-
-    
 
     /**
      * Show the form for creating a new resource.
      */
     public function create($facilityAbbreviation)
     {
-        
+
         // if request[netid] is not null, get the user with that netid so they can be selected by default
 
         $selected_user = null;
@@ -134,25 +134,19 @@ class OrderController extends Controller
 
             // get all accounts that are not expired, or expired within the last 30 days
             $accounts = $user->paymentAccounts()->where('expiration_date', '>', now()->addDays(-30))->get();
-
-        } 
-
-        elseif (request('user_id')) {
+        } elseif (request('user_id')) {
             $user = User::find(request('user_id'));
             $selected_user = $user;
             $accounts = [];
             // get the payment accounts for the user that are not expired
             $accounts = $user->paymentAccounts()->where('expiration_date', '>', now()->addDays(-90))->get();
-
-        }
-        
-        else {
+        } else {
             $accounts = null;
         }
 
         if (request('payment_account_id')) {
             $account_warning_array = [];
-            $selected_account= PaymentAccount::find(request('payment_account_id'));
+            $selected_account = PaymentAccount::find(request('payment_account_id'));
             // if the selected account expired 30 or fewer days ago, show a warning
             if ($selected_account->expiration_date < now()) {
                 $days_until_expiration = (strtotime($selected_account->expiration_date) - strtotime(now())) / (60 * 60 * 24);
@@ -171,8 +165,6 @@ class OrderController extends Controller
                 $warning_type = 'warning';
 
                 $account_warning_array = array('warning' => $account_warning, 'type' => $warning_type);
-
-                
             }
         } else {
             $selected_account = null;
@@ -180,7 +172,7 @@ class OrderController extends Controller
         }
 
 
-        $facility = Facility::where('status', 'active')->where('abbreviation', $facilityAbbreviation)->first(); 
+        $facility = Facility::where('status', 'active')->where('abbreviation', $facilityAbbreviation)->first();
 
         return view('orders.create', compact('facility', 'selected_user', 'accounts', 'selected_account', 'account_warning_array'));
     }
@@ -199,7 +191,7 @@ class OrderController extends Controller
 
             // payment_account_id is only reqired if price_group is 'internal'
             'payment_account_id' => $request->price_group == 'internal' ? 'required' : '',
-            
+
             'price_group' => 'required',
         ]);
 
@@ -214,9 +206,9 @@ class OrderController extends Controller
         $order->title = $request->title;
         $order->description = $request->description;
         $order->date = $request->date;
-    
+
         $order->facility_id = $facility_id;
-        if($request->price_group == 'internal'){
+        if ($request->price_group == 'internal') {
             $payment_account = PaymentAccount::find($request->payment_account_id)->id;
             $order->payment_account_id = $payment_account;
         }
@@ -230,22 +222,22 @@ class OrderController extends Controller
             $order->company_name = $request->external_company_name;
         }
 
-        
+
         $order = $order->save();
         // get the id of the order that was just created
         $order = Order::latest()->first();
 
         $order->users()->sync($request->additional_users);
 
-        
+
         OrderLog::create([
             'order_id' => $order->id,
             'message' => 'Order created.',
             'user_id' => auth()->user()->id ?? null,
             'changed_at' => now(),
         ]);
-        
-    
+
+
         return redirect()->route('orders.edit', $order)->with('success', 'Order created successfully!');
     }
 
@@ -256,7 +248,7 @@ class OrderController extends Controller
     {
         $order_items = OrderItem::where('order_id', $order->id)->get();
         $payment_account = PaymentAccount::find($order->payment_account_id);
-        
+
         $order->total = 0;
         foreach ($order_items as $order_item) {
             $order->total += $order_item->price * $order_item->quantity;
@@ -276,7 +268,7 @@ class OrderController extends Controller
         $selected_user = $order->user_id;
         $status_options = Order::statusOptions();
 
-        if($order->price_group == 'internal'){
+        if ($order->price_group == 'internal') {
             $accounts = PaymentAccount::where('user_id', $order->user_id)->get();
         } else {
             $accounts = null;
@@ -298,9 +290,6 @@ class OrderController extends Controller
                     ->where('is_deleted', 0)
                     ->get();
             }
-    
-
-            
         } else {
             // Else, get all categories for the facility and group products by category
             $categoryRequested = null;
@@ -322,9 +311,9 @@ class OrderController extends Controller
         }
 
 
-        
 
-        
+
+
 
         //handling for internal-only orders
 
@@ -334,27 +323,21 @@ class OrderController extends Controller
             $expiration_date = $current_account->expiration_date;
             $today = date('Y-m-d');
             $days_until_expiration = (strtotime($expiration_date) - strtotime($today)) / (60 * 60 * 24);
-    
-    
+
+
             $account_warning = null;
-    
-           if ($days_until_expiration <= 0) {
+
+            if ($days_until_expiration <= 0) {
                 $account_warning = 'This account expired ' . abs($days_until_expiration) . ' days ago. You can use this account for this order, but it is recommended to use a different account.';
                 $warning_type = 'danger';
-            } 
-            
-            
-    
-           else if ($days_until_expiration < 60) {
+            } else if ($days_until_expiration < 60) {
                 $account_warning = 'This account will expire in ' . $days_until_expiration . ' days.';
                 $warning_type = 'warning';
-            } 
-            
-            else {
+            } else {
                 $account_warning = null;
             }
-    
-            if($account_warning){
+
+            if ($account_warning) {
                 $account_warning_array = array('warning' => $account_warning, 'type' => $warning_type);
             } else {
                 $account_warning_array = null;
@@ -364,7 +347,7 @@ class OrderController extends Controller
             $account_warning_array = null;
         }
 
-        
+
 
         if (request('user_id') or $order->user_id) {
             if (request('user_id')) {
@@ -377,23 +360,22 @@ class OrderController extends Controller
             $accounts = [];
 
             $accounts =  $user->paymentAccounts()->get();
-            
         } else {
             $accounts = null;
         }
 
-        
+
         return view('orders.edit', compact('order', 'facility', 'selected_user', 'accounts', 'account_warning_array', 'status_options', 'categoryRequested', 'facility_products'));
     }
 
     // show the financial files for an order
 
-    public function financialFiles(Request $request) {
-       
+    public function financialFiles(Request $request)
+    {
+
         $order = Order::find($request->order);
         $payment_account = PaymentAccount::find($order->payment_account_id);
         return view('orders.financialFiles', compact('order', 'payment_account'));
-
     }
 
     public function bulkUpdate(Request $request)
@@ -436,17 +418,17 @@ class OrderController extends Controller
             // If no specific IDs are passed, fetch all orders (fallback)
             $orders = Order::with(['facility', 'customer'])->get();
         }
-    
+
         // Prepare CSV export
         $csvFileName = 'orders_' . now()->format('Ymd') . '.csv';
-    
+
         // Use Laravel's response handling for streaming CSV
         return response()->streamDownload(function () use ($orders) {
             $handle = fopen('php://output', 'w');
-    
+
             // Add CSV header row
             fputcsv($handle, ['ID', 'Facility', 'User', 'Title', 'Date', 'Status', 'Account', 'Total']);
-    
+
             // Write data for each order
             foreach ($orders as $order) {
                 fputcsv($handle, [
@@ -460,21 +442,21 @@ class OrderController extends Controller
                     $order->total,
                 ]);
             }
-    
+
             fclose($handle);
         }, $csvFileName, [
             'Content-Type' => 'text/csv',
             'Content-Disposition' => 'attachment; filename="' . $csvFileName . '"',
         ]);
     }
-    
+
 
     /**
      * Update the specified resource in storage.
      */
     public function update(Request $request, Order $order)
     {
-       
+
         $request->validate([
             'title' => 'required',
             'date' => 'required',
@@ -539,7 +521,7 @@ class OrderController extends Controller
         $order->facility_id = $facility_id;
         $order->users()->sync($additional_users);
 
-        if($request->price_group == 'internal'){
+        if ($request->price_group == 'internal') {
             $payment_account = PaymentAccount::find($request->payment_account_id)->id;
             $order->payment_account_id = $payment_account;
         }
@@ -551,10 +533,10 @@ class OrderController extends Controller
             $message .= '. Status changed to ' . $request->status;
         }
 
-        
+
         $order->status = $request->status;
 
-        if(!empty($fields_changed)){
+        if (!empty($fields_changed)) {
             OrderLog::create([
                 'order_id' => $order->id,
                 'message' => $message,
@@ -574,16 +556,16 @@ class OrderController extends Controller
 
         $order->save();
 
- 
-        if($order->paymentAccount != null){
+
+        if ($order->paymentAccount != null) {
             if ($order->paymentAccount->account_type === 'uch' && $order->status === 'invoice') {
                 try {
                     Mail::to(env('UCH_FINANCE_EMAIL'))->send(new UCHInvoiceCreated($order));
                 } catch (\Exception $e) {
-                
+
                     Log::error('Failed to send UCH invoice email: ' . $e->getMessage());
                 }
-            }          
+            }
         }
 
 
@@ -601,7 +583,7 @@ class OrderController extends Controller
 
     public function addItem(Request $request)
     {
-        
+
         $request->validate([
             'order_id' => 'required',
             'quantity' => 'required',
@@ -610,7 +592,6 @@ class OrderController extends Controller
         $order_item = new OrderItem();
         if ($request->product_id == 0) {
             $order_item->name = $request->name;
-
         } else {
             $order_product = Product::find($request->product_id);
             $order_item->product_id = $request->product_id;
@@ -719,7 +700,8 @@ class OrderController extends Controller
         return redirect()->route('orders.edit', $order)->with('success', 'Order sent to customer successfully!');
     }
 
-    public function downloadFinancialFile($order){
+    public function downloadFinancialFile($order)
+    {
         // put the results of $order->financialFile into a .dat file and download it
         $order = Order::find($order);
         $financial_file = $order->financialFile();
@@ -728,16 +710,15 @@ class OrderController extends Controller
         $fileName = 'honeycrisp-' . $order->id . '.dat';
         $filePath = storage_path('app/exports/' . $fileName);
 
-        if ( !file_exists($filePath) && $financial_file ) {
+        if (!file_exists($filePath) && $financial_file) {
             file_put_contents($filePath, $financial_file);
 
 
             return response()->download($filePath)->deleteFileAfterSend(true);
         } else {
-  
+
             file_put_contents($filePath, $financial_file);
             return response()->download($filePath)->deleteFileAfterSend(true);
         }
-        
     }
 }

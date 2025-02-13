@@ -106,33 +106,41 @@
 
                             @else
 
-                            <table class="table table-hover">
-                                <thead>
+                            <table class="table table-striped table-bordered align-middle">
+                                <thead class="table-dark">
                                     <tr>
-                                        <th>
+                                        <th class="text-center" style="width: 40px;">
                                             <input type="checkbox" id="select-all">
                                         </th>
-                                        <th>Order#</th>
+                                        <th class="text-center" style="width: 100px;">Order#</th>
+                                        <th class="text-center" style="width: 120px;">Date</th>
                                         <th>User</th>
                                         <th>Title</th>
-                                        <th>Date</th>
-                                        <th>Total</th>
-                                        <th>Actions</th>
+
+                                        <th class="text-end" style="width: 120px;">Total</th>
+                                        <th class="text-center" style="width: 150px;">Actions</th>
                                     </tr>
                                 </thead>
                                 <tbody>
                                     @foreach ($orders as $order)
                                         <tr>
-                                            <td>
+                                            <td class="text-center">
                                                 <input type="checkbox" name="order_ids[]" value="{{ $order->id }}">
                                             </td>
-                                            <td>{{ $order->facility->abbreviation }} - {{ $order->id }}</td>
-                                            
-                                            <td>{{ $order->customer->name }} 
-                                                @if ($order->paymentAccount)
-                                                    ({{ strtoupper(optional($order->paymentAccount)->account_type) }})
-                                                @endif
 
+                                            <td class="text-center">
+                                                <strong>{{ $order->facility->abbreviation }} - {{ $order->id }}</strong>
+                                            </td>
+
+                                            <td class="text-center">
+                                                {{ $order->date }}
+                                            </td>
+                                            <td>
+                                                {{ $order->customer->name }}
+                                                @if ($order->paymentAccount)
+                                                    <small class="text-muted">({{ strtoupper(optional($order->paymentAccount)->account_type) }})</small>
+                                                @endif
+                                                <br>
                                                 @if ($order->price_group == 'internal')
                                                     <span class="badge bg-primary">Internal</span>
                                                 @elseif ($order->price_group == 'external_forprofit')
@@ -140,26 +148,28 @@
                                                 @elseif ($order->price_group == 'external_nonprofit')
                                                     <span class="badge bg-success">External Non Profit</span>
                                                 @endif
-
-
+                                            </td>
+                                            <td>
+                                                {{ $order->title }}
+                                                <span class="badge bg-{{ $order->status_color }}">{{ ucfirst($order->status) }}</span>
                                             </td>
 
-                                            <td>{{ $order->title }} <span class="badge badge-{{ $order->status_color }}">{{ $order->status }}</span></td>
-                                            <td>{{ $order->date }}</td>
-                                            <td>$@dollars($order->total)</td>
-                                            <td>
+                                            <td class="text-end">
+                                                $@dollars($order->total)
+                                            </td>
+                                            <td class="text-center">
                                                 @can('see-order', $order)
-                                                    <a href="{{ route('orders.show', $order->id) }}" class="btn btn-primary btn-sm">View</a>
+                                                    <a href="{{ route('orders.show', $order->id) }}" class="btn btn-sm btn-outline-primary">View</a>
                                                 @endcan
-
                                                 @can('update-order', $order)
-                                                    <a href="{{ route('orders.edit', $order->id) }}" class="btn btn-secondary btn-sm">Edit</a>
+                                                    <a href="{{ route('orders.edit', $order->id) }}" class="btn btn-sm btn-outline-secondary">Edit</a>
                                                 @endcan
                                             </td>
                                         </tr>
                                     @endforeach
                                 </tbody>
                             </table>
+                            
 
                             @endif
 
