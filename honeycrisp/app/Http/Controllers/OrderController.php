@@ -108,7 +108,7 @@ class OrderController extends Controller
 
         // Get the filtered orders
         $orders = $query->where('status', '!=', 'complete')
-            ->orderBy('date', 'desc')
+            ->orderBy('id', 'desc')
             ->paginate(60);
 
         return view('orders.index', compact('orders', 'status_options', 'selected_status', 'data', 'account_types'));
