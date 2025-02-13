@@ -20,11 +20,13 @@
                         {{-- little horizontal nav for the facilities --}}
                         <ul class="nav nav-pills mb-3">
                             <li class="nav-item">
-                                <a class="nav-link {{ request('facility_id') ? '' : 'active' }}" href="{{ route('orders.index') }}">All Facilities</a>
+                                <a class="nav-link {{ request('facility_id') ? '' : 'active' }}"
+                                    href="{{ route('orders.index') }}">All Facilities</a>
                             </li>
                             @foreach ($facilities as $facility)
                                 <li class="nav-item">
-                                    <a class="nav-link {{ request('facility_id') == $facility->id ? 'active' : '' }}" href="{{ route('orders.index', ['facility_id' => $facility->id]) }}">
+                                    <a class="nav-link {{ request('facility_id') == $facility->id ? 'active' : '' }}"
+                                        href="{{ route('orders.index', ['facility_id' => $facility->id]) }}">
                                         {{ $facility->abbreviation }}
                                     </a>
                                 </li>
@@ -45,14 +47,15 @@
                                 </div> --}}
 
                                 <input type ="hidden" name="facility_id" value="{{ request('facility_id') }}">
-                                
+
 
                                 <div class="col">
                                     <label for="status">Status:</label>
                                     <select class="form-select" id="status" name="status">
                                         <option value="">All Active</option>
                                         @foreach ($status_options as $slug => $name)
-                                            <option value="{{ $slug }}" {{ $slug == $selected_status ? 'selected' : '' }}>
+                                            <option value="{{ $slug }}"
+                                                {{ $slug == $selected_status ? 'selected' : '' }}>
                                                 {{ $name }}
                                             </option>
                                         @endforeach
@@ -61,21 +64,28 @@
 
                                 <div class="col">
                                     <label for="start_date">Date Range:</label>
-                                    <input type="date" class="form-control" id="start_date" name="start_date" value="{{ request('start_date') }}">
+                                    <input type="date" class="form-control" id="start_date" name="start_date"
+                                        value="{{ request('start_date') }}">
                                 </div>
 
                                 <div class="col">
                                     <label for="end_date">to</label>
-                                    <input type="date" class="form-control" id="end_date" name="end_date" value="{{ request('end_date') }}">
+                                    <input type="date" class="form-control" id="end_date" name="end_date"
+                                        value="{{ request('end_date') }}">
                                 </div>
 
                                 <div class="col">
                                     <label for="price_group">Internal/External:</label>
                                     <select class="form-select" id="price_group" name="price_group">
                                         <option value="">All Price Groups</option>
-                                        <option value="internal" {{ request('price_group') == 'internal' ? 'selected' : '' }}>Internal</option>
-                                        <option value="external_forprofit" {{ request('price_group') == 'external_forprofit' ? 'selected' : '' }}>External For Profit</option>
-                                        <option value="external_nonprofit" {{ request('price_group') == 'external_nonprofit' ? 'selected' : '' }}>External Non Profit</option>
+                                        <option value="internal"
+                                            {{ request('price_group') == 'internal' ? 'selected' : '' }}>Internal</option>
+                                        <option value="external_forprofit"
+                                            {{ request('price_group') == 'external_forprofit' ? 'selected' : '' }}>External
+                                            For Profit</option>
+                                        <option value="external_nonprofit"
+                                            {{ request('price_group') == 'external_nonprofit' ? 'selected' : '' }}>External
+                                            Non Profit</option>
                                     </select>
                                 </div>
 
@@ -84,7 +94,8 @@
                                     <select class="form-select" id="account_type" name="account_type">
                                         <option value="">All</option>
                                         @foreach ($account_types as $account_type)
-                                            <option value="{{ $account_type }}" {{ $account_type == request('account_type') ? 'selected' : '' }}>
+                                            <option value="{{ $account_type }}"
+                                                {{ $account_type == request('account_type') ? 'selected' : '' }}>
                                                 {{ strtoupper($account_type) }}
                                             </option>
                                         @endforeach
@@ -119,73 +130,81 @@
 
                             @if ($orders->isEmpty())
                                 <div class="alert alert-info">No orders found.</div>
-
                             @else
-
-                            <table class="table table-striped table-bordered align-middle">
-                                <thead class="table-dark">
-                                    <tr>
-                                        <th class="text-center" style="width: 40px;">
-                                            <input type="checkbox" id="select-all">
-                                        </th>
-                                        <th class="text-center" style="width: 100px;">Order#</th>
-                                        <th class="text-center" style="width: 120px;">Date</th>
-                                        <th>User</th>
-                                        <th>Title</th>
-
-                                        <th class="text-end" style="width: 120px;">Total</th>
-                                        <th class="text-center" style="width: 150px;">Actions</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    @foreach ($orders as $order)
+                                <table class="table table-striped table-bordered align-middle">
+                                    <thead class="table-dark">
                                         <tr>
-                                            <td class="text-center">
-                                                <input type="checkbox" name="order_ids[]" value="{{ $order->id }}">
-                                            </td>
+                                            <th class="text-center" style="width: 40px;">
+                                                <input type="checkbox" id="select-all">
+                                            </th>
+                                            <th class="text-center" style="width: 100px;">Order#</th>
+                                            <th class="text-center" style="width: 120px;">Date</th>
+                                            <th>User</th>
+                                            <th>Title</th>
 
-                                            <td class="text-center">
-                                                <strong>{{ $order->facility->abbreviation }} - {{ $order->id }}</strong>
-                                            </td>
-
-                                            <td class="text-center">
-                                                {{ $order->date }}
-                                            </td>
-                                            <td>
-                                                {{ $order->customer->name }}
-                                                @if ($order->paymentAccount)
-                                                    <small class="text-muted">({{ strtoupper(optional($order->paymentAccount)->account_type) }})</small>
-                                                @endif
-                                                <br>
-                                                @if ($order->price_group == 'internal')
-                                                    <span class="badge bg-primary">Internal</span>
-                                                @elseif ($order->price_group == 'external_forprofit')
-                                                    <span class="badge bg-danger">External For Profit</span>
-                                                @elseif ($order->price_group == 'external_nonprofit')
-                                                    <span class="badge bg-success">External Non Profit</span>
-                                                @endif
-                                            </td>
-                                            <td>
-                                                {{ $order->title }}
-                                                <span class="badge bg-{{ $order->status_color }}">{{ ucfirst($order->status) }}</span>
-                                            </td>
-
-                                            <td class="text-end">
-                                                $@dollars($order->total)
-                                            </td>
-                                            <td class="text-center">
-                                                @can('see-order', $order)
-                                                    <a href="{{ route('orders.show', $order->id) }}" class="btn btn-sm btn-outline-primary">View</a>
-                                                @endcan
-                                                @can('update-order', $order)
-                                                    <a href="{{ route('orders.edit', $order->id) }}" class="btn btn-sm btn-outline-secondary">Edit</a>
-                                                @endcan
-                                            </td>
+                                            <th class="text-end" style="width: 120px;">Total</th>
+                                            <th class="text-center" style="width: 150px;">Actions</th>
                                         </tr>
-                                    @endforeach
-                                </tbody>
-                            </table>
-                            
+                                    </thead>
+                                    <tbody>
+                                        @foreach ($orders as $order)
+                                            <tr>
+                                                <td class="text-center">
+                                                    <input type="checkbox" name="order_ids[]" value="{{ $order->id }}">
+                                                </td>
+
+                                                <td class="text-center">
+                                                    <strong>{{ $order->facility->abbreviation }} -
+                                                        {{ $order->id }}</strong>
+                                                </td>
+
+                                                <td class="text-center">
+                                                    {{ $order->date }}
+                                                </td>
+                                                <td>
+
+                                                    @if ($order->price_group == 'internal')
+                                                        <span class="badge bg-primary">Internal</span>
+                                                    @elseif ($order->price_group == 'external_forprofit')
+                                                        <span class="badge bg-danger">External For Profit</span>
+                                                    @elseif ($order->price_group == 'external_nonprofit')
+                                                        <span class="badge bg-success">External Non Profit</span>
+                                                    @endif 
+
+                                                    <br>
+
+                                                    {{ $order->customer->name }}
+                                                    @if ($order->paymentAccount)
+                                                        <small
+                                                            class="text-muted">({{ strtoupper(optional($order->paymentAccount)->account_type) }})</small>
+                                                    @endif
+
+
+                                                </td>
+                                                <td>
+                                                    {{ $order->title }}
+                                                    <span
+                                                        class="badge bg-{{ $order->status_color }}">{{ ucfirst($order->status) }}</span>
+                                                </td>
+
+                                                <td class="text-end">
+                                                    $@dollars($order->total)
+                                                </td>
+                                                <td class="text-center">
+                                                    @can('see-order', $order)
+                                                        <a href="{{ route('orders.show', $order->id) }}"
+                                                            class="btn btn-sm btn-outline-primary">View</a>
+                                                    @endcan
+                                                    @can('update-order', $order)
+                                                        <a href="{{ route('orders.edit', $order->id) }}"
+                                                            class="btn btn-sm btn-outline-secondary">Edit</a>
+                                                    @endcan
+                                                </td>
+                                            </tr>
+                                        @endforeach
+                                    </tbody>
+                                </table>
+
 
                             @endif
 
@@ -202,7 +221,7 @@
     </div>
 
     <script>
-        document.getElementById('select-all').addEventListener('click', function () {
+        document.getElementById('select-all').addEventListener('click', function() {
             const checkboxes = document.querySelectorAll('input[name="order_ids[]"]');
             checkboxes.forEach(checkbox => checkbox.checked = this.checked);
         });
