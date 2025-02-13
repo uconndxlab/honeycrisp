@@ -17,9 +17,22 @@
                         <h5>Filter Orders</h5>
                     </div>
                     <div class="card-body">
+                        {{-- little horizontal nav for the facilities --}}
+                        <ul class="nav nav-pills mb-3">
+                            <li class="nav-item">
+                                <a class="nav-link {{ request('facility_id') ? '' : 'active' }}" href="{{ route('orders.index') }}">All Facilities</a>
+                            </li>
+                            @foreach ($facilities as $facility)
+                                <li class="nav-item">
+                                    <a class="nav-link {{ request('facility_id') == $facility->id ? 'active' : '' }}" href="{{ route('orders.index', ['facility_id' => $facility->id]) }}">
+                                        {{ $facility->abbreviation }}
+                                    </a>
+                                </li>
+                            @endforeach
+                        </ul>
                         <form action="{{ route('orders.index') }}" method="GET">
                             <div class="row my-3 align-items-center">
-                                <div class="col">
+                                {{-- <div class="col">
                                     <label for="facility_id">Facility:</label>
                                     <select class="form-select" id="facility_id" name="facility_id">
                                         <option value="">All Facilities</option>
@@ -29,7 +42,7 @@
                                             </option>
                                         @endforeach
                                     </select>
-                                </div>
+                                </div> --}}
 
                                 <div class="col">
                                     <label for="status">Status:</label>
