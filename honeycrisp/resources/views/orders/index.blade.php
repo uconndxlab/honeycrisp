@@ -44,6 +44,9 @@
                                     </select>
                                 </div> --}}
 
+                                <input type ="hidden" name="facility_id" value="{{ request('facility_id') }}">
+                                
+
                                 <div class="col">
                                     <label for="status">Status:</label>
                                     <select class="form-select" id="status" name="status">
