@@ -32,7 +32,8 @@
                                 </li>
                             @endforeach
                         </ul>
-                        <form action="{{ route('orders.index') }}" method="GET">
+                        <form action="{{ route('orders.index') }}" method="GET" hx-get="{{ route('orders.index') }}"
+                            hx-target="#order-results" hx-select="#order-results" hx-swap="outerHTML" hx-push-url="true">
                             <div class="row my-3 align-items-center">
                                 {{-- <div class="col">
                                     <label for="facility_id">Facility:</label>
@@ -51,7 +52,9 @@
 
                                 <div class="col">
                                     <label for="status">Status:</label>
-                                    <select class="form-select" id="status" name="status">
+                                    <select 
+                                        onchange="this.form.submit()"
+                                    class="form-select" id="status" name="status">
                                         <option value="">All Active</option>
                                         @foreach ($status_options as $slug => $name)
                                             <option value="{{ $slug }}"
@@ -64,19 +67,25 @@
 
                                 <div class="col">
                                     <label for="start_date">Date Range:</label>
-                                    <input type="date" class="form-control" id="start_date" name="start_date"
+                                    <input 
+                                        onchange="this.form.submit()"
+                                        type="date" class="form-control" id="start_date" name="start_date"
                                         value="{{ request('start_date') }}">
                                 </div>
 
                                 <div class="col">
                                     <label for="end_date">to</label>
-                                    <input type="date" class="form-control" id="end_date" name="end_date"
+                                    <input 
+                                        onchange="this.form.submit()"
+                                        type="date" class="form-control" id="end_date" name="end_date"
                                         value="{{ request('end_date') }}">
                                 </div>
 
                                 <div class="col">
                                     <label for="price_group">Internal/External:</label>
-                                    <select class="form-select" id="price_group" name="price_group">
+                                    <select 
+                                    onchange="this.form.submit()"
+                                    class="form-select" id="price_group" name="price_group">
                                         <option value="">All Price Groups</option>
                                         <option value="internal"
                                             {{ request('price_group') == 'internal' ? 'selected' : '' }}>Internal</option>
@@ -91,7 +100,9 @@
 
                                 <div class="col">
                                     <label for="account_type">Account Type:</label>
-                                    <select class="form-select" id="account_type" name="account_type">
+                                    <select 
+                                    onchange="this.form.submit()"
+                                        class="form-select" id="account_type" name="account_type">
                                         <option value="">All</option>
                                         @foreach ($account_types as $account_type)
                                             <option value="{{ $account_type }}"
@@ -126,12 +137,12 @@
                                 <button type="submit" class="btn btn-primary">Apply</button>
                             </div>
                         </div>
-                        <div class="card-body">
+                        <div id="order-results" class="card-body">
 
                             @if ($orders->isEmpty())
                                 <div class="alert alert-info">No orders found.</div>
                             @else
-                                <table class="table table-striped table-bordered align-middle">
+                                <table  class="table table-striped table-bordered align-middle">
                                     <thead class="table-dark">
                                         <tr>
                                             <th class="text-center" style="width: 40px;">

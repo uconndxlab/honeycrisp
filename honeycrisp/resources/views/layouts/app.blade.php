@@ -33,12 +33,7 @@
                 <div class="collapse navbar-collapse">
                     <ul class="navbar-nav" style="margin-left: auto; display: flex; justify-content: end; width: 100%;">
                         @if ( Auth::check() ) 
-                            <li class="nav-item">
-                                <a class="nav-link text-white" href="#">My Profile</a>
-                            </li>
-                            <li class="nav-item">
-                                <a class="nav-link text-white" href="#">Settings</a>
-                            </li>
+
                             <li class="nav-item">
                                 <a class="nav-link text-white" href="{{ route('logout') }}">Logout</a>
                             </li>

@@ -2,21 +2,24 @@
 
 @import url('https://fonts.googleapis.com/css2?family=Fira+Code:wght@300;400;500;600;700&display=swap');
 @import url('https://fonts.googleapis.com/css2?family=Open+Sans:wght@300;400;600;700&display=swap');
-/** roboto slab */
+/** Raleway */
 @import url('https://fonts.googleapis.com/css2?family=Roboto+Slab:wght@300;400;500;600;700&display=swap');
 
+/* raleway */
+@import url('https://fonts.googleapis.com/css2?family=Raleway:wght@300;400;500;600;700&display=swap');
+
 :root {
-  --light-color: #c0dbf5;
-  --primary-color: #0056b3;
+  --light-color: #f0ece6;
+  --primary-color: #9c2d09;
   /* Different Blue */
-  --primary-color-dark: #004b87;
+  --primary-color-dark: #434343;
   /* Different blue, darker */
   --secondary-color:
-    /** extremely navy */
-    #020202;
-  --dark-color: #343a40;
+
+    #c55210;
+  --dark-color: #434343;
   /* Dark gray */
-  --accent-color: #e71313;
+  --accent-color: #FFB84E;
   /* Red */
 }
 
@@ -42,7 +45,7 @@ p {
 }
 
 .text-mono {
-  font-family: 'Roboto Slab', serif;
+  font-family: 'Raleway', serif;
 }
 
 h1 {
@@ -63,6 +66,14 @@ h4 {
   font-size: 1rem;
 }
 
+.nav-pills .nav-link.active, .nav-pills .show>.nav-link {
+  background-color: var(--primary-color);
+  color: white;
+}
+
+.nav-pills .nav-link {
+  color: var(--primary-color);
+}
 
 
 body {
@@ -117,7 +128,7 @@ h3,
 h4,
 h5,
 h6 {
-  font-family: 'Roboto Slab', serif;
+  font-family: 'Raleway', serif;
 }
 
 .navbar {
@@ -126,7 +137,7 @@ h6 {
 
 .navbar .navbar-brand {
   color: white;
-  font-family: 'Roboto Slab', serif;
+  font-family: 'Raleway', serif;
   padding-right: 8px;
   border-right: 1px solid #4e4e4e;
   font-size: 16px;
@@ -136,7 +147,7 @@ h6 {
   color: white;
   padding-right: 2rem !important;
   font-size: 14px;
-  font-family: 'Roboto Slab', serif;
+  font-family: 'Raleway', serif;
 }
 
 .navbar .nav-link:hover {
@@ -202,8 +213,7 @@ h6 {
 h5,
 h6 {
   color: var(--dark-color);
-  text-transform: uppercase;
-  font-weight: bold;
+
 }
 
 /** style cards to have square corners and material design shadow */
