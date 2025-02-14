@@ -46,7 +46,7 @@
                 </div>
             </div>
 
-            <table id="user-table" class="table mt-3">
+            <table id="user-table" class="table table-light table-hover table-bordered align-middle">
                 <thead>
                     <tr>
                         <th>ID</th>

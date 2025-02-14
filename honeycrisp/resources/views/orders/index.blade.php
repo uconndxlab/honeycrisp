@@ -12,10 +12,7 @@
         <div class="row">
             <div class="col-md-12">
                 <!-- Filter Orders -->
-                <div class="card mb-4">
-                    <div class="card-header">
-                        <h5>Filter Orders</h5>
-                    </div>
+                <div class="mb-4">
                     <div class="card-body">
                         {{-- little horizontal nav for the facilities --}}
                         <ul class="nav nav-pills mb-3">
@@ -113,7 +110,7 @@
                                     </select>
                                 </div>
 
-                                <div class="col align-items-center mt-4">
+                                <div class="col mt-4">
                                     <button type="submit" class="btn btn-primary">Filter</button>
                                 </div>
                             </div>
@@ -124,9 +121,9 @@
                 <!-- Orders Table -->
                 <form action="{{ route('orders.bulkUpdate') }}" method="POST">
                     @csrf
-                    <div class="card">
-                        <div class="card-header d-flex justify-content-between align-items-center">
-                            <h5>Orders</h5>
+                    <div>
+                        <div class="d-flex justify-content-between align-items-center mb-4">
+                            <div></div>
                             <div>
                                 <select name="status" class="form-select d-inline-block w-auto" required>
                                     <option value="" disabled selected>Bulk Update Status</option>
@@ -142,8 +139,8 @@
                             @if ($orders->isEmpty())
                                 <div class="alert alert-info">No orders found.</div>
                             @else
-                                <table  class="table table-striped table-bordered align-middle">
-                                    <thead class="table-dark">
+                                <table class="table table-light table-hover table-bordered align-middle">
+                                    <thead class="">
                                         <tr>
                                             <th class="text-center" style="width: 40px;">
                                                 <input type="checkbox" id="select-all">

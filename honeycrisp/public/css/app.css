@@ -78,6 +78,7 @@ h4 {
 
 body {
   overflow-y: scroll;
+  background-color:#f0ece6;
 }
 
 .list-group-item-action {
@@ -116,11 +117,6 @@ body {
   color: var(--accent-color) !important;
 }
 
-body {
-  background-color: #f8f9fa;
-  /* Light gray */
-  font-family: 'Open Sans', sans-serif;
-}
 
 h1,
 h2,
@@ -470,6 +466,22 @@ legend {
   background-color: var(--dark-color);
   border-color: var(--dark-color);
   color: white;
+}
+
+.table-striped tbody tr:nth-of-type(odd) {
+  background-color: var(--light-color);
+}
+
+.table-striped tbody tr:nth-of-type(even) {
+  background-color: white;
+}
+
+.table-hover tbody tr:hover {
+  background-color: var(--light-color);
+}
+
+.table-light td {
+  border-color: var(--light-color);
 }
 
 @media print {
