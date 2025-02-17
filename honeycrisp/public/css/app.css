@@ -545,3 +545,45 @@ legend {
 }
 
 /** improved styles for bootstrap form controls */
+
+
+/** improved table styles like .table-danger is too light currently */
+.table-danger {
+  background-color: #9c2d09!important;
+  opacity:0.75;
+  color:#fff;
+}
+
+.table-success {
+  background-color: #28a745!important;
+  opacity:0.75;
+  color:#fff;
+}
+
+.table-secondary {
+  background-color: #6c757d!important;
+  opacity:0.75;
+  color:#fff;
+}
+
+#reservation_scheduling td a {
+  color:#dee2e6;
+  text-decoration: none;
+}
+
+#reservation_scheduling tr:hover {
+  background-color:#dee2e6;
+  color:#343a40;
+}
+
+#reservation_scheduling tr:hover a {
+  color:#343a40!important;
+}
+
+#reservation_scheduling tr:hover td a {
+  text-decoration: none;
+}
+
+#reservation_scheduling tr:hover td:hover a {
+  text-decoration: underline;
+}

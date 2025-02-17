@@ -30,7 +30,7 @@ class ReservationController extends Controller
 
     public function createForProduct(Product $product)
     {
-        $user_id = request()->user_id;
+        $user_id = request()->user_id ?? auth()->user()->id;
         
         $selected_user = User::where('id', $user_id)->first();
 
@@ -51,6 +51,7 @@ class ReservationController extends Controller
         $reservations = $product->reservations()->where('reservation_start', '>=', now())
             ->where('reservation_start', '<=', now()->addDays(30))
             ->get();
+
 
         return view('reservations.createForProduct', compact('product', 'scheduleRules', 'reservations', 'accounts', 'selected_user', 'facility'));
     }
@@ -152,11 +153,12 @@ class ReservationController extends Controller
 
         Reservation::create([
             'product_id' => $product->id,
-            'reservation_start' => $request->reservation_start,
+            'reservation_start' => \DateTime::createFromFormat('Y-m-d H:i:s', $request->reservation_date . ' ' . $request->reservation_start)->format('Y-m-d H:i:s'),
             'order_id' => $order_id,
-            'reservation_end' => $request->reservation_end,
+            'reservation_end' => \DateTime::createFromFormat('Y-m-d H:i:s', $request->reservation_date . ' ' . $request->reservation_end)->format('Y-m-d H:i:s'),
             'status' => 'pending',
         ]);
+
 
 
         return redirect()->route('reservations.index')->with('success', 'Reservation created successfully. A pending order has been created.');

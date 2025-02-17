@@ -96,6 +96,7 @@
                             <th>Day</th>
                             <th>Start Time</th>
                             <th>End Time</th>
+                            <th>Actions</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -104,8 +105,18 @@
                                 <td>{{ ucfirst($rule->day) }}</td>
                                 <td>{{ $rule->time_of_day_start }}</td>
                                 <td>{{ $rule->time_of_day_end }}</td>
+                                <td>
+                                    <a href="{{ route('schedule-rules.edit', $rule->id) }}" class="btn btn-primary">Edit</a>
+                                    <form action="{{ route('schedule-rules.destroy', $rule->id) }}" method="POST" style="display: inline;">
+                                        @csrf
+                                        @method('DELETE')
+                                        <button type="submit" class="btn btn-danger">Delete</button>
+                                    </form>
+                                </td>
                             </tr>
                         @endforeach
+
+                            
                     </tbody>
                 </table>
             @endif
@@ -123,6 +134,8 @@
                     @foreach ($product->reservations as $reservation)
                         <div class="card mb-3">
                             <div class="card-body">
+                                <p><strong>Reserved By:</strong> {{ $reservation->user->name }}</p>
+                                <p><strong>Reservation Date: </strong> {{ $reservation->reservation_date }}</p>
                                 <p><strong>Reservation Start:</strong> {{ $reservation->reservation_start }}</p>
                                 <p><strong>Reservation End:</strong> {{ $reservation->reservation_end }}</p>
                                 <p><strong>Status:</strong> {{ $reservation->status }}</p>
