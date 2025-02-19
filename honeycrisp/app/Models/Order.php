@@ -67,6 +67,11 @@ class Order extends Model
         return $this->belongsTo(PaymentAccount::class);
     }
 
+    public function reservation()
+    {
+        return $this->hasOne(Reservation::class)->withDefault();
+    }
+
 
 
     public function updateTotal()

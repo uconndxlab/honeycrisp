@@ -46,7 +46,6 @@ class ReservationController extends Controller
         $reservations_for_date = Reservation::where('product_id', $product->id)
             ->whereDate('reservation_start', $reservation_date)
             ->get();
-        dump($reservations_for_date);
 
         $scheduleRules = $product->scheduleRulesForDay($reservation_date);
         $availableStartTimes = [];
@@ -164,7 +163,7 @@ class ReservationController extends Controller
             'title' => $request->title,
             'date' => now(),
             'description' => $request->description,
-            'status' => 'pending',
+            'status' => 'quote',
             'price_group' => $price_group->name,
             'payment_account_id' => $request->payment_account_id,
         ]);
@@ -181,18 +180,18 @@ class ReservationController extends Controller
 
 
         // add order item to the order, with the product, and quantity is # of minutes
-        // $orderItem = OrderItem::create([
-        //     'order_id' => $order_id,
-        //     'product_id' => $product->id,
-        //     'quantity' => $minutes,
-        //     'name' => $product->name,
-        //     'description' => 'Reservation for ' . $product->name,
-        //     'price' => $price,
-        //     'status' => 'pending',
-        // ]);
+        $orderItem = OrderItem::create([
+            'order_id' => $order_id,
+            'product_id' => $product->id,
+            'quantity' => $minutes,
+            'name' => $product->name,
+            'description' => 'Reservation for ' . $product->name,
+            'price' => $price,
+            'status' => 'pending',
+        ]);
 
-        // $orderItem->quantity = 8;
-        // $orderItem->save();
+        $orderItem->quantity = 8;
+        $orderItem->save();
 
         // add the orderlog to the order
         $order->logs()->create([
@@ -201,13 +200,14 @@ class ReservationController extends Controller
             'changed_at' => now(),
         ]);
 
+        $order->updateTotal();
+
 
         Reservation::create([
             'product_id' => $product->id,
             'reservation_start' => \DateTime::createFromFormat('Y-m-d H:i', $request->reservation_date . ' ' . $request->reservation_start)->format('Y-m-d H:i:s'),
             'order_id' => $order_id,
             'reservation_end' => \DateTime::createFromFormat('Y-m-d H:i', $request->reservation_date . ' ' . $request->reservation_end)->format('Y-m-d H:i:s'),
-            'status' => 'pending',
         ]);
 
 

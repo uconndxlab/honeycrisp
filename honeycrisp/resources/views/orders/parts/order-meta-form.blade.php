@@ -119,6 +119,16 @@
                                     <textarea required name="description" id="description" class="form-control">{{ old('description', isset($order) ? $order->description : '') }}</textarea>
                                 </div>
 
+                                @if (isset($order) && $order->reservation)
+                                    <div class="alert alert-info">
+                                        <h4>Reservation Details</h4>
+                                        <p><strong>Reservation ID:</strong> {{ $order->reservation->id }}</p>
+                                        <p><strong>Reservation Date:</strong> {{ \Carbon\Carbon::parse($order->reservation->reservation_date)->format('F j, Y') }}</p>
+                                        <p><strong>Reservation Start Time:</strong> {{ \Carbon\Carbon::parse($order->reservation->reservation_start)->format('g:i A') }}</p>
+                                        <p><strong>Reservation End Time:</strong> {{ \Carbon\Carbon::parse($order->reservation->reservation_end)->format('g:i A') }}</p>
+                                    </div>
+                                @endif
+
                                 <div class="form-group my-2">
                                     <label for="date">Date*:</label>
                                     <input type="date" name="date" id="date" class="form-control"

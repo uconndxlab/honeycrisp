@@ -36,7 +36,16 @@ class PriceGroupController extends Controller
         $newPriceGroup->product_id = $request->product_id;
         $newPriceGroup->name = $request->name;
         $newPriceGroup->description = $request->description;
+
+        // price is in dollars, so convert to cents
         $newPriceGroup->price = $request->price * 100;
+
+        // and if product->can_reserve, then the price has been set per hour, and we need to convert to per minute
+        if ($newPriceGroup->product->can_reserve) {
+            $newPriceGroup->price = $newPriceGroup->price / 60;
+        }
+
+        
         $newPriceGroup->start_date = $request->start_date;
         $newPriceGroup->end_date = $request->end_date;
         $newPriceGroup->save();
@@ -58,8 +67,9 @@ class PriceGroupController extends Controller
     public function edit(string $id)
     {
         $priceGroup = PriceGroup::find($id);
+        $product = Product::find($priceGroup->product_id);
 
-        return view('price-groups.edit', compact('priceGroup'));
+        return view('price-groups.edit', compact('priceGroup', 'product'));
     }
 
     /**
@@ -73,6 +83,10 @@ class PriceGroupController extends Controller
         // price is in dollars, so convert to cents
         $priceGroup->price = $request->price * 100;
         $priceGroup->description = $request->description;
+
+        if ($priceGroup->product->can_reserve) {
+            $priceGroup->price = $priceGroup->price / 60;
+        }
 
         $priceGroup->start_date = $request->start_date;
         $priceGroup->end_date = $request->end_date;

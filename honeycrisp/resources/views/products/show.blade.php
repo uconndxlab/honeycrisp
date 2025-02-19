@@ -24,7 +24,7 @@
                             @if ($product->priceGroups->isEmpty())
                             <p>No price groups found for this product.</p>
                             @if (Auth::user()->can('update-facility', $product->facility))
-                            <a href="{{ route('price-groups.create', $product->id) }}" class="btn btn-primary">Add Price Group</a>
+                            <a href="{{ route('price-groups.create', $product->id) }}" class="btn btn-primary">Add Price Rule</a>
                             @endif
                         @else
                             <table class="table">
@@ -61,7 +61,7 @@
                             </table>
 
                             @can('update-facility', $product->facility)
-                            <a href="{{ route('price-groups.create', $product->id) }}" class="btn btn-primary">Add Price Group</a>
+                            <a href="{{ route('price-groups.create', $product->id) }}" class="btn btn-primary">Add Price Rule</a>
                             @endcan
                         @endif
 

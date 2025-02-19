@@ -5,18 +5,18 @@
         @include ('reservations.parts.reservation-meta-form')
         <div class="card mb-4">
             <div class="card-header">
-                <h5 class="card-title">Product Details</h5>
+                <h5 class="card-title">Instrument Details</h5>
             </div>
             <div class="card-body">
                 <p><strong>Description:</strong> {{ $product->description ?? 'No description available.' }}</p>
-                <p><strong>Schedule Rules:</strong></p>
+                <p><strong>Availability</strong></p>
                 @if ($scheduleRules->isEmpty())
                     <p>No specific schedule rules for this product.</p>
                 @else
                     <ul>
-                        @foreach ($scheduleRules as $rule)
+                        @foreach ($product->scheduleRules as $rule)
                             <li>
-                                Available on <strong>{{ ucfirst($rule->day) }}</strong>:
+                                <strong>{{ ucfirst($rule->day) }}</strong>:
                                 {{ $rule->time_of_day_start }} - {{ $rule->time_of_day_end }}
                             </li>
                         @endforeach
@@ -48,13 +48,13 @@
                         <input type="date" class="form-control" id="reservation_date" name="reservation_date" required
                             hx-get="{{ route('reservations.create.product', ['product' => $product->id]) }}?user_id={{ request('user_id') }}"
                             hx-target="#reservation_times" hx-select="#reservation_times" hx-swap="outerHTML"
-                            hx-push-url="true" hx-trigger="change" value="{{ request('reservation_date') }}"
+                            hx-push-url="true" hx-trigger="change" value="{{ $reservation_date }}"
                             min="{{ \Carbon\Carbon::now()->format('Y-m-d') }}">
                     </div>
                 </div>
 
                 <div class="col-md-6">
-                    <div id="reservation_times">
+                    <div id="reservation_times" class="mb-3">
                         @if ($reservation_date)
                             @php
                                 $dayName = strtolower(\Carbon\Carbon::parse($reservation_date)->format('l'));
