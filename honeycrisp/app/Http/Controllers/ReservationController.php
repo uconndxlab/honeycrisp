@@ -28,13 +28,8 @@ class ReservationController extends Controller
         return view('reservations.create', compact('products', 'facility'));
     }
 
-    public function createForProduct(Product $product)
+    public function createForProduct(Request $request, Product $product)
     {
-        $user_id = request()->user_id ?? auth()->user()->id;
-        
-        $selected_user = User::where('id', $user_id)->first();
-
-        $accounts = $selected_user->paymentAccounts;
 
         // Ensure the product is reservable
         if (!$product->can_reserve) {
@@ -42,18 +37,74 @@ class ReservationController extends Controller
                 ->with('error', 'This product cannot be reserved.');
         }
 
+        $reservation_date = $request->reservation_date ?? now()->format('Y-m-d');
+        $reservation_start = $request->reservation_start ?? null;
+        $reservation_end = $request->reservation_end ?? null;
+        $user_id = request()->user_id ?? auth()->user()->id;
+        $selected_user = User::where('id', $user_id)->first();
+        $accounts = $selected_user->paymentAccounts;
+        $reservations_for_date = Reservation::where('product_id', $product->id)
+            ->whereDate('reservation_start', $reservation_date)
+            ->get();
+        dump($reservations_for_date);
+
+        $scheduleRules = $product->scheduleRulesForDay($reservation_date);
+        $availableStartTimes = [];
+
+        foreach ($scheduleRules as $rule) {
+            $ruleStart = new \DateTime($rule->time_of_day_start);
+            $ruleEnd = new \DateTime($rule->time_of_day_end);
+
+            $ruleStart = \DateTime::createFromFormat('Y-m-d H:i', $reservation_date . ' ' . $ruleStart->format('H:i'));
+            $ruleEnd = \DateTime::createFromFormat('Y-m-d H:i', $reservation_date . ' ' . $ruleEnd->format('H:i'));
+
+            $interval = $product->reservation_interval;
+            $current = clone $ruleStart;
+            while ($current < $ruleEnd) {
+            $next = clone $current;
+            $next->add(new \DateInterval('PT' . $interval . 'M'));
+
+            if (!$product->isBooked($current, $next)) {
+                $availableStartTimes[] = $current->format('H:i');
+            }
+
+            $current->add(new \DateInterval('PT' . $interval . 'M'));
+            }
+        }
+
+        $reservations = $reservations_for_date;
+
+        $availableEndTimes = [];
+
+        // if start time is selected, calculate available end times
+        if ($reservation_start) {
+            $start = \DateTime::createFromFormat('Y-m-d H:i', $reservation_date . ' ' . $reservation_start);
+            $end = \DateTime::createFromFormat('Y-m-d H:i', $reservation_date . ' ' . $reservation_start);
+
+            $interval = $product->reservation_interval;
+            $current = clone $start;
+            while ($current < $ruleEnd) {
+            $next = clone $current;
+            $next->add(new \DateInterval('PT' . $interval . 'M'));
+
+            if (!$product->isBooked($current, $next)) {
+                $availableEndTimes[] = $next->format('H:i');
+            } else {
+                break; // Stop if the next slot is booked
+            }
+
+            $current->add(new \DateInterval('PT' . $interval . 'M'));
+            }
+        }
+
+
+
         $facility = $product->facility;
 
-        // Fetch schedule rules for the product
-        $scheduleRules = $product->scheduleRules;
-    
-        // get product reservations in the next 30 days
-        $reservations = $product->reservations()->where('reservation_start', '>=', now())
-            ->where('reservation_start', '<=', now()->addDays(30))
-            ->get();
 
 
-        return view('reservations.createForProduct', compact('product', 'scheduleRules', 'reservations', 'accounts', 'selected_user', 'facility'));
+        return view('reservations.createForProduct', compact('product', 'scheduleRules', 'reservations', 'accounts', 'selected_user', 
+        'facility', 'reservation_date', 'reservation_start', 'reservation_end', 'availableStartTimes', 'availableEndTimes'));
     }
 
     public function edit(Reservation $reservation)
@@ -96,8 +147,8 @@ class ReservationController extends Controller
 
         
 
-        $start = \DateTime::createFromFormat('Y-m-d H:i:s', $request->reservation_date . ' ' . $request->reservation_start);
-        $end = \DateTime::createFromFormat('Y-m-d H:i:s', $request->reservation_date . ' ' . $request->reservation_end);
+        $start = \DateTime::createFromFormat('Y-m-d H:i', $request->reservation_date . ' ' . $request->reservation_start);
+        $end = \DateTime::createFromFormat('Y-m-d H:i', $request->reservation_date . ' ' . $request->reservation_end);
 
         
 
@@ -153,9 +204,9 @@ class ReservationController extends Controller
 
         Reservation::create([
             'product_id' => $product->id,
-            'reservation_start' => \DateTime::createFromFormat('Y-m-d H:i:s', $request->reservation_date . ' ' . $request->reservation_start)->format('Y-m-d H:i:s'),
+            'reservation_start' => \DateTime::createFromFormat('Y-m-d H:i', $request->reservation_date . ' ' . $request->reservation_start)->format('Y-m-d H:i:s'),
             'order_id' => $order_id,
-            'reservation_end' => \DateTime::createFromFormat('Y-m-d H:i:s', $request->reservation_date . ' ' . $request->reservation_end)->format('Y-m-d H:i:s'),
+            'reservation_end' => \DateTime::createFromFormat('Y-m-d H:i', $request->reservation_date . ' ' . $request->reservation_end)->format('Y-m-d H:i:s'),
             'status' => 'pending',
         ]);
 

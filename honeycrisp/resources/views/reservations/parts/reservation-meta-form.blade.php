@@ -28,12 +28,13 @@
                         <span class="badge badge-{{ $order->status_color }}">{{ Str::headline($order->status) }}</span>
                     @endif
                 </h1>
-
-                <h2>{{ $product->name }}</h2>
+                <h2>{{ $facility->name }} ({{ $facility->abbreviation }})</h2>
+                
 
 
             </div>
-            <h2>{{ $facility->name }} ({{ $facility->abbreviation }})</h2>
+
+            <h2>{{ $product->name }}</h2>
 
         </div>
     </div>

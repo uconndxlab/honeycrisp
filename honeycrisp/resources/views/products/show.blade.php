@@ -134,13 +134,12 @@
                     @foreach ($product->reservations as $reservation)
                         <div class="card mb-3">
                             <div class="card-body">
-                                <p><strong>Reserved By:</strong> {{ $reservation->user->name }}</p>
+                                <p><strong>Reserved By:</strong> {{ $reservation->order->customer->name }}</p>
                                 <p><strong>Reservation Date: </strong> {{ $reservation->reservation_date }}</p>
                                 <p><strong>Reservation Start:</strong> {{ $reservation->reservation_start }}</p>
                                 <p><strong>Reservation End:</strong> {{ $reservation->reservation_end }}</p>
                                 <p><strong>Status:</strong> {{ $reservation->status }}</p>
-                                <p><strong>Account Type:</strong> {{ $reservation->account_type }}</p>
-                            </div>
+                                <p><strong>Account Type:</strong> ({{ optional($reservation->order->paymentAccount)->account_type }})</p>
                             <div class="card-footer">
                                 <a href="{{ route('reservations.show', $reservation->id) }}" class="btn btn-primary">View</a>
                                 <a href="{{ route('reservations.edit', $reservation->id) }}" class="btn btn-primary">Edit</a>

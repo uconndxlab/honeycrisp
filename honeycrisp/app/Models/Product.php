@@ -44,12 +44,20 @@ class Product extends Model
 
     public function reservations()
     {
-        return $this->hasMany(Reservation::class);
+        return $this->hasMany(Reservation::class)->with(['order' => function ($query) {
+            $query->with('paymentAccount');
+        }]);
     }
 
     public function scheduleRules()
     {
         return $this->hasMany(ScheduleRule::class);
+    }
+
+    public function scheduleRulesForDay($date)
+    {
+        $dayOfWeek = strtolower((new \DateTime($date))->format('l')); // e.g., 'monday'
+        return $this->scheduleRules()->where('day', $dayOfWeek)->get();
     }
 
     public function isReservable($start, $end)
@@ -72,4 +80,25 @@ class Product extends Model
 
         return false;
     }
+
+    public function isBooked($start, $end)
+    {
+        $reservations = $this->reservations()->get();
+
+        foreach ($reservations as $reservation) {
+            $reservationStart = new \DateTime($reservation->reservation_start);
+            $reservationEnd = new \DateTime($reservation->reservation_end);
+
+            if (
+                $start->format('Y-m-d H:i:s') >= $reservationStart->format('Y-m-d H:i:s') &&
+                $end->format('Y-m-d H:i:s') <= $reservationEnd->format('Y-m-d H:i:s')
+            ) {
+                return true;
+            }
+        }
+
+        return false;
+    }
+
+    
 }
