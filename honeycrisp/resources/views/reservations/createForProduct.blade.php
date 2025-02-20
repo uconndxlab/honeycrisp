@@ -88,7 +88,11 @@
 
                                 <div class="mb-3">
                                     <label for="reservation_end" class="form-label">Select an End Time</label>
-                                    <select class="form-select" id="reservation_end" name="reservation_end" required>
+                                    <select 
+                                    hx-get="{{ route('reservations.create.product', ['product' => $product->id]) }}?reservation_date={{ request('reservation_date') }}&reservation_start={{ request('reservation_start') }}&user_id={{ request('user_id') }}"
+                                    hx-target="#reservation_times" hx-select="#reservation_times" hx-swap="outerHTML"
+                                    hx-push-url="true" hx-trigger="change"
+                                    class="form-select" id="reservation_end" name="reservation_end" required>
                                         <option value="" disabled {{ request('reservation_end') ? '' : 'selected' }}>
                                             Select
                                             an end time</option>
@@ -112,7 +116,7 @@
                 </div>
             </div>
 
-            <div id="reservation_calendar" class="row my-4 d-none">
+            <div id="reservation_calendar" class="row my-4">
                 @php
                     $daysOfWeek = collect();
                     $currentDate = request('reservation_date')
@@ -134,206 +138,6 @@
                     }
                 @endphp
 
-                <div class="table-responsive">
-                    <table class="table table-hover text-center">
-                        <thead class="thead-light position-sticky top-0 bg-white">
-                            <tr>
-                                <th>Time</th>
-                                @foreach ($daysOfWeek as $day)
-                                    <th>{{ $day->format('l j') }}</th>
-                                @endforeach
-                            </tr>
-                        </thead>
-                        <tbody hx-boot="true">
-                            @php
-                                $selectedStartTime = request()->query('reservation_start'); // Selected start time
-                                $selectedStartDate = request()->query('reservation_date'); // Selected start date
-                                $hiddenRows = [];
-                                $lastUnavailableTime = null;
-                            @endphp
-                            @foreach ($timeSlots as $timeSlot)
-                                @php
-                                    $isRowEmpty = true;
-                                    foreach ($daysOfWeek as $day) {
-                                        $dayName = strtolower($day->format('l'));
-                                        $rulesForDay = $scheduleRules->where('day', $dayName);
-                                        $isAvailable = false;
-                                        $isBooked = false;
-
-                                        foreach ($rulesForDay as $rule) {
-                                            $intervalStart = \Carbon\Carbon::createFromTimeString(
-                                                $rule->time_of_day_start,
-                                            );
-                                            $intervalEnd = \Carbon\Carbon::createFromTimeString($rule->time_of_day_end);
-
-                                            if ($timeSlot->between($intervalStart, $intervalEnd)) {
-                                                $isBooked = $reservations
-                                                    ->filter(function ($reservation) use ($timeSlot, $day) {
-                                                        $reservationStart = \Carbon\Carbon::parse(
-                                                            $reservation->reservation_start,
-                                                        );
-                                                        $reservationEnd = \Carbon\Carbon::parse(
-                                                            $reservation->reservation_end,
-                                                        );
-
-                                                        return $reservationStart->between(
-                                                            $day->copy()->setTimeFrom($timeSlot),
-                                                            $day->copy()->setTimeFrom($timeSlot)->addMinutes(30),
-                                                        ) ||
-                                                            $reservationEnd->between(
-                                                                $day->copy()->setTimeFrom($timeSlot),
-                                                                $day->copy()->setTimeFrom($timeSlot)->addMinutes(30),
-                                                            ) ||
-                                                            ($reservationStart->lte(
-                                                                $day->copy()->setTimeFrom($timeSlot),
-                                                            ) &&
-                                                                $reservationEnd->gte(
-                                                                    $day
-                                                                        ->copy()
-                                                                        ->setTimeFrom($timeSlot)
-                                                                        ->addMinutes(30),
-                                                                ));
-                                                    })
-                                                    ->count();
-
-                                                $isAvailable = !$isBooked;
-                                                break;
-                                            }
-                                        }
-
-                                        if ($isAvailable) {
-                                            $isRowEmpty = false;
-                                            break;
-                                        }
-                                    }
-
-                                    // Track empty rows for consolidation
-                                    if ($isRowEmpty) {
-                                        if ($lastUnavailableTime === null) {
-                                            $lastUnavailableTime = $timeSlot;
-                                        }
-                                        $hiddenRows[] = $timeSlot;
-                                        continue;
-                                    }
-
-                                    // Insert "Unavailable until..." row before next available time
-                                    if (!empty($hiddenRows)) {
-                                        echo "<tr class='bg-light text-muted'><td colspan='" .
-                                            (count($daysOfWeek) + 1) .
-                                            "'>
-                                            Unavailable until " .
-                                            $timeSlot->format('g:i A') .
-                                            '</td></tr>';
-                                        $hiddenRows = [];
-                                        $lastUnavailableTime = null;
-                                    }
-                                @endphp
-
-                                <tr>
-                                    <td>{{ $timeSlot->format('g:i A') }}</td>
-                                    @foreach ($daysOfWeek as $day)
-                                        @php
-                                            $dayName = strtolower($day->format('l'));
-                                            $rulesForDay = $scheduleRules->where('day', $dayName);
-                                            $isAvailable = false;
-                                            $isBooked = false;
-                                            $isSelected = false;
-                                            $isDisabled = false;
-
-                                            foreach ($rulesForDay as $rule) {
-                                                $intervalStart = \Carbon\Carbon::createFromTimeString(
-                                                    $rule->time_of_day_start,
-                                                );
-                                                $intervalEnd = \Carbon\Carbon::createFromTimeString(
-                                                    $rule->time_of_day_end,
-                                                );
-
-                                                if ($timeSlot->between($intervalStart, $intervalEnd)) {
-                                                    $isBooked = $reservations
-                                                        ->filter(function ($reservation) use ($timeSlot, $day) {
-                                                            $reservationStart = \Carbon\Carbon::parse($reservation->reservation_start);
-                                                            $reservationEnd = \Carbon\Carbon::parse($reservation->reservation_end);
-
-                                                            return $reservation->date == $day->format('Y-m-d') &&
-                                                                $reservationStart->lte($day->copy()->setTimeFrom($timeSlot)->addMinutes(30)) &&
-                                                                $reservationEnd->gte($day->copy()->setTimeFrom($timeSlot));
-                                                        })
-                                                        ->count() > 0;
-
-                                                    $isAvailable = !$isBooked;
-                                                    break;
-                                                }
-                                            }
-
-                                            // If a start time is selected, enforce "only later slots on that day"
-                                            if ($selectedStartTime && $selectedStartDate == $day->format('Y-m-d')) {
-                                                $selectedStart = \Carbon\Carbon::createFromTimeString(
-                                                    $selectedStartTime,
-                                                );
-
-                                                if ($timeSlot->equalTo($selectedStart)) {
-                                                    $isSelected = true;
-                                                } elseif ($timeSlot->lt($selectedStart)) {
-                                                    $isDisabled = true; // Disable earlier slots on this day
-                                                }
-                                            }
-
-                                            // If a start time is selected, disable all other days
-                                            if ($selectedStartTime && $selectedStartDate != $day->format('Y-m-d')) {
-                                                $isDisabled = true;
-                                            }
-                                        @endphp
-
-                                        @php
-                                            $selectedStart = request()->query('reservation_start');
-                                            $selectedEnd = request()->query('reservation_end');
-                                        @endphp
-
-                                        <td
-                                            class="{{ $isSelected || ($selectedStart && $selectedEnd && $selectedStartDate == $day->format('Y-m-d') && $timeSlot->between(\Carbon\Carbon::parse($selectedStart), \Carbon\Carbon::parse($selectedEnd)->subMinute())) ? 'table-primary' : ($isAvailable ? ($isDisabled ? 'table-secondary unavailable' : 'table-success') : ($isBooked ? 'bg-warning' : 'bg-light')) }}">
-                                            @if ($isSelected)
-                                                <strong>Start: {{ $timeSlot->format('g:i A') }}</strong>
-                                            @elseif (
-                                                $selectedStart &&
-                                                    $selectedEnd &&
-                                                    $selectedStartDate == $day->format('Y-m-d') &&
-                                                    $timeSlot->between(\Carbon\Carbon::parse($selectedStart), \Carbon\Carbon::parse($selectedEnd)->subMinute()))
-                                                <strong></strong>
-                                                {{-- if this is the last timeslot in the range, say "End" --}}
-
-                                                {{-- if this is the first timeslot in the range, say "Start" --}}
-                                            @elseif ($isBooked)
-                                                <span class="text-danger">Booked</span>
-                                            @elseif ($isAvailable && !$isDisabled)
-                                                <a hx-get="{{ route('reservations.create.product', ['product' => $product->id]) }}?reservation_date={{ $day->format('Y-m-d') }}&reservation_start={{ request()->query('reservation_start') ?? $timeSlot->format('H:i:s') }}{{ request()->query('reservation_start') ? '&reservation_end=' . $timeSlot->format('H:i:s') : '' }}"
-                                                    hx-target="#reservation_scheduling" hx-select="#reservation_scheduling"
-                                                    hx-swap="outerHTML" hx-push-url="true"
-                                                    href="{{ route('reservations.create.product', ['product' => $product->id]) }}?reservation_date={{ $day->format('Y-m-d') }}&reservation_start={{ request()->query('reservation_start') ?? $timeSlot->format('H:i:s') }}{{ request()->query('reservation_start') ? '&reservation_end=' . $timeSlot->format('H:i:s') : '' }}"
-                                                    class="text-white">
-                                                    Available
-                                                </a>
-                                            @else
-                                                <span class="text-muted"></span>
-                                            @endif
-
-                                            @if (
-                                                $selectedEnd &&
-                                                    $selectedEnd == $timeSlot->copy()->addMinutes(30)->format('H:i:s') &&
-                                                    $selectedStartDate == $day->format('Y-m-d'))
-                                                <strong>End:
-                                                    {{ $timeSlot->copy()->addMinutes(30)->format('g:i A') }}</strong>
-                                            @endif
-                                        </td>
-                                    @endforeach
-                                </tr>
-                            @endforeach
-                        </tbody>
-
-
-
-
-                    </table>
-                </div>
             </div>
 
 
