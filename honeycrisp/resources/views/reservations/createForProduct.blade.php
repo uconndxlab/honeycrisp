@@ -25,13 +25,17 @@
 
                     <div id="reservation_calendar" class="row my-4">
                         <div class="col-md-12">
-        
+
                             @if ($reservation_date)
                                 @php
                                     $startOfDay = \Carbon\Carbon::parse($reservation_date)->startOfDay();
                                     $endOfDay = \Carbon\Carbon::parse($reservation_date)->endOfDay();
                                     $interval = $product->reservation_interval;
-                                    $times = \Carbon\CarbonPeriod::create($startOfDay, $interval . ' minutes', $endOfDay);
+                                    $times = \Carbon\CarbonPeriod::create(
+                                        $startOfDay,
+                                        $interval . ' minutes',
+                                        $endOfDay,
+                                    );
                                 @endphp
                                 <div class="card">
                                     <div class="card-header bg-primary text-white">
@@ -53,7 +57,8 @@
                                             @elseif (empty($reservation_end))
                                                 Select your <strong>end time</strong> to complete your reservation.
                                             @else
-                                                {{$reservation_date}} <strong>{{ $reservation_start }}</strong> to <strong>{{ $reservation_end }}</strong>.
+                                                {{ $reservation_date }} <strong>{{ $reservation_start }}</strong> to
+                                                <strong>{{ $reservation_end }}</strong>.
                                             @endif
                                         </div>
                                         <div class="d-flex flex-wrap">
@@ -61,15 +66,16 @@
                                                 <div class="time-block selected">
                                                     <span>{{ $reservation_start }}</span>
                                                 </div>
-        
+
                                                 @foreach ($availableEndTimes as $time)
-                                                    <div class="time-block available {{ request('reservation_end') === $time ? 'selected' : '' }}">
+                                                    <div
+                                                        class="time-block available {{ request('reservation_end') === $time ? 'selected' : '' }}">
                                                         <span>
-                                                            <a 
-                                                            hx-get="{{ route('reservations.create.product', ['product' => $product->id]) }}?reservation_date={{ request('reservation_date') }}&reservation_start={{ request('reservation_start') }}&reservation_end={{ $time }}&user_id={{ request('user_id') }}"
-                                                            hx-target="#reservation_scheduling" hx-select="#reservation_scheduling" hx-swap="outerHTML"
-                                                            hx-push-url="true"
-                                                            href="{{ route('reservations.create.product', ['product' => $product->id]) }}?reservation_date={{ request('reservation_date') }}&reservation_start={{ request('reservation_start') }}&reservation_end={{ $time }}&user_id={{ request('user_id') }}">
+                                                            <a hx-get="{{ route('reservations.create.product', ['product' => $product->id]) }}?reservation_date={{ request('reservation_date') }}&reservation_start={{ request('reservation_start') }}&reservation_end={{ $time }}&user_id={{ request('user_id') }}"
+                                                                hx-target="#reservation_scheduling"
+                                                                hx-select="#reservation_scheduling" hx-swap="outerHTML"
+                                                                hx-push-url="true"
+                                                                href="{{ route('reservations.create.product', ['product' => $product->id]) }}?reservation_date={{ request('reservation_date') }}&reservation_start={{ request('reservation_start') }}&reservation_end={{ $time }}&user_id={{ request('user_id') }}">
                                                                 {{ $time }}
                                                             </a>
                                                         </span>
@@ -77,13 +83,14 @@
                                                 @endforeach
                                             @elseif ($reservation_date && empty($reservation_start))
                                                 @foreach ($availableStartTimes as $time)
-                                                    <div class="time-block available {{ request('reservation_start') === $time ? 'selected' : '' }}">
+                                                    <div
+                                                        class="time-block available {{ request('reservation_start') === $time ? 'selected' : '' }}">
                                                         <span>
-                                                            <a 
-                                                            hx-get="{{ route('reservations.create.product', ['product' => $product->id]) }}?reservation_date={{ request('reservation_date') }}&reservation_start={{ $time }}&user_id={{ request('user_id') }}"
-                                                            hx-target="#reservation_scheduling" hx-select="#reservation_scheduling" hx-swap="outerHTML"
-                                                            hx-push-url="true"
-                                                            href="{{ route('reservations.create.product', ['product' => $product->id]) }}?reservation_date={{ request('reservation_date') }}&reservation_start={{ $time }}&user_id={{ request('user_id') }}">
+                                                            <a hx-get="{{ route('reservations.create.product', ['product' => $product->id]) }}?reservation_date={{ request('reservation_date') }}&reservation_start={{ $time }}&user_id={{ request('user_id') }}"
+                                                                hx-target="#reservation_scheduling"
+                                                                hx-select="#reservation_scheduling" hx-swap="outerHTML"
+                                                                hx-push-url="true"
+                                                                href="{{ route('reservations.create.product', ['product' => $product->id]) }}?reservation_date={{ request('reservation_date') }}&reservation_start={{ $time }}&user_id={{ request('user_id') }}">
                                                                 {{ $time }}
                                                             </a>
                                                         </span>
@@ -94,7 +101,7 @@
                                     </div>
                                 </div>
                             @endif
-        
+
                             <style>
                                 .time-block {
                                     width: 100px;
@@ -103,42 +110,34 @@
                                     border-radius: 5px;
                                     text-align: center;
                                 }
-        
+
                                 .available {
                                     background-color: #6c757d;
                                     color: white;
                                 }
-        
+
                                 .selected {
                                     background-color: #007bff;
                                     color: white;
                                 }
-        
+
                                 .available a {
                                     color: white;
                                     text-decoration: none;
                                 }
-        
+
                                 .unavailable {
                                     display: none;
                                     /* faded grey like disabled */
                                     background-color: #f8f9fa;
-        
-        
+
+
                                     color: #ccc;
                                 }
                             </style>
                         </div>
                     </div>
-        
-        
-        
-        
                 </div>
-
-
-
-             
 
                 <div class="col-md-6">
                     <div id="reservation_times" class="mb-3">
@@ -157,8 +156,8 @@
                                     <label for="reservation_start" class="form-label">Select a Start Time</label>
                                     <select class="form-select" id="reservation_start" name="reservation_start" required
                                         hx-get="{{ route('reservations.create.product', ['product' => $product->id]) }}?reservation_date={{ request('reservation_date') }}&user_id={{ request('user_id') }}"
-                                        hx-target="#reservation_scheduling" hx-select="#reservation_scheduling" hx-swap="outerHTML"
-                                        hx-push-url="true" hx-trigger="change">
+                                        hx-target="#reservation_scheduling" hx-select="#reservation_scheduling"
+                                        hx-swap="outerHTML" hx-push-url="true" hx-trigger="change">
                                         <option value="" disabled
                                             {{ request('reservation_start') ? '' : 'selected' }}>
                                             Select
@@ -177,9 +176,9 @@
                                     <label for="reservation_end" class="form-label">Select an End Time</label>
                                     <select
                                         hx-get="{{ route('reservations.create.product', ['product' => $product->id]) }}?reservation_date={{ request('reservation_date') }}&reservation_start={{ request('reservation_start') }}&user_id={{ request('user_id') }}"
-                                        hx-target="#reservation_scheduling" hx-select="#reservation_scheduling" hx-swap="outerHTML"
-                                        hx-push-url="true" hx-trigger="change" class="form-select" id="reservation_end"
-                                        name="reservation_end" required>
+                                        hx-target="#reservation_scheduling" hx-select="#reservation_scheduling"
+                                        hx-swap="outerHTML" hx-push-url="true" hx-trigger="change" class="form-select"
+                                        id="reservation_end" name="reservation_end" required>
                                         <option value="" disabled {{ request('reservation_end') ? '' : 'selected' }}>
                                             Select
                                             an end time</option>
@@ -200,14 +199,13 @@
                         @endif
                     </div>
                     <button type="submit" class="btn btn-success">Submit Reservation</button>
-                    <a
-                    hx-get="{{ route('reservations.create.product', ['product' => $product->id]) }}?user_id={{ request('user_id') }}"
-                    hx-target="#reservation_scheduling" hx-select="#reservation_scheduling" hx-swap="outerHTML"
-                    hx-push-url="true" 
-                    href="{{ route('reservations.create.product', ['product' => $product->id]) }}?user_id={{ request('user_id') }}"
-                    class="btn btn-secondary ms-2">Change</a>
+                    <a hx-get="{{ route('reservations.create.product', ['product' => $product->id]) }}?user_id={{ request('user_id') }}"
+                        hx-target="#reservation_scheduling" hx-select="#reservation_scheduling" hx-swap="outerHTML"
+                        hx-push-url="true"
+                        href="{{ route('reservations.create.product', ['product' => $product->id]) }}?user_id={{ request('user_id') }}"
+                        class="btn btn-secondary ms-2">Change</a>
                 </div>
             </div>
-            
 
-    @endsection
+
+        @endsection

@@ -73,9 +73,10 @@ class Product extends Model
             $minTime = $this->minimum_reservation_time ? \Carbon\Carbon::parse($this->minimum_reservation_time) : null;
             $maxTime = $this->maximum_reservation_time ? \Carbon\Carbon::parse($this->maximum_reservation_time) : null;
 
-            if ($start->between($ruleStart, $ruleEnd, true) && $end->between($ruleStart, $ruleEnd, true)) {
-                if (($minTime && $end->diffInMinutes($start) < $minTime->diffInMinutes('00:00')) ||
-                    ($maxTime && $end->diffInMinutes($start) > $maxTime->diffInMinutes('00:00'))
+            if (\Carbon\Carbon::instance($start)->between($ruleStart, $ruleEnd, true) && \Carbon\Carbon::instance($end)->between($ruleStart, $ruleEnd, true)) {
+                $reservationDuration = $end->diffInMinutes($start);
+                if (($minTime && $reservationDuration < $minTime->diffInMinutes('00:00')) ||
+                    ($maxTime && $reservationDuration > $maxTime->diffInMinutes('00:00'))
                 ) {
                     return false;
                 }

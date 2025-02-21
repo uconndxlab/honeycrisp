@@ -151,9 +151,9 @@ class ReservationController extends Controller
 
         
 
-        if (!$product->isReservable($start, $end)) {
-            return back()->withErrors(['error' => 'The reservation does not match the product\'s schedule rules.']);
-        }
+        // if (!$product->isReservable($start, $end)) {
+        //     return back()->withErrors(['error' => 'The reservation does not match the product\'s schedule rules.']);
+        // }
    
 
         // create an order to go with it, with no items
