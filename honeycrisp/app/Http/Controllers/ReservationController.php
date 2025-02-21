@@ -190,13 +190,13 @@ class ReservationController extends Controller
             'status' => 'pending',
         ]);
 
-        $orderItem->quantity = 8;
+        $orderItem->quantity = $minutes;
         $orderItem->save();
 
         // add the orderlog to the order
         $order->logs()->create([
             'user_id' => auth()->user()->id ?? null,
-            'message' => 'Order created',
+            'message' => 'Order created via reservation.',
             'changed_at' => now(),
         ]);
 

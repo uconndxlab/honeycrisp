@@ -40,7 +40,7 @@
                                     <td>{{ $reservation->status }}</td>
                                     <td>{{ $reservation->account_type }}</td>
                                     <td>
-                                        <a href="#" class="btn btn-primary">View</a>
+                                        <a href="{{ route('orders.show', $reservation->order_id) }}" class="btn btn-primary">View</a>
                                         <a href="#" class="btn btn-primary">Edit</a>
                                         <form action="{{ route('reservations.destroy', $reservation->id) }}" method="POST">
                                             @csrf

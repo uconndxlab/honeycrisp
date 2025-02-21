@@ -84,8 +84,8 @@
                                 </div>
 
                                 <div class="form-group my-2">
-                                    <label for="description">Description*:</label>
-                                    <textarea required name="description" id="description" class="form-control">{{ old('description', isset($order) ? $order->description : '') }}</textarea>
+                                    <label for="description">Description: (notes to Facility)</label>
+                                    <textarea name="description" id="description" class="form-control">{{ old('description', isset($order) ? $order->description : '') }}</textarea>
                                 </div>
 
                                 <div class="form-group my-2">
@@ -132,7 +132,30 @@
                         </div>
                     </div>
                 </div>
-
+                <div class="card mb-4">
+                    <div class="card-header">
+                        <h5 class="card-title">Instrument Details</h5>
+                    </div>
+                    <div class="card-body">
+                        <p><strong>Availability</strong></p>
+                        @if ($scheduleRules->isEmpty())
+                            <p>No specific schedule rules for this product.</p>
+                        @else
+                            <ul>
+                                @foreach ($product->scheduleRules as $rule)
+                                    <li>
+                                        <strong>{{ ucfirst($rule->day) }}</strong>:
+                                        {{ $rule->time_of_day_start }} - {{ $rule->time_of_day_end }}
+                                    </li>
+                                @endforeach
+                            </ul>
+                        @endif
+        
+                        <p><strong>Reservation Interval:</strong> {{ $product->reservation_interval }} minutes</p>
+                        <p><strong>Minimum Reservation Duration:</strong> {{ $product->minimum_reservation_time }} minutes</p>
+                        <p><strong>Maximum Reservation Duration:</strong> {{ $product->maximum_reservation_time }} minutes</p>
+                    </div>
+                </div>
             </div>
 
             <div class="col-md-6">
@@ -218,7 +241,7 @@
                                     <select id="price_group" name="price_group_id" class="form-select">
                                         @foreach ($product->priceGroups as $priceGroup)
                                             <option value="{{ $priceGroup->id }}">
-                                                {{ $priceGroup->name }} ($@dollars($priceGroup->price))
+                                                {{ $priceGroup->name }} ($@dollars($priceGroup->price * 60))
                                             </option>
                                         @endforeach
                                     </select>

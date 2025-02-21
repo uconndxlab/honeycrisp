@@ -62,18 +62,23 @@ class Product extends Model
 
     public function isReservable($start, $end)
     {
-        
         $dayOfWeek = strtolower($start->format('l')); // e.g., 'monday'
         $rules = $this->scheduleRules()->where('day', $dayOfWeek)->get();
 
         foreach ($rules as $rule) {
-            $ruleStart = new \DateTime($rule->time_of_day_start);
-            $ruleEnd = new \DateTime($rule->time_of_day_end);
+            $ruleStart = \Carbon\Carbon::parse($rule->time_of_day_start);
+            $ruleEnd = \Carbon\Carbon::parse($rule->time_of_day_end);
 
-            if (
-                $start->format('H:i') >= $ruleStart->format('H:i') &&
-                $end->format('H:i') <= $ruleEnd->format('H:i')
-            ) {
+            // Ensure the reservation fits within min/max allowed time
+            $minTime = $this->minimum_reservation_time ? \Carbon\Carbon::parse($this->minimum_reservation_time) : null;
+            $maxTime = $this->maximum_reservation_time ? \Carbon\Carbon::parse($this->maximum_reservation_time) : null;
+
+            if ($start->between($ruleStart, $ruleEnd, true) && $end->between($ruleStart, $ruleEnd, true)) {
+                if (($minTime && $end->diffInMinutes($start) < $minTime->diffInMinutes('00:00')) ||
+                    ($maxTime && $end->diffInMinutes($start) > $maxTime->diffInMinutes('00:00'))
+                ) {
+                    return false;
+                }
                 return true;
             }
         }
@@ -83,22 +88,13 @@ class Product extends Model
 
     public function isBooked($start, $end)
     {
-        $reservations = $this->reservations()->get();
-
-        foreach ($reservations as $reservation) {
-            $reservationStart = new \DateTime($reservation->reservation_start);
-            $reservationEnd = new \DateTime($reservation->reservation_end);
-
-            if (
-                $start->format('Y-m-d H:i:s') >= $reservationStart->format('Y-m-d H:i:s') &&
-                $end->format('Y-m-d H:i:s') <= $reservationEnd->format('Y-m-d H:i:s')
-            ) {
-                return true;
-            }
-        }
-
-        return false;
+        return $this->reservations()
+            ->where(function ($query) use ($start, $end) {
+                $query->where(function ($q) use ($start, $end) {
+                    $q->where('reservation_start', '<', $end)
+                        ->where('reservation_end', '>', $start);
+                });
+            })
+            ->exists();
     }
-
-    
 }
